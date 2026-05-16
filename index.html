@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShiftHub Pro — L1 Operations</title>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+ :root {
+  --bg: #f4f6f9;
+  --surface: #ffffff;
+  --surface2: #f8fafc;
+  --surface3: #eef2f7;
+  --border: #d7dde8;
+  --border2: #b9c3d4;
+  --ink: #172033;
+  --ink2: #4b5870;
+  --ink3: #718097;
+  --gold: #b7791f;
+  --gold-dim: #f7d9a8;
+  --gold-bg: #fff7e6;
+  --blue: #2563eb;
+  --blue-dim: #bfdbfe;
+  --blue-bg: #eff6ff;
+  --green: #047857;
+  --green-dim: #bbf7d0;
+  --green-bg: #ecfdf5;
+  --red: #b91c1c;
+  --red-dim: #fecaca;
+  --red-bg: #fef2f2;
+  --purple: #7c3aed;
+  --purple-dim: #ddd6fe;
+  --purple-bg: #f5f3ff;
+  --amber: #b45309;
+  --teal: #0f766e;
+  --r: 12px;
+  --r-sm: 8px;
+  --shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px; position: sticky; top: 0; z-index: 200;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-hex {
+  width: 36px; height: 36px; background: var(--gold);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 18px; color: #1a0a00; letter-spacing: -1px;
+}
+.logo-name { font-size: 17px; font-weight: 700; color: var(--ink); letter-spacing: -0.3px; }
+.logo-sub { font-size: 11px; color: var(--ink3); margin-top: -2px; font-family: 'DM Mono', monospace; }
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.clock-box { text-align: right; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--ink2); }
+
+/* ── NAV ── */
+.nav {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 2px;
+  padding: 0 1rem;
+  position: sticky; top: 56px; z-index: 190;
+  overflow-x: auto;
+}
+.nav-btn {
+  border: none; background: transparent; color: var(--ink2);
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  padding: 14px 14px; cursor: pointer; white-space: nowrap;
+  border-bottom: 2px solid transparent; transition: all 0.18s;
+  display: flex; align-items: center; gap: 6px;
+}
+.nav-btn:hover { color: var(--ink); background: var(--surface2); }
+.nav-btn.active { color: var(--gold); border-bottom-color: var(--gold); background: transparent; }
+.nav-badge {
+  background: var(--surface3); border-radius: 10px;
+  padding: 1px 7px; font-size: 10px; font-weight: 700; color: var(--ink2);
+  font-family: 'DM Mono', monospace;
+}
+.nav-btn.active .nav-badge { background: var(--gold-dim); color: var(--gold); }
+
+/* ── LOCK OVERLAY ── */
+.lock-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(10,11,18,0.97);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 20px;
+}
+.lock-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 2.5rem; text-align: center;
+  max-width: 360px; width: 90%;
+  box-shadow: 0 8px 48px rgba(0,0,0,0.6);
+}
+.lock-icon { font-size: 40px; margin-bottom: 12px; }
+.lock-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; color: var(--gold); }
+.lock-sub { font-size: 13px; color: var(--ink2); margin-bottom: 20px; }
+.lock-input-row { display: flex; gap: 8px; }
+.lock-input {
+  flex: 1; background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: var(--r-sm); color: var(--ink); padding: 11px 14px;
+  font-size: 20px; font-family: 'DM Mono', monospace; letter-spacing: 8px;
+  text-align: center;
+}
+.lock-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(245,166,35,0.15); }
+.lock-err { color: var(--red); font-size: 12px; margin-top: 8px; display: none; }
+.lock-hint { font-size: 11px; color: var(--ink3); margin-top: 16px; }
+
+/* ── CONTENT ── */
+.content { max-width: 1300px; margin: 0 auto; padding: 1.5rem; }
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); box-shadow: var(--shadow); margin-bottom: 1rem;
+}
+.card-head {
+  padding: 1rem 1.25rem; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.card-title { font-size: 14px; font-weight: 600; flex: 1; }
+.card-body { padding: 1.25rem; }
+.card-icon { font-size: 16px; }
+
+/* ── GRIDS ── */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+.g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+.g5 { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; }
+@media(max-width:900px){ .g3,.g4,.g5{ grid-template-columns:1fr 1fr; } }
+@media(max-width:600px){ .g2,.g3,.g4,.g5{ grid-template-columns:1fr; } }
+
+/* ── FORM ELEMENTS ── */
+.field { margin-bottom: 12px; }
+.field > label { display: block; font-size: 11px; font-weight: 600; color: var(--ink3); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 5px; }
+input[type=text], input[type=number], input[type=date], input[type=password], select, textarea {
+  width: 100%; background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--r-sm); color: var(--ink); padding: 9px 11px;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; transition: border-color .15s;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(245,166,35,.12);
+}
+textarea { min-height: 80px; resize: vertical; }
+input[readonly],.fixed-cell{ background: var(--surface3)!important; color: var(--ink2)!important; border-style: dashed; cursor: default; }
+select option { background: var(--surface2); }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 16px; border-radius: var(--r-sm);
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  border: 1px solid transparent; transition: all .15s;
+  font-family: 'DM Sans', sans-serif; white-space: nowrap;
+}
+.btn-gold { background: var(--gold); color: #1a0a00; border-color: var(--gold); }
+.btn-gold:hover { background: #e09520; }
+.btn-outline { background: transparent; color: var(--ink2); border-color: var(--border2); }
+.btn-outline:hover { background: var(--surface2); color: var(--ink); }
+.btn-green { background: var(--green-dim); color: var(--green); border-color: #1a4a35; }
+.btn-green:hover { background: #0d3522; }
+.btn-red { background: var(--red-dim); color: var(--red); border-color: #7a2a2a; }
+.btn-red:hover { background: #6a1a1a; }
+.btn-blue { background: var(--blue-dim); color: var(--blue); border-color: #243a6a; }
+.btn-blue:hover { background: #0f1d3a; }
+.btn-sm { padding: 5px 10px; font-size: 12px; }
+.btn-full { width: 100%; justify-content: center; }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+.row-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+
+/* ── STAT CARDS ── */
+.stat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 1rem; }
+@media(max-width:900px){ .stat-grid{ grid-template-columns: 1fr 1fr; } }
+.stat-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 1rem 1.25rem;
+}
+.stat-val { font-family: 'DM Mono', monospace; font-size: 28px; font-weight: 700; }
+.stat-lbl { font-size: 11px; color: var(--ink3); text-transform: uppercase; letter-spacing: .6px; margin-top: 2px; }
+.stat-card.gold .stat-val { color: var(--gold); }
+.stat-card.green .stat-val { color: var(--green); }
+.stat-card.red .stat-val { color: var(--red); }
+.stat-card.blue .stat-val { color: var(--blue); }
+
+/* ── TABLES ── */
+.tbl-wrap { overflow-x: auto; border-radius: var(--r-sm); border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th {
+  background: var(--surface2); color: var(--ink3); font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .7px; padding: 9px 11px;
+  text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+td { padding: 9px 11px; border-bottom: 1px solid var(--border); color: var(--ink); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,.02); }
+.mono { font-family: 'DM Mono', monospace; font-size: 11px; }
+.pos { color: var(--green); font-weight: 600; }
+.neg { color: var(--red); font-weight: 600; }
+.tag {
+  display: inline-block; padding: 2px 8px; border-radius: 20px;
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+}
+.tag-green { background: var(--green-dim); color: var(--green); }
+.tag-red { background: var(--red-dim); color: var(--red); }
+.tag-amber { background: var(--gold-dim); color: var(--gold); }
+.tag-blue { background: var(--blue-dim); color: var(--blue); }
+.tag-purple { background: var(--purple-dim); color: var(--purple); }
+
+/* ── DIVIDER ── */
+.section-label {
+  font-size: 11px; font-weight: 700; color: var(--ink3); text-transform: uppercase;
+  letter-spacing: .8px; margin: 16px 0 8px; display: flex; align-items: center; gap: 8px;
+}
+.section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* ── SUMMARY BOX ── */
+.sum-box {
+  border-radius: var(--r-sm); padding: 12px 16px; background: var(--surface2);
+  border: 1px solid var(--border);
+}
+.sum-box.calc-increase { background: var(--green-bg); border-color: var(--green-dim); }
+.sum-box.calc-remove { background: var(--red-bg); border-color: var(--red-dim); }
+.sum-box .sum-val { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 700; }
+.sum-box .sum-lbl { font-size: 11px; color: var(--ink3); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+
+/* ── HELP BOX ── */
+.help-box {
+  background: var(--blue-bg); border: 1px solid var(--blue-dim);
+  border-radius: var(--r-sm); padding: 10px 14px; font-size: 12px;
+  color: var(--blue); margin-bottom: 12px; line-height: 1.6;
+}
+.warn-box {
+  background: var(--gold-bg); border: 1px solid var(--gold-dim);
+  border-radius: var(--r-sm); padding: 10px 14px; font-size: 12px;
+  color: var(--gold); margin-bottom: 12px; line-height: 1.6;
+}
+
+/* ── TABS ── */
+.inner-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 1rem; overflow-x: auto; }
+.inner-tab {
+  border: none; background: transparent; color: var(--ink2);
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  padding: 10px 16px; cursor: pointer;
+  border-bottom: 2px solid transparent; transition: all .15s; white-space: nowrap;
+}
+.inner-tab:hover { color: var(--ink); }
+.inner-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+.inner-panel { display: none; }
+.inner-panel.active { display: block; }
+
+/* ── ACCORDION ── */
+.acc { border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 8px; overflow: hidden; }
+.acc-head {
+  padding: 12px 16px; background: var(--surface2); display: flex;
+  justify-content: space-between; cursor: pointer; align-items: center;
+  font-weight: 600; font-size: 13px;
+}
+.acc-head:hover { background: var(--surface3); }
+.acc-body { display: none; padding: 1rem; border-top: 1px solid var(--border); }
+.acc-body.open { display: block; }
+
+/* ── TOAST ── */
+#toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(30px);
+  background: var(--surface2); color: var(--ink); border: 1px solid var(--border);
+  padding: 10px 20px; border-radius: 30px; font-size: 13px;
+  opacity: 0; transition: all .25s; pointer-events: none; z-index: 999;
+  box-shadow: var(--shadow);
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── GUIDE MODAL ── */
+.modal-bg {
+  position: fixed; inset: 0; background: rgba(0,0,0,.7);
+  z-index: 400; display: none; align-items: center; justify-content: center; padding: 1rem;
+}
+.modal-bg.open { display: flex; }
+.modal-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; max-width: 700px; width: 100%; max-height: 85vh;
+  overflow-y: auto; padding: 1.5rem; box-shadow: var(--shadow);
+}
+.modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.modal-title { font-size: 18px; font-weight: 700; }
+.guide-step {
+  border-left: 3px solid var(--gold); padding: 10px 16px; margin-bottom: 12px;
+  background: var(--surface2); border-radius: 0 var(--r-sm) var(--r-sm) 0;
+}
+.guide-step h4 { color: var(--gold); font-size: 13px; margin-bottom: 4px; }
+.guide-step p { color: var(--ink2); font-size: 12px; line-height: 1.6; }
+
+
+
+/* ── LIGHT OPERATIONS THEME OVERRIDES ── */
+body {
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+}
+.topbar {
+  background: #ffffff;
+  border-bottom: 1px solid #d7dde8;
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
+}
+.logo-hex {
+  background: #f3b23c;
+  color: #2d1a00;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,.08);
+}
+.logo-name { color: #172033; }
+.logo-sub, .clock-box { color: #667085; }
+.nav {
+  background: #ffffff;
+  border-bottom: 1px solid #d7dde8;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+.nav-btn:hover { background: #f1f5f9; color: #172033; }
+.nav-btn.active {
+  color: #9a5b00;
+  background: #fff7e6;
+  border-bottom-color: #f3b23c;
+}
+.card, .stat-card, .lock-card, .modal-box {
+  background: #ffffff;
+  border: 1px solid #d7dde8;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+}
+.card-head {
+  background: #fbfcfe;
+  border-bottom: 1px solid #d7dde8;
+}
+.card-title { color: #172033; }
+input[type=text], input[type=number], input[type=date], input[type=password], select, textarea {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #172033;
+  min-height: 38px;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: #f3b23c;
+  box-shadow: 0 0 0 3px rgba(243,178,60,.20);
+}
+input[readonly], .fixed-cell {
+  background: #f1f5f9 !important;
+  color: #475569 !important;
+}
+select option { background: #ffffff; color: #172033; }
+th {
+  background: #f1f5f9;
+  color: #475569;
+  border-bottom: 1px solid #d7dde8;
+}
+td {
+  color: #172033;
+  border-bottom: 1px solid #e5e7eb;
+}
+tr:hover td { background: #f8fafc; }
+.tbl-wrap { border-color: #d7dde8; background: #ffffff; }
+.help-box {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
+.warn-box {
+  background: #fff7e6;
+  border-color: #f7d9a8;
+  color: #92400e;
+}
+.sum-box {
+  background: #ffffff;
+  border: 1px solid #d7dde8;
+}
+.sum-box.status-increase {
+  background: #dcfce7;
+  border-color: #86efac;
+}
+.sum-box.status-remove {
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+.sum-box.status-ok {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+.pos { color: #047857; font-weight: 800; }
+.neg { color: #b91c1c; font-weight: 800; }
+.tag-green { background: #dcfce7; color: #047857; }
+.tag-red { background: #fee2e2; color: #b91c1c; }
+.tag-amber { background: #fef3c7; color: #92400e; }
+.tag-blue { background: #dbeafe; color: #1d4ed8; }
+.tag-purple { background: #ede9fe; color: #6d28d9; }
+.btn-gold { background: #f3b23c; color: #2d1a00; border-color: #f3b23c; }
+.btn-outline { background: #ffffff; color: #344054; border-color: #cbd5e1; }
+.btn-outline:hover { background: #f8fafc; color: #172033; }
+.btn-green { background: #dcfce7; color: #047857; border-color: #86efac; }
+.btn-red { background: #fee2e2; color: #b91c1c; border-color: #fca5a5; }
+.btn-blue { background: #dbeafe; color: #1d4ed8; border-color: #93c5fd; }
+.lock-overlay { background: rgba(248,250,252,0.96); }
+.lock-title { color: #9a5b00; }
+.lock-sub, .lock-hint { color: #667085; }
+#toast { background: #ffffff; color: #172033; border-color: #d7dde8; }
+@media(max-width:900px){
+  #panel-passoff > div { grid-template-columns: 1fr !important; }
+  .topbar { padding: 0 1rem; }
+  .content { padding: 1rem; }
+}
+
+/* ── PRINT ── */
+@media print {
+  @page { size: landscape; margin: .4in; }
+  body { background: #fff; color: #111; font-size: 11px; }
+  .topbar, .nav, #toast, .lock-overlay, .modal-bg, .btn, .row-actions, .acc-head button { display: none !important; }
+  .panel { display: block !important; }
+  .card { border: 1px solid #ccc; box-shadow: none; break-inside: avoid; }
+  .stat-val { color: #111 !important; }
+  th { background: #eee !important; color: #333 !important; }
+  td { color: #111 !important; border-bottom: 1px solid #ddd !important; }
+}
+
+/* === Professional Pass-Off Style Refinement === */
+body { background: #eef2f7; }
+.topbar { box-shadow: 0 2px 14px rgba(15,23,42,.08); }
+.card { border: 1px solid #cfd8e6; box-shadow: 0 10px 28px rgba(15,23,42,.08); }
+.card-head { background: linear-gradient(180deg,#ffffff,#f8fafc); }
+.btn-gold { background:#f2b233; color:#1f2937; border-color:#d4941f; }
+input[type=text], input[type=number], input[type=date], input[type=password], select, textarea {
+  background:#fff; border:1px solid #cbd5e1; color:#111827;
+}
+input[readonly], .fixed-cell { background:#f1f5f9!important; color:#334155!important; }
+.help-box { background:#eff6ff; border-color:#bfdbfe; color:#1e3a8a; }
+.warn-box { background:#fff7ed; border-color:#fed7aa; color:#9a3412; }
+
+/* Pouches one-page worksheet */
+.pouch-onepage {
+  background:#ffffff;
+  border:1px solid #94a3b8;
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 8px 18px rgba(15,23,42,.08);
+}
+.pouch-title {
+  text-align:center;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size:24px;
+  font-weight:700;
+  padding:12px 10px 6px;
+  color:#111827;
+  border-bottom:2px solid #3b82f6;
+  background:#ffffff;
+}
+.pouch-meta {
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap:8px;
+  padding:10px 16px;
+  border-bottom:1px solid #cbd5e1;
+  font-size:12px;
+}
+.pouch-meta b { color:#111827; }
+.pouch-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  padding:16px;
+}
+.pouch-section {
+  border:1px solid #111827;
+  background:#ffffff;
+}
+.pouch-section h3 {
+  margin:0;
+  padding:7px 10px;
+  text-align:center;
+  font-size:16px;
+  background:#f8fafc;
+  border-bottom:1px solid #111827;
+}
+.pouch-table { width:100%; border-collapse:collapse; font-size:13px; }
+.pouch-table th, .pouch-table td {
+  border-bottom:1px dashed #94a3b8;
+  padding:6px 8px;
+}
+.pouch-table th {
+  width:48%;
+  text-align:right;
+  color:#111827;
+  background:#f8fafc;
+  font-size:12px;
+}
+.pouch-table td { background:#fff; }
+.pouch-table input {
+  height:30px;
+  padding:4px 8px;
+  font-family:'DM Mono', monospace;
+  font-size:13px;
+  text-align:right;
+}
+.pouch-table input[readonly] { font-weight:700; }
+.pouch-total-row td, .pouch-total-row th {
+  background:#fff7cc!important;
+  font-weight:800;
+}
+.pouch-status {
+  display:inline-block;
+  padding:4px 10px;
+  border-radius:0;
+  font-weight:800;
+  color:#111827;
+  min-width:92px;
+  text-align:center;
+}
+.pouch-acceptable { background:#86efac; }
+.pouch-attention { background:#fde047; }
+.pouch-critical { background:#ef4444; color:#fff; }
+.pouch-comments {
+  padding:0 16px 16px;
+}
+.pouch-comments textarea {
+  min-height:52px;
+  background:#fff;
+}
+.pouch-totals {
+  margin:0 16px 16px;
+  border:2px solid #111827;
+  background:#ffffff;
+}
+.pouch-totals h3 {
+  margin:0;
+  text-align:center;
+  padding:8px;
+  background:#e0f2fe;
+  border-bottom:1px solid #111827;
+}
+.pouch-preview {
+  margin:0 16px 16px;
+  border:1px solid #94a3b8;
+  background:#f8fafc;
+  padding:10px 12px;
+  font-family:'DM Mono', monospace;
+  font-size:12px;
+  line-height:1.5;
+}
+.pouch-preview strong { color:#111827; }
+@media(max-width:900px){
+  .pouch-grid{grid-template-columns:1fr;}
+  .pouch-meta{grid-template-columns:1fr;}
+}
+@media print {
+  body.print-pouches .topbar,
+  body.print-pouches .nav,
+  body.print-pouches #toast,
+  body.print-pouches .lock-overlay,
+  body.print-pouches .modal-bg,
+  body.print-pouches .btn,
+  body.print-pouches .row-actions,
+  body.print-pouches .help-box,
+  body.print-pouches .warn-box { display:none!important; }
+  body.print-pouches .panel { display:none!important; }
+  body.print-pouches #panel-pouches { display:block!important; padding:0!important; margin:0!important; max-width:none!important; }
+  body.print-pouches .card { border:none!important; box-shadow:none!important; margin:0!important; }
+  body.print-pouches .card-head { display:none!important; }
+  body.print-pouches .card-body { padding:0!important; }
+  body.print-pouches .pouch-onepage { border:1px solid #111!important; box-shadow:none!important; border-radius:0!important; }
+  body.print-pouches input, body.print-pouches textarea { border:none!important; background:transparent!important; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- LOCK SCREEN (Team Lead only) -->
+<div class="lock-overlay" id="lockScreen">
+  <div class="lock-card">
+    <div class="lock-icon">🔐</div>
+    <div class="lock-title">Team Lead Access</div>
+    <div class="lock-sub">Enter your 4-digit PIN to access the Daily Report module. Other modules are always accessible.</div>
+    <div class="lock-input-row">
+      <input type="password" inputmode="numeric" pattern="[0-9]*" class="lock-input" id="pinInput" maxlength="4" placeholder="7890" oninput="this.value=this.value.replace(/[^0-9]/g,''); if(this.value.length===4) checkPin();">
+      <button class="btn btn-gold" onclick="checkPin()">Enter</button>
+    </div>
+    <div class="lock-err" id="pinErr">❌ Incorrect PIN. Try again.</div>
+    <div class="lock-hint">Team Lead PIN: 7890</div>
+    <div style="margin-top:16px">
+      <button class="btn btn-outline btn-sm" onclick="skipToMain()">↩ Go to other modules</button>
+    </div>
+  </div>
+</div>
+
+<!-- GUIDE MODAL -->
+<div class="modal-bg" id="guideModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title">📖 ShiftHub Pro — Guía de Uso</div>
+      <button class="btn btn-outline btn-sm" onclick="closeGuide()">✕ Cerrar</button>
+    </div>
+    <div class="guide-step"><h4>🔐 Daily Report / Dashboard — Solo Team Lead</h4><p>El PIN de Team Lead es 7890. El Dashboard y el Daily Report son solo para revisar reportes por edificio, por turno, por empleado y para detectar ajustes altos.</p></div>
+    <div class="guide-step"><h4>🍫 Chocolate Adjustment</h4><p>Selecciona la línea, el item que está corriendo y el chocolate. Los tanques, enrobers/pipes y bed vienen en 100% por defecto porque casi siempre se reportan completos. Solo modifica ese porcentaje si la línea terminó producción y se hizo retorno o si de verdad no está al 100%.</p></div>
+    <div class="guide-step"><h4>🥜 Ingredients Adjustment</h4><p>Escoge la plantilla correcta y escribe la cantidad física. Las libras fijas ya vienen cargadas para evitar errores. La herramienta calcula la diferencia contra sistema.</p></div>
+    <div class="guide-step"><h4>📦 Pouches Adjustment</h4><p>La lógica correcta es: primero se hace el scrap que reporta producción. Después el sistema queda en System After Scrap. Luego se calcula el PA necesario para llegar a lo físico. Ejemplo: System 700, Scrap 150 → después del scrap quedan 550. Si físico es 850, el PA debe ser +300.</p></div>
+    <div class="guide-step"><h4>⏱ Mid Shift / ✅ End Shift</h4><p>Mid Shift usa solamente completion, sistema, físico y scrap de Mid Shift. End Shift usa solamente los datos de End Shift. En Totals solo se suman los ajustes IMS: Scrap IMS + PA. No se suma completion.</p></div>
+    <div class="guide-step"><h4>🟢🟡🔴 Estatus</h4><p>No cambies esta lógica: Acceptable ≤5%, Attention mayor de 5% y menor o igual a 8%, Critical mayor de 8%.</p></div>
+    <div class="guide-step"><h4>🧾 Pass Off Builder</h4><p>Pega texto de IMS para detectar Item, LPN y Qty. Recuerda: el LP importante normalmente empieza con R. Agrega ajustes, scrap, movimientos o cycle count y exporta a Word.</p></div>
+    <div class="guide-step"><h4>📤 Exportar</h4><p>Usa Word para generar reportes. Antes de limpiar datos, guarda o exporta el reporte.</p></div>  </div>
+</div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-hex">SH</div>
+    <div>
+      <div class="logo-name">ShiftHub Pro</div>
+      <div class="logo-sub">L1 · Lindon Operations Center</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <button class="btn btn-outline btn-sm" onclick="openGuide()">📖 Guide</button>
+    <div class="clock-box">
+      <div id="clock">--:--:--</div>
+      <div id="dateLabel">--</div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nav-btn active" onclick="switchPanel('dashboard',this)">📊 Dashboard <span class="nav-badge">🔒 TL</span></button>
+  <button class="nav-btn" onclick="switchPanel('daily',this)">📋 Daily Report <span class="nav-badge" id="nb-daily">🔒 TL</span></button>
+  <button class="nav-btn" onclick="switchPanel('chocolate',this)">🍫 Chocolate <span class="nav-badge" id="nb-choc">0</span></button>
+  <button class="nav-btn" onclick="switchPanel('ingredients',this)">🥜 Ingredients <span class="nav-badge" id="nb-ing">0</span></button>
+  <button class="nav-btn" onclick="switchPanel('pouches',this)">📦 Pouches <span class="nav-badge" id="nb-pch">0</span></button>
+  <button class="nav-btn" onclick="switchPanel('passoff',this)">🧾 Pass Off <span class="nav-badge" id="nb-po">0</span></button>
+</div>
+
+<!-- ══════════════════════ DASHBOARD ══════════════════════ -->
+<div id="panel-dashboard" class="panel active content">
+  <div class="stat-grid">
+    <div class="stat-card gold"><div class="stat-val" id="ds-reports">0</div><div class="stat-lbl">Reports Saved</div></div>
+    <div class="stat-card green"><div class="stat-val" id="ds-adj">0</div><div class="stat-lbl">Adjustments</div></div>
+    <div class="stat-card blue"><div class="stat-val" id="ds-pch">0</div><div class="stat-lbl">Pouch Records</div></div>
+    <div class="stat-card red"><div class="stat-val" id="ds-scrap">0</div><div class="stat-lbl">Scrap Entries</div></div>
+  </div>
+  <div class="card">
+    <div class="card-head">
+      <span class="card-icon">📊</span>
+      <span class="card-title">Saved Reports</span>
+      <div class="row-actions" style="margin:0">
+        <input type="date" id="dashDate" onchange="renderDash()" style="width:auto">
+        <select id="dashBuilding" onchange="renderDash()" style="width:auto">
+          <option value="">All Buildings</option>
+          <option>L1</option><option>L2</option><option>L3</option>
+        </select>
+        <select id="dashShift" onchange="renderDash()" style="width:auto">
+          <option value="">All Shifts</option>
+          <option>Shift 1</option><option>Shift 2</option><option>Shift 3</option>
+        </select>
+        <button class="btn btn-outline btn-sm" onclick="exportDayWord()">⬇ Export Day</button>
+      </div>
+    </div>
+    <div class="card-body" id="dashList">
+      <div style="text-align:center;padding:2rem;color:var(--ink3)">No reports saved yet. Start filling in the modules.</div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-head"><span class="card-icon">👤</span><span class="card-title">Employee / User Summary — Team Lead Only</span></div>
+      <div class="card-body" id="dashEmployees"><div style="color:var(--ink3)">Unlock Team Lead and save reports to see employee totals.</div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-icon">🚨</span><span class="card-title">High Adjustments / Critical Review</span></div>
+      <div class="card-body" id="dashHighAdjustments"><div style="color:var(--ink3)">Critical pouch records and large adjustments will show here.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ DAILY REPORT (TL ONLY) ══════════════════════ -->
+<div id="panel-daily" class="panel content">
+  <div class="card">
+    <div class="card-head">
+      <span class="card-icon">📋</span>
+      <span class="card-title">Daily Report — REPORTE AJUSTE DE CHOCOLATE</span>
+      <div class="row-actions" style="margin:0">
+        <button class="btn btn-outline btn-sm" onclick="resetDaily()">↺ Reset</button>
+        <button class="btn btn-gold btn-sm" onclick="saveDaily()">💾 Save</button>
+        <button class="btn btn-green btn-sm" onclick="exportDailyWord()">⬇ Word</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="help-box">🔒 Team Lead module — Enter IMS adjustment data for all lines. This report consolidates Sollich 1, 2, 3 and Cycle Count per shift.</div>
+      <div class="g3">
+        <div class="field"><label>Date</label><input type="date" id="dlDate"></div>
+        <div class="field"><label>Building</label><select id="dlBuilding"><option>L1</option><option>L2</option><option>L3</option></select></div>
+        <div class="field"><label>Team Lead Name</label><input type="text" id="dlTL" placeholder="Your name"></div>
+      </div>
+      <div class="section-label">Shift 1</div>
+      <div id="dlShift1" class="shift-block" data-shift="1"></div>
+      <div class="section-label">Shift 2</div>
+      <div id="dlShift2" class="shift-block" data-shift="2"></div>
+      <div class="section-label">Shift 3</div>
+      <div id="dlShift3" class="shift-block" data-shift="3"></div>
+      <div class="section-label">Summary by Line</div>
+      <div class="tbl-wrap" id="dlSummaryTable"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ CHOCOLATE ══════════════════════ -->
+<div id="panel-chocolate" class="panel content">
+  <div class="card">
+    <div class="card-head">
+      <span class="card-icon">🍫</span>
+      <span class="card-title">Chocolate Adjustment — Sollich Lines</span>
+      <div class="row-actions" style="margin:0">
+        <button class="btn btn-outline btn-sm" onclick="resetChoc()">↺ Reset</button>
+        <button class="btn btn-gold btn-sm" onclick="saveChoc()">💾 Save</button>
+        <button class="btn btn-green btn-sm" onclick="exportChocWord()">⬇ Word</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="g4" style="margin-bottom:12px">
+        <div class="field"><label>Date</label><input type="date" id="chDate"></div>
+        <div class="field"><label>Shift</label><select id="chShift"><option>Shift 1</option><option>Shift 2</option><option>Shift 3</option></select></div>
+        <div class="field"><label>Line</label><select id="chLine" onchange="buildChocRows()"><option>Sollich 2</option><option>Sollich 3</option></select></div>
+        <div class="field"><label>Running Item</label><select id="chItem" onchange="buildChocRows()"></select></div>
+        <div class="field"><label>Chocolate Item</label><select id="chChocItem"></select></div>
+        <div class="field"><label>Total in System (lbs)</label><input type="number" id="chSystem" placeholder="e.g. 16638" oninput="calcChoc()"></div>
+      </div>
+      <div class="help-box"><strong>Nota importante:</strong> Tanks / AD / Enrobers & Pipes / Bed quedan en <strong>100%</strong> por defecto. Solo modifica el porcentaje si la línea terminó producción, se hizo retorno, o si realmente no está al 100%. FG Pallets = cantidad de pallets. Boxes on the Floor = cantidad de cajas.</div>
+      <div class="tbl-wrap">
+        <table id="chTable">
+          <thead><tr><th>Area / Tank</th><th>Fixed Weight (lbs)</th><th>Physical Input</th><th>Mode</th><th>Total lbs</th></tr></thead>
+          <tbody id="chBody"></tbody>
+        </table>
+      </div>
+      <div class="g3" id="chSummary" style="margin-top:12px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ INGREDIENTS ══════════════════════ -->
+<div id="panel-ingredients" class="panel content">
+  <div class="card">
+    <div class="card-head">
+      <span class="card-icon">🥜</span>
+      <span class="card-title">Ingredients Adjustment</span>
+      <div class="row-actions" style="margin:0">
+        <button class="btn btn-outline btn-sm" onclick="resetIng()">↺ Reset</button>
+        <button class="btn btn-gold btn-sm" onclick="saveIng()">💾 Save</button>
+        <button class="btn btn-green btn-sm" onclick="exportIngWord()">⬇ Word</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="g4" style="margin-bottom:12px">
+        <div class="field"><label>Date</label><input type="date" id="ingDate"></div>
+        <div class="field"><label>Shift</label><select id="ingShift"><option>Shift 1</option><option>Shift 2</option><option>Shift 3</option></select></div>
+        <div class="field"><label>Template</label>
+          <select id="ingTemplate" onchange="buildIngRows()">
+            <option value="single">1 Ingredient</option>
+            <option value="smore">Smore — Graham & Marshmallow</option>
+            <option value="pistachio">Pistachio Big & Small</option>
+            <option value="pecan">Pecan</option>
+          </select>
+        </div>
+        <div class="field" id="ingItemGroup"><label>Ingredient</label><select id="ingItem" onchange="buildIngRows()"></select></div>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Detail</th><th>Qty Physical</th><th>Per Pallet / Fixed (lbs)</th><th>Quantity lbs</th></tr></thead>
+          <tbody id="ingBody"></tbody>
+        </table>
+      </div>
+      <div class="tbl-wrap" id="ingSummary" style="margin-top:12px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ POUCHES ══════════════════════ -->
+<div id="panel-pouches" class="panel content">
+  <div class="card">
+    <div class="card-head">
+      <span class="card-icon">📦</span>
+      <span class="card-title">Pouches Adjustments — One Page Pass Off Style</span>
+      <div class="row-actions" style="margin:0">
+        <button class="btn btn-outline btn-sm" onclick="resetPch()">↺ Reset</button>
+        <button class="btn btn-gold btn-sm" onclick="savePch()">💾 Save</button>
+        <button class="btn btn-blue btn-sm" onclick="printPouchesOnly()">🖨 Print / PDF</button>
+        <button class="btn btn-green btn-sm" onclick="exportPchWord()">⬇ Word</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="help-box"><strong>Lógica correcta:</strong> primero se hace el Scrap reportado por Production. Después el sistema calcula el PA necesario para llegar al físico real. Ejemplo: System 700 · Scrap 150 → After Scrap 550 · Physical 850 → PA +300.</div>
+
+      <div class="pouch-onepage" id="pouchPrintable">
+        <div class="pouch-title">Pouches Adjustments</div>
+
+        <div class="pouch-meta">
+          <div><b>Date:</b> <input type="date" id="pchDate" style="width:150px"></div>
+          <div><b>Shift:</b> <select id="pchShift" style="width:140px"><option>Shift 1</option><option>Shift 2</option><option>Shift 3</option></select></div>
+          <div><b>Line:</b> <select id="pchLine" style="width:150px"><option>Sollich 1</option><option>Sollich 2</option><option>Sollich 3</option><option>Pack 1</option><option>Pack 2</option><option>Pack 3</option></select></div>
+          <div><b>Item:</b> <select id="pchItem" onchange="pchUpdateDesc()" style="width:170px"></select></div>
+          <div style="grid-column:span 2"><b>Description:</b> <input type="text" id="pchDesc" readonly style="width:78%"></div>
+          <div><b>BOM:</b> <input type="number" id="pchBom" value="1" readonly style="width:70px"> Ea</div>
+        </div>
+
+        <div class="pouch-grid">
+          <!-- MID SHIFT -->
+          <div class="pouch-section">
+            <h3>Mid Shift</h3>
+            <table class="pouch-table">
+              <tr><th>Completion</th><td><input type="number" id="pchMidCompletion" oninput="calcPchAll()" placeholder="0"></td></tr>
+              <tr><th>Qty in System</th><td><input type="number" id="pchMidSistema" oninput="calcPchAll()" placeholder="0"></td></tr>
+              <tr><th>Qty in Physical</th><td><input type="number" id="pchMidFisico" oninput="calcPchAll()" placeholder="0"></td></tr>
+              <tr><th>Scrap Reported</th><td><input type="number" id="pchMidScrapUsed" oninput="calcPchAll()" placeholder="0"></td></tr>
+              <tr><th>Scrap IMS Adjustment</th><td><input type="number" id="pchMidScrap" readonly></td></tr>
+              <tr><th>System After Scrap</th><td><input type="number" id="pchMidAfterScrap" readonly></td></tr>
+              <tr><th>PA / Production Adjustment</th><td><input type="number" id="pchMidAdj" readonly></td></tr>
+              <tr class="pouch-total-row"><th>Total IMS Adjustment</th><td><input type="number" id="pchMidTotalAdj" readonly></td></tr>
+              <tr><th>Adjustment %</th><td><span id="pchMidPct">0.00%</span></td></tr>
+              <tr><th>Status</th><td><span id="pchMidStatus" class="pouch-status pouch-acceptable">Acceptable</span></td></tr>
+            </table>
+          </div>
+
+          <!-- END SHIFT -->
+          <div class="pouch-section">
+            <h3>End of Shift</h3>
+            <table class="pouch-table">
+              <tr><th>Completion</th><td><input type="number" id="pchEndCompletion" oninput="calcPchAll()" placeholder="0"></td></tr>
+              <tr><th>Qty in System</th><td><input type="number" id="pchEndSistema" oninput="calcPchAll()" placeholder="0"></td></tr>
+              <tr><th>Qty in Physical</th><td><input type="number" id="pchEndFisico" oninput="calcPchAll()" placeholder="0"></td></tr>
+              <tr><th>Scrap Reported</th><td><input type="number" id="pchEndScrapUsed" oninput="calcPchAll()" placeholder="0"></td></tr>
+              <tr><th>Scrap IMS Adjustment</th><td><input type="number" id="pchEndScrap" readonly></td></tr>
+              <tr><th>System After Scrap</th><td><input type="number" id="pchEndAfterScrap" readonly></td></tr>
+              <tr><th>PA / Production Adjustment</th><td><input type="number" id="pchEndAdj" readonly></td></tr>
+              <tr class="pouch-total-row"><th>Total IMS Adjustment</th><td><input type="number" id="pchEndTotalAdj" readonly></td></tr>
+              <tr><th>Adjustment %</th><td><span id="pchEndPct">0.00%</span></td></tr>
+              <tr><th>Status</th><td><span id="pchEndStatus" class="pouch-status pouch-acceptable">Acceptable</span></td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- TOTALS -->
+        <div class="pouch-totals">
+          <h3>Totals — Adjustments Only</h3>
+          <table class="pouch-table">
+            <tr>
+              <th>Total Scrap IMS</th>
+              <td><input type="number" id="pchTotalScrapIMS" readonly></td>
+              <th>Total PA</th>
+              <td><input type="number" id="pchTotalPA" readonly></td>
+            </tr>
+            <tr class="pouch-total-row">
+              <th>Grand Total IMS Adjustment</th>
+              <td colspan="3"><input type="number" id="pchGrandTotalIMS" readonly style="font-size:18px;font-weight:800"></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="pouch-preview" id="pchReportPreview">
+          <strong>Report preview will appear here.</strong>
+        </div>
+
+        <div class="pouch-comments">
+          <div class="g2">
+            <div class="field"><label>Comments Mid Shift</label><textarea id="pchMidComments" placeholder="Mid shift comments..."></textarea></div>
+            <div class="field"><label>Comments End of Shift</label><textarea id="pchEndComments" placeholder="End shift comments..."></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="pchMidSummary" style="display:none"></div>
+      <div id="pchEndSummary" style="display:none"></div>
+      <div id="pchTotalsSummary" style="display:none"></div>
+      <div id="pchTotalsTable" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ PASS OFF ══════════════════════ -->
+<div id="panel-passoff" class="panel content">
+  <div style="display:grid; grid-template-columns: 400px 1fr; gap:1rem; align-items:start;">
+    <!-- LEFT -->
+    <div>
+      <div class="card">
+        <div class="card-head"><span class="card-icon">🧾</span><span class="card-title">Pass Off Builder</span></div>
+        <div class="card-body">
+          <div class="g2">
+            <div class="field"><label>Operator</label><input type="text" id="poOp" placeholder="Name"></div>
+            <div class="field"><label>Date</label><input type="date" id="poDate"></div>
+            <div class="field"><label>Shift</label><select id="poShift"><option>Shift 1</option><option>Shift 2</option><option>Shift 3</option></select></div>
+            <div class="field"><label>Building</label><select id="poBuilding"><option>L1</option><option>L2</option><option>L3</option></select></div>
+            <div class="field"><label>Area/Line</label><select id="poArea"><option>Sollich 1</option><option>Sollich 2</option><option>Sollich 3</option><option>Kitchen 1</option><option>Kitchen 2</option><option>Kitchen 3</option><option>Pack 1</option><option>Pack 2</option></select></div>
+            <div class="field"><label>Product/Item</label><input type="text" id="poProduct" list="prodList" placeholder="Item #"></div>
+          </div>
+          <div class="section-label">Production Summary</div>
+          <div class="g2">
+            <div class="field"><label>Item 1</label><input type="text" id="poItem1" list="prodList"></div>
+            <div class="field"><label>Qty Made 1</label><input type="text" id="poQty1" placeholder="e.g. 150 cases"></div>
+            <div class="field"><label>Item 2 (optional)</label><input type="text" id="poItem2" list="prodList"></div>
+            <div class="field"><label>Qty Made 2</label><input type="text" id="poQty2"></div>
+          </div>
+          <div class="field"><label>Production Notes</label><textarea id="poNotes" placeholder="Items produced, incidents..."></textarea></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-icon">📋</span><span class="card-title">Add Entry</span></div>
+        <div class="card-body">
+          <div class="field">
+            <label>Paste IMS Text</label>
+            <textarea id="poPaste" placeholder="Paste text from IMS / NetSuite..." oninput="poLivePreview()"></textarea>
+          </div>
+          <div id="poPreview" style="display:none; margin-bottom:10px; padding:10px; background:var(--blue-bg); border:1px solid var(--blue-dim); border-radius:6px; font-size:12px; color:var(--blue)"></div>
+          <div class="g2">
+            <div class="field"><label>Type</label>
+              <select id="poType" onchange="poUpdateFields()">
+                <option value="adj">🔧 Adjustment</option>
+                <option value="scrap">♻️ Scrap</option>
+                <option value="mov">🔄 Movement</option>
+                <option value="cycle">📦 Cycle Count</option>
+              </select>
+            </div>
+            <div class="field"><label>Reason</label>
+              <select id="poReason">
+                <option>Initial Inventory Mid Shift Real Qty in Physical</option>
+                <option>Initial Inventory Chocolate Mid Shift Real Qty in Physical</option>
+                <option>End Inventory Kitchen Real Qty in Physical</option>
+                <option>End Shift Scrap Pouches Real Qty in Physical</option>
+                <option>Mid Shift Scrap Real Qty in Physical</option>
+                <option>Full Shift Scrap SafetyChain Real Qty in Physical</option>
+              </select>
+            </div>
+          </div>
+          <div id="poExtraFields"></div>
+          <button class="btn btn-gold btn-full" onclick="poAddEntry()">+ Add Entry</button>
+        </div>
+      </div>
+    </div>
+    <!-- RIGHT: Tables -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">📊</span>
+        <span class="card-title">Pass Off Tables</span>
+        <div class="row-actions" style="margin:0">
+          <button class="btn btn-outline btn-sm" onclick="resetPo()">↺ Reset</button>
+          <button class="btn btn-gold btn-sm" onclick="savePo()">💾 Save</button>
+          <button class="btn btn-green btn-sm" onclick="exportPoWord()">⬇ Word</button>
+        </div>
+      </div>
+      <div class="inner-tabs" style="padding:0 1.25rem">
+        <button class="inner-tab active" onclick="poTab('adj',this)">🔧 Adjustments <span class="nav-badge" id="po-cnt-adj">0</span></button>
+        <button class="inner-tab" onclick="poTab('scrap',this)">♻️ Scrap <span class="nav-badge" id="po-cnt-scrap">0</span></button>
+        <button class="inner-tab" onclick="poTab('mov',this)">🔄 Movements <span class="nav-badge" id="po-cnt-mov">0</span></button>
+        <button class="inner-tab" onclick="poTab('cycle',this)">📦 Cycle Count <span class="nav-badge" id="po-cnt-cycle">0</span></button>
+      </div>
+      <div style="padding:0 1.25rem 1.25rem">
+        <div class="inner-panel active" id="po-panel-adj">
+          <div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Qty</th><th>LPN</th><th>Reason</th><th></th></tr></thead><tbody id="po-body-adj"></tbody></table></div>
+        </div>
+        <div class="inner-panel" id="po-panel-scrap">
+          <div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Qty</th><th>LPN</th><th>Reason</th><th></th></tr></thead><tbody id="po-body-scrap"></tbody></table></div>
+        </div>
+        <div class="inner-panel" id="po-panel-mov">
+          <div class="tbl-wrap"><table><thead><tr><th>Item</th><th>LPN</th><th>From</th><th>To</th><th>Reason</th><th></th></tr></thead><tbody id="po-body-mov"></tbody></table></div>
+        </div>
+        <div class="inner-panel" id="po-panel-cycle">
+          <div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Found?</th><th>LPN</th><th>Detail</th><th></th></tr></thead><tbody id="po-body-cycle"></tbody></table></div>
+        </div>
+        <div class="field" style="margin-top:12px"><label>General Observations</label><textarea id="poObs" placeholder="General shift observations..."></textarea></div>
+      </div>
+    </div>
+  </div>
+</div>
+<datalist id="prodList"></datalist>
+
+<div id="toast"></div>
+
+<script>
+// ══════════════════════ DATA ══════════════════════
+const CHOC_ROWS_S2 = [
+  ['MELTING TANK 1',4000,'pct'],['MELTING TANK 2',4000,'pct'],
+  ['AD3',2060,'pct'],['AD4',2060,'pct'],['AD5',2060,'pct'],['AD6',2060,'pct'],
+  ['DECORATOR 1 (BIG)',4000,'pct'],['DECORATOR 2 (SMALL)',2000,'pct'],
+  ['ENROBERS AND PIPES',800,'pct'],['BED',null,'bed'],
+  ['FG PALLETS (WITHOUT LABEL)',null,'pal'],['BOXES ON THE FLOOR',50,'count']
+];
+const CHOC_ROWS_S3 = [
+  ['MELTING TANK 1',4000,'pct'],['MELTING TANK 2',4000,'pct'],['MELTING TANK 3',4000,'pct'],
+  ['AD3',1800,'pct'],['AD4',1800,'pct'],['AD5',1800,'pct'],['AD6',1800,'pct'],
+  ['MORCOS TANK',4000,'pct'],['ENROBERS AND PIPES',400,'pct'],['BED',null,'bed'],
+  ['FG PALLETS (WITHOUT LABEL)',null,'pal'],['BOXES ON THE FLOOR',50,'count']
+];
+const PROD_ITEMS = [
+  {id:'20108',desc:'FAD-Truf Bite-Plain-SS-Dark-Wrapped-Single Piece',chocPal:479,bed:596},
+  {id:'20121',desc:'PRS-Choc Car-Vanilla-SS-MK-Wrapped-SINGLE PIECE',chocPal:261,bed:1385},
+  {id:'20128',desc:'PRS-Truf Bite-Plain-SS-Dark-Wrapped-SINGLE BITE',chocPal:531,bed:1320},
+  {id:'21067',desc:'MMK-Choc Car-Vanilla-SS-MK-Wrapped-SINGLE PIECE (12g)',chocPal:134.88,bed:644.67},
+  {id:'21110',desc:'MMK-Truf Bite-Plain-Milk-Single Piece',chocPal:580,bed:1006},
+  {id:'21112',desc:'MMK-Truf Bite-Plain-SS-Dark-Single Piece',chocPal:596,bed:1340},
+  {id:'21113',desc:'MMK-Truf Bite-Toffee-SS-Milk-Single Piece',chocPal:365,bed:1160},
+  {id:'21157',desc:'MMK-Truf Bite-Peach-Milk-White-Single Piece',chocPal:250,bed:417},
+  {id:'30503-Case6',desc:'FAD-Choc Car-Vanilla-SS-Dark-Pouch 11oz/Case6',chocPal:263,bed:1965},
+  {id:'30517-Pallet320',desc:'MMK-Cluster-Pecan-Milk-PET 30.16oz/Pallet320',chocPal:310,bed:620},
+  {id:'30518-Pallet320',desc:'MMK-Choc Car-Vanilla-SS-MK-PET 36oz/Pallet320',chocPal:263,bed:1600},
+  {id:'30521-Case8',desc:'MMK-Choc Car-Vanilla-SS-Dark-PET 36oz/Case8',chocPal:263,bed:1310},
+  {id:'30536-Case6',desc:'FAD-Cluster-Pecan-Milk-Pouch 6.5oz/Case6',chocPal:235,bed:725},
+  {id:'30537-Case6',desc:'FAD-Choc Car-Vanilla-SS-Milk-Pouch 11oz/Case6',chocPal:263,bed:2400},
+  {id:'30539-Pallet240',desc:'KKL-Cluster-Smore-Milk-Pouch 26.3oz/Pallet240',chocPal:190.94,bed:1232.56},
+  {id:'30554-Pallet400',desc:'KKL-Cluster-Macadamia-Milk-PET 32oz-Pallet400',chocPal:380,bed:876},
+  {id:'30809-Pallet240',desc:'MMK-Enrobed-Pretzel Thins-Dark-Pouch 19.2oz/Pallet240',chocPal:156,bed:181},
+  {id:'30826-Pallet300',desc:'CPK-Cluster-Pistachio-Dark-Pouch 16oz/Pallet300',chocPal:77,bed:600},
+  {id:'30873-Case6',desc:'TAT-Cookie Bark-SS-Dark-Pouch 5oz/Case6',chocPal:62.93,bed:101}
+];
+const CHOC_ITEMS = [
+  {id:'10227',type:'DARK'},{id:'10257',type:'DARK'},{id:'10232',type:'MILK'},
+  {id:'10200',type:'MILK'},{id:'10121',type:'MILK'},{id:'10169',type:'MILK'},
+  {id:'10102',type:'MILK'},{id:'10226',type:'MILK'},{id:'10278',type:'DARK'},
+  {id:'10266',type:'DARK'},{id:'10273',type:'WHITE'},{id:'10259',type:'MILK'},{id:'10066',type:'DARK'}
+];
+const ING_ITEMS = [
+  {id:'21084',name:'GRAHAM',pal:40.3584,bed:700,band:260.52},
+  {id:'10088',name:'MARSHMALLOW',pal:60.1224,bed:750,band:388.11},
+  {id:'10024',name:'PECAN',pal:80,bed:800,band:160},
+  {id:'20112 COSTCO',name:'MACADAMIA',pal:230,bed:800,band:531},
+  {id:'10205',name:'ALMOND',pal:145,bed:700,band:145},
+  {id:'10221',name:'PISTACHIO (BIG)',pal:88,bed:800,band:467},
+  {id:'10223',name:'PISTACHIO (SMALL)',pal:35,bed:800,band:187},
+  {id:'10206',name:'PRETZEL',pal:0,bed:0,band:0}
+];
+const POUCH_ITEMS = [
+  {id:'40623',desc:'PKG-Pouch 11oz-FD-Choc Car-Vanilla-Dark-Thin (12g)'},{id:'40666',desc:'PKG-Pouch 6.5oz-FD-Pecan Cluster-Choc-MK'},
+  {id:'40667',desc:'PKG-Pouch 11oz-FD-Choc Car-Vanilla-Milk-Thin (12g)'},{id:'40674',desc:'PKG-Pouch 26.3oz-KKL-Cluster-Smore-Milk'},
+  {id:'40826',desc:'PKG-Pouch 6oz-TJ-Cluster-Brookie-Dark'},{id:'40836',desc:'PKG-Pouch 6oz-SRS-Cluster-Pecan-Milk'},
+  {id:'41032',desc:'PKG-Pouch 19.2oz-MMK-Enrobed-Pretzel Thins-Dark'},{id:'40863-V3',desc:'PKG-Pouch-MMK-Choc Car-Vanilla-SS-Milk-21.57oz-Recyclable'},
+  {id:'41055-V2',desc:'PKG-Pouch 16.25oz-MMK-Truf Bite-Assorted-RA Update'},{id:'41067-V1',desc:'PKG-Pouch 16oz-CPK-Cluster-Pistachio-Dark-V1'},
+  {id:'40899',desc:'PKG-Pouch 10oz-TJ-Choc Car-Vanilla-Dark (12g Piece)'},{id:'40963',desc:'PKG-Pouch 6.6oz-BET-Cluster-Pecan-Milk'},
+  {id:'41147',desc:'PKG-Pouch 5oz-TAT-Cookie Bark-Milk'},{id:'41151',desc:'PKG-Pouch 5oz-TAT-Cookie Bark-SS-Dark'},
+  {id:'40976',desc:'PKG-Pouch 5.1oz-HER-Choc Bar-Dark-Zero Sugar-8g'},{id:'41128',desc:'PKG-Pouch 5.1oz-HER-ZS-CookiesNCream-8g'}
+];
+
+// ══════════════════════ STATE ══════════════════════
+let poEntries = {adj:[],scrap:[],mov:[],cycle:[]};
+let poActiveTab = 'adj';
+let pchActiveTab = 'mid';
+
+// ══════════════════════ INIT ══════════════════════
+function init() {
+  const today = new Date().toISOString().slice(0,10);
+  ['chDate','ingDate','pchDate','poDate','dlDate','dashDate'].forEach(id => { const el = document.getElementById(id); if(el) el.value = today; });
+
+  // Populate selects
+  fillSelect('chItem', PROD_ITEMS, p => p.id, p => `${p.id} — ${p.desc}`);
+  fillSelect('chChocItem', CHOC_ITEMS, c => c.id, c => `${c.id} — ${c.type}`);
+  fillSelect('ingItem', ING_ITEMS, i => i.id, i => `${i.id} — ${i.name}`);
+  fillSelect('pchItem', POUCH_ITEMS, p => p.id, p => `${p.id} — ${p.desc}`);
+  PROD_ITEMS.forEach(p => { const o = document.createElement('option'); o.value=p.id; document.getElementById('prodList').appendChild(o); });
+
+  buildDailyShifts();
+  buildChocRows();
+  buildIngRows();
+  calcPchAll();
+  pchUpdateDesc();
+  poUpdateFields();
+  renderPoTables();
+  renderDash();
+  setInterval(() => {
+    document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US',{hour12:false});
+    document.getElementById('dateLabel').textContent = new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+  }, 1000);
+}
+
+function fillSelect(id, arr, val, label) {
+  const s = document.getElementById(id); if(!s) return;
+  s.innerHTML = arr.map(x => `<option value="${val(x)}">${label(x)}</option>`).join('');
+}
+
+// ══════════════════════ PIN ══════════════════════
+const TL_PIN = '7890';
+let tlUnlocked = false;
+
+function checkPin() {
+  const pin = String(document.getElementById('pinInput').value || '').replace(/[^0-9]/g,'').trim();
+  document.getElementById('pinInput').value = pin;
+  if(pin === TL_PIN) { tlUnlocked = true; document.getElementById('lockScreen').style.display = 'none'; toast('✅ Team Lead access granted'); }
+  else { document.getElementById('pinErr').style.display = 'block'; setTimeout(() => document.getElementById('pinErr').style.display='none', 2000); document.getElementById('pinInput').value=''; }
+}
+document.addEventListener('DOMContentLoaded', () => { document.getElementById('pinInput').addEventListener('keydown', e => { if(e.key==='Enter') checkPin(); }); });
+function skipToMain() { document.getElementById('lockScreen').style.display = 'none'; switchPanel('chocolate', document.querySelectorAll('.nav-btn')[2]); }
+
+// ══════════════════════ NAV ══════════════════════
+function switchPanel(name, btn) {
+  if((name === 'daily' || name === 'dashboard') && !tlUnlocked) { document.getElementById('lockScreen').style.display = 'flex'; document.getElementById('pinInput').focus(); return; }
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  if(name==='dashboard') renderDash();
+}
+
+// ══════════════════════ GUIDE ══════════════════════
+function openGuide() { document.getElementById('guideModal').classList.add('open'); }
+function closeGuide() { document.getElementById('guideModal').classList.remove('open'); }
+
+// ══════════════════════ TOAST ══════════════════════
+function toast(msg) {
+  const t = document.getElementById('toast'); t.textContent = msg;
+  t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2600);
+}
+function fmt(n) { return (Number(n)||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+// ══════════════════════ DAILY REPORT ══════════════════════
+function buildDailyShifts() {
+  const lines = ['SOLLICH 1','SOLLICH 2','SOLLICH 3','CYCLE COUNT'];
+  [1,2,3].forEach(s => {
+    const el = document.getElementById(`dlShift${s}`);
+    el.innerHTML = `<div class="tbl-wrap"><table>
+      <thead><tr><th>Line</th><th>Item</th><th>Start Adj.</th><th>End Adj.</th><th>User</th><th>Dark Adj.</th><th>Milk Adj.</th><th>White Adj.</th></tr></thead>
+      <tbody>${lines.map((l,i) => `<tr>
+        <td>${l}</td>
+        <td><input type="text" id="dl${s}_${i}_item" placeholder="10200" style="min-width:80px"></td>
+        <td><input type="number" id="dl${s}_${i}_start" placeholder="0" oninput="calcDailySummary()"></td>
+        <td><input type="number" id="dl${s}_${i}_end" placeholder="0" oninput="calcDailySummary()"></td>
+        <td><input type="text" id="dl${s}_${i}_user" placeholder="Name"></td>
+        <td><input type="number" id="dl${s}_${i}_dark" oninput="calcDailySummary()"></td>
+        <td><input type="number" id="dl${s}_${i}_milk" oninput="calcDailySummary()"></td>
+        <td><input type="number" id="dl${s}_${i}_white" oninput="calcDailySummary()"></td>
+      </tr>`).join('')}</tbody>
+    </table></div>`;
+  });
+  calcDailySummary();
+}
+function calcDailySummary() {
+  const lines = ['SOLLICH 1','SOLLICH 2','SOLLICH 3','CYCLE COUNT'];
+  let html = `<table><thead><tr><th>Line</th>`;
+  ['Dark Shift1','Dark Shift2','Dark Shift3','Total Dark','Milk Shift1','Milk Shift2','Milk Shift3','Total Milk','White Shift1','White Shift2','White Shift3','Total White'].forEach(h => html += `<th>${h}</th>`);
+  html += `</tr></thead><tbody>`;
+  lines.forEach((l,i) => {
+    const vals = {dark:[],milk:[],white:[]};
+    [1,2,3].forEach(s => {
+      vals.dark.push(parseFloat(document.getElementById(`dl${s}_${i}_dark`)?.value)||0);
+      vals.milk.push(parseFloat(document.getElementById(`dl${s}_${i}_milk`)?.value)||0);
+      vals.white.push(parseFloat(document.getElementById(`dl${s}_${i}_white`)?.value)||0);
+    });
+    const td = (v) => { const c = v>0?'pos':v<0?'neg':''; return `<td class="${c} mono">${v!==0?fmt(v):'—'}</td>`; };
+    const tot = arr => arr.reduce((a,b)=>a+b,0);
+    html += `<tr><td><strong>${l}</strong></td>${vals.dark.map(td).join('')}${td(tot(vals.dark))}${vals.milk.map(td).join('')}${td(tot(vals.milk))}${vals.white.map(td).join('')}${td(tot(vals.white))}</tr>`;
+  });
+  html += `</tbody></table>`;
+  document.getElementById('dlSummaryTable').innerHTML = html;
+}
+function getDailyData() {
+  const lines = ['SOLLICH 1','SOLLICH 2','SOLLICH 3','CYCLE COUNT'];
+  const shifts = [1,2,3].map(s => ({
+    shift: s,
+    rows: lines.map((l,i) => ({
+      line:l, item:document.getElementById(`dl${s}_${i}_item`)?.value||'',
+      start:document.getElementById(`dl${s}_${i}_start`)?.value||'',
+      end:document.getElementById(`dl${s}_${i}_end`)?.value||'',
+      user:document.getElementById(`dl${s}_${i}_user`)?.value||'',
+      dark:document.getElementById(`dl${s}_${i}_dark`)?.value||'',
+      milk:document.getElementById(`dl${s}_${i}_milk`)?.value||'',
+      white:document.getElementById(`dl${s}_${i}_white`)?.value||''
+    }))
+  }));
+  return { date:document.getElementById('dlDate').value, building:document.getElementById('dlBuilding').value, tl:document.getElementById('dlTL').value, shifts };
+}
+function resetDaily() { buildDailyShifts(); toast('Daily Report reset'); }
+function saveDaily() { saveReport({id:String(Date.now()),module:'daily',date:document.getElementById('dlDate').value,shift:'All',building:document.getElementById('dlBuilding').value,data:getDailyData(),savedAt:new Date().toISOString()}); }
+
+// ══════════════════════ CHOCOLATE ══════════════════════
+function buildChocRows() {
+  const line = document.getElementById('chLine').value;
+  const rows = line === 'Sollich 3' ? CHOC_ROWS_S3 : CHOC_ROWS_S2;
+  const prod = PROD_ITEMS.find(p => p.id === document.getElementById('chItem').value) || {};
+  const tbody = document.getElementById('chBody');
+  tbody.innerHTML = rows.map(([name, weight, mode]) => {
+    let fw = weight;
+    if(name.startsWith('BED')) fw = prod.bed||0;
+    if(name.startsWith('FG PALLET')) fw = prod.chocPal||0;
+    const modeTag = mode==='pct'?'<span class="tag tag-amber">%</span>':mode==='count'?'<span class="tag tag-blue">×</span>':'<span class="tag tag-green">fixed</span>';
+    const autoDefault100 = name.startsWith('ENROBERS AND PIPES') || name.startsWith('BED');
+    const hint = autoDefault100 ? 'Default 100% — modify only if line ended / return was made' : (mode==='count'?'# boxes':'# pallets / %');
+    const defaultVal = autoDefault100 ? '100' : '';
+    const note = autoDefault100 ? '<div class="mono" style="font-size:10px;color:var(--ink3);margin-top:3px">Default 100%. Modify only if line ended production / return was made.</div>' : '';
+    return `<tr data-mode="${mode}" data-fixed="${fw}">
+      <td>${name}${note}</td>
+      <td class="mono fixed-cell">${fmt(fw)}</td>
+      <td><input type="number" step="any" class="ch-input" value="${defaultVal}" oninput="calcChoc()" placeholder="${hint}"></td>
+      <td>${modeTag}</td>
+      <td class="mono ch-qty pos">0.00</td>
+    </tr>`;
+  }).join('');
+  calcChoc();
+}
+function calcChoc() {
+  let total = 0;
+  document.querySelectorAll('#chBody tr').forEach(tr => {
+    const mode = tr.dataset.mode, fw = parseFloat(tr.dataset.fixed)||0;
+    const inp = parseFloat(tr.querySelector('.ch-input').value)||0;
+    let lbs = 0;
+    if(mode==='pct') lbs = fw * (inp > 1 ? inp/100 : inp);
+    else if(mode==='bed') lbs = fw * (inp > 1 ? inp/100 : inp);
+    else lbs = fw * inp;
+    tr.querySelector('.ch-qty').textContent = fmt(lbs);
+    total += lbs;
+  });
+  const sys = parseFloat(document.getElementById('chSystem').value)||0;
+  const diff = total - sys;
+  const actionClass = diff > 0 ? 'status-increase' : (diff < 0 ? 'status-remove' : 'status-ok');
+  document.getElementById('chSummary').innerHTML = `
+    <div class="sum-box"><div class="sum-lbl">Total Physical Inventory</div><div class="sum-val">${fmt(total)} lbs</div></div>
+    <div class="sum-box ${actionClass}"><div class="sum-lbl">Qty to ${diff>0?'Increase':diff<0?'Remove':'Adjust'}</div><div class="sum-val ${diff>0?'pos':diff<0?'neg':''}">${fmt(Math.abs(diff))} lbs</div></div>
+    <div class="sum-box"><div class="sum-lbl">System Qty</div><div class="sum-val mono">${fmt(sys)} lbs</div></div>`;
+}
+function getChocData() {
+  const rows = [];
+  document.querySelectorAll('#chBody tr').forEach(tr => {
+    rows.push({area:tr.cells[0].textContent, fixed:tr.dataset.fixed, input:tr.querySelector('.ch-input').value, mode:tr.dataset.mode, qty:tr.querySelector('.ch-qty').textContent});
+  });
+  return {date:document.getElementById('chDate').value,shift:document.getElementById('chShift').value,line:document.getElementById('chLine').value,item:document.getElementById('chItem').value,chocItem:document.getElementById('chChocItem').value,system:document.getElementById('chSystem').value,rows};
+}
+function resetChoc() { document.getElementById('chSystem').value=''; buildChocRows(); toast('Chocolate reset'); }
+function saveChoc() { saveReport({id:String(Date.now()),module:'chocolate',date:document.getElementById('chDate').value,shift:document.getElementById('chShift').value,building:'L1',data:getChocData(),savedAt:new Date().toISOString()}); document.getElementById('nb-choc').textContent = (getReports().filter(r=>r.module==='chocolate').length); }
+
+// ══════════════════════ INGREDIENTS ══════════════════════
+function buildIngRows() {
+  const t = document.getElementById('ingTemplate').value;
+  document.getElementById('ingItemGroup').style.display = t==='single'?'block':'none';
+  const getIng = id => ING_ITEMS.find(i=>i.id===id)||{pal:0,bed:0,band:0};
+  let rows = [];
+  if(t==='single') {
+    const ing = getIng(document.getElementById('ingItem').value);
+    rows = [
+      [`PALLET WITHOUT LABEL ${ing.id||''}`,1,ing.pal,'pal'],
+      [`TOTAL IN BAND PER PIECE AFTER ENROBER`,1,ing.band,'fixed'],
+      [`BED BEFORE ENROBER`,1,ing.bed,'fixed'],
+      [`BOXES ON THE FLOOR`,1,30,'count']
+    ];
+  } else if(t==='pecan') {
+    rows = [['PALLET WITHOUT LABEL 10024',5,80,'pal'],['TOTAL PECAN IN BAND PER PIECE 10024',1,160,'fixed'],['BED',1,800,'fixed'],['BOXES ON THE FLOOR 10024',40,30,'count']];
+  } else if(t==='smore') {
+    const g=getIng('21084'), m=getIng('10088');
+    rows = [
+      ['FG PALLET WITHOUT LABEL 21084',1,g.pal,'pal'],['FG PALLET WITHOUT LABEL 10088',1,m.pal,'pal'],
+      ['TOTAL IN BAND PER PIECE 21084',1,g.band,'fixed'],['TOTAL IN BAND PER PIECE 10088',1,m.band,'fixed'],
+      ['BED 21084',1,g.bed,'fixed'],['BED 10088',1,m.bed,'fixed'],
+      ['TOTTE ON THE FLOOR 21084',250,1,'count'],['BOXES ON THE FLOOR 10088',1,15,'count']
+    ];
+  } else {
+    rows = [
+      ['PALLET WITHOUT LABEL 10221',4,88,'pal'],['PALLET WITHOUT LABEL 10223',4,35,'pal'],
+      ['TOTAL PISTACHIO IN BAND PER PIECE 10221',1,467,'fixed'],['TOTAL PISTACHIO IN BAND PER PIECE 10223',1,187,'fixed'],
+      ['BED',1,1600,'fixed'],['BOXES ON THE FLOOR 10221',10,25,'count'],['BOXES ON THE FLOOR 10223',18,25,'count']
+    ];
+  }
+  document.getElementById('ingBody').innerHTML = rows.map(([detail,qty,fixed,mode]) =>
+    `<tr data-fixed="${fixed}"><td>${detail}</td>
+    <td><input type="number" step="any" class="ing-qty" value="${qty}" oninput="calcIng()"></td>
+    <td class="mono fixed-cell">${fmt(fixed)}</td>
+    <td class="mono ing-lbs pos">0.00</td></tr>`
+  ).join('');
+  calcIng();
+}
+function calcIng() {
+  let total = 0;
+  document.querySelectorAll('#ingBody tr').forEach(tr => {
+    const q = parseFloat(tr.querySelector('.ing-qty').value)||0;
+    const f = parseFloat(tr.dataset.fixed)||0;
+    const lbs = q*f; total += lbs;
+    tr.querySelector('.ing-lbs').textContent = fmt(lbs);
+  });
+  const oldSys = document.getElementById('ingSysInput')?.value||'';
+  document.getElementById('ingSummary').innerHTML = `<table><thead><tr><th>Total Physical Inventory</th><th>Total in System</th><th>Qty to Remove</th><th>Qty to Increase</th></tr></thead>
+  <tbody><tr>
+    <td class="mono pos">${fmt(total)} lbs</td>
+    <td><input type="number" id="ingSysInput" value="${oldSys}" placeholder="System qty" oninput="calcIngFinal(${total})" style="min-width:100px"></td>
+    <td class="mono neg" id="ing-remove">—</td>
+    <td class="mono pos" id="ing-increase">—</td>
+  </tr></tbody></table>`;
+  calcIngFinal(total);
+}
+function calcIngFinal(total) {
+  const sys = parseFloat(document.getElementById('ingSysInput')?.value)||0;
+  const diff = total - sys;
+  if(document.getElementById('ing-remove')) document.getElementById('ing-remove').textContent = diff < 0 ? fmt(Math.abs(diff)) : '—';
+  if(document.getElementById('ing-increase')) document.getElementById('ing-increase').textContent = diff > 0 ? fmt(diff) : '—';
+}
+function resetIng() { buildIngRows(); toast('Ingredients reset'); }
+function saveIng() { saveReport({id:String(Date.now()),module:'ingredients',date:document.getElementById('ingDate').value,shift:document.getElementById('ingShift').value,building:'L1',savedAt:new Date().toISOString()}); }
+
+// ══════════════════════ POUCHES ══════════════════════
+function pchUpdateDesc() {
+  const item = POUCH_ITEMS.find(p => p.id === document.getElementById('pchItem').value);
+  document.getElementById('pchDesc').value = item ? item.desc : '';
+}
+function pchTab(tab, btn) { calcPchAll(); }
+function pchNumber(n){ return Number.isFinite(n) ? Math.round(n*100)/100 : 0; }
+function pchSet(id, val){ const el=document.getElementById(id); if(el) el.value = (val===0 || val) ? String(pchNumber(val)) : ''; }
+
+function pchStatusClass(status){
+  return status === 'Acceptable' ? 'pouch-acceptable' : status === 'Attention' ? 'pouch-attention' : 'pouch-critical';
+}
+function updatePouchOnePage(mid, end, totals){
+  const setTxt = (id, txt) => { const el = document.getElementById(id); if(el) el.textContent = txt; };
+  const setStatus = (id, status) => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.textContent = status;
+    el.className = 'pouch-status ' + pchStatusClass(status);
+  };
+  setTxt('pchMidPct', (mid.pct*100).toFixed(2)+'%');
+  setTxt('pchEndPct', (end.pct*100).toFixed(2)+'%');
+  setStatus('pchMidStatus', mid.status);
+  setStatus('pchEndStatus', end.status);
+  pchSet('pchTotalScrapIMS', totals.scrapAdj);
+  pchSet('pchTotalPA', totals.pa);
+  pchSet('pchGrandTotalIMS', totals.totalAdj);
+
+  const item = document.getElementById('pchItem')?.value || '';
+  const line = document.getElementById('pchLine')?.value || '';
+  const shift = document.getElementById('pchShift')?.value || '';
+  const preview = document.getElementById('pchReportPreview');
+  if(preview){
+    preview.innerHTML = `
+      <strong>Mid Shift:</strong> Pouches Qty in System: ${fmt(mid.system)} · Qty in Phy: ${fmt(mid.physical)} · Scrap: ${fmt(mid.scrapAdj)} · PA: ${fmt(mid.pa)} · Total Adjustment: ${fmt(mid.totalAdj)}<br>
+      <strong>End of Shift:</strong> Pouches Qty in System: ${fmt(end.system)} · Qty in Phy: ${fmt(end.physical)} · Scrap: ${fmt(end.scrapAdj)} · PA: ${fmt(end.pa)} · Total Adjustment: ${fmt(end.totalAdj)}<br>
+      <strong>Totals:</strong> Scrap IMS: ${fmt(totals.scrapAdj)} · PA: ${fmt(totals.pa)} · Grand Total IMS Adjustment: ${fmt(totals.totalAdj)} · Item ${item} · ${shift} · ${line}
+    `;
+  }
+}
+function printPouchesOnly(){
+  calcPchAll();
+  document.body.classList.add('print-pouches');
+  window.print();
+  setTimeout(()=>document.body.classList.remove('print-pouches'), 500);
+}
+
+function pchData(section) {
+  const cap = section.charAt(0).toUpperCase()+section.slice(1);
+  const val = name => parseFloat(document.getElementById(`pch${cap}${name}`)?.value)||0;
+  const completion = val('Completion');
+  const system = val('Sistema');
+  const physical = val('Fisico');
+  const scrapUsed = Math.abs(val('ScrapUsed'));
+  const scrapAdj = scrapUsed ? -scrapUsed : 0;
+  const afterScrap = system + scrapAdj;
+  const pa = physical - afterScrap;
+  const totalAdj = scrapAdj + pa;
+  const pct = completion ? Math.abs(totalAdj) / completion : 0;
+  const status = pct <= .05 ? 'Acceptable' : pct <= .08 ? 'Attention' : 'Critical';
+  return {section, cap, completion, system, physical, scrapUsed, scrapAdj, afterScrap, pa, totalAdj, pct, status};
+}
+function renderPchSection(d){
+  pchSet(`pch${d.cap}Scrap`, d.scrapAdj);
+  pchSet(`pch${d.cap}AfterScrap`, d.afterScrap);
+  pchSet(`pch${d.cap}Adj`, d.pa);
+  pchSet(`pch${d.cap}TotalAdj`, d.totalAdj);
+  const cls = d.status === 'Acceptable' ? 'tag-green' : d.status === 'Attention' ? 'tag-amber' : 'tag-red';
+  const action = d.totalAdj < 0 ? 'Total Qty to Remove' : d.totalAdj > 0 ? 'Total Qty to Increase' : 'No Adjustment';
+  const actionBox = d.totalAdj < 0 ? 'calc-remove' : d.totalAdj > 0 ? 'calc-increase' : '';
+  const actionCls = d.totalAdj < 0 ? 'neg' : d.totalAdj > 0 ? 'pos' : '';
+  const reportType = d.section === 'mid' ? 'Mid Shift' : 'End of Shift';
+  const item = document.getElementById('pchItem')?.value || '';
+  const line = document.getElementById('pchLine')?.value || '';
+  const shift = document.getElementById('pchShift')?.value || '';
+  const el = document.getElementById(`pch${d.cap}Summary`);
+  if(el) el.innerHTML = `
+    <div class="sum-box ${actionBox}"><div class="sum-lbl">${action}</div><div class="sum-val mono ${actionCls}">${fmt(Math.abs(d.totalAdj))}</div></div>
+    <div class="sum-box"><div class="sum-lbl">Adjustment %</div><div class="sum-val mono">${(d.pct*100).toFixed(2)}%</div></div>
+    <div class="sum-box"><div class="sum-lbl">Status</div><div class="sum-val"><span class="tag ${cls}">${d.status}</span></div></div>
+    <div class="sum-box"><div class="sum-lbl">PA Needed After Scrap</div><div class="sum-val mono ${d.pa>0?'pos':d.pa<0?'neg':''}">${fmt(d.pa)}</div></div>
+    <div class="sum-box" style="grid-column:1/-1"><div class="sum-lbl">Report Line Preview</div><div class="mono" style="font-size:13px;line-height:1.5">${reportType} Pouches Qty in System: ${fmt(d.system)} · Qty in Phy: ${fmt(d.physical)} · Scrap: ${fmt(d.scrapAdj)} · PA: ${fmt(d.pa)} · Total Adjustment: ${fmt(d.totalAdj)} · Item ${item} · ${shift} · ${line}</div></div>`;
+}
+function calcPch(section) { calcPchAll(); }
+function calcPchAll() {
+  const mid = pchData('mid');
+  const end = pchData('end');
+  renderPchSection(mid); renderPchSection(end);
+  const totals = {
+    scrapAdj: mid.scrapAdj + end.scrapAdj,
+    pa: mid.pa + end.pa,
+    totalAdj: mid.totalAdj + end.totalAdj
+  };
+  updatePouchOnePage(mid, end, totals);
+  const action = totals.totalAdj < 0 ? 'Grand Total to Remove' : totals.totalAdj > 0 ? 'Grand Total to Increase' : 'No Total Adjustment';
+  const box = totals.totalAdj < 0 ? 'calc-remove' : totals.totalAdj > 0 ? 'calc-increase' : '';
+  const cls = totals.totalAdj < 0 ? 'neg' : totals.totalAdj > 0 ? 'pos' : '';
+  const sum = document.getElementById('pchTotalsSummary');
+  if(sum) sum.innerHTML = `
+    <div class="sum-box calc-remove"><div class="sum-lbl">Total Scrap IMS</div><div class="sum-val mono neg">${fmt(totals.scrapAdj)}</div></div>
+    <div class="sum-box ${totals.pa>=0?'calc-increase':'calc-remove'}"><div class="sum-lbl">Total PA</div><div class="sum-val mono ${totals.pa>=0?'pos':'neg'}">${fmt(totals.pa)}</div></div>
+    <div class="sum-box ${box}"><div class="sum-lbl">${action}</div><div class="sum-val mono ${cls}">${fmt(totals.totalAdj)}</div></div>`;
+  const tbl = document.getElementById('pchTotalsTable');
+  if(tbl) tbl.innerHTML = `<table><thead><tr><th>Section</th><th>Scrap IMS</th><th>System After Scrap</th><th>PA</th><th>Total IMS Adjustment</th><th>Status</th></tr></thead><tbody>
+    <tr><td>Mid Shift</td><td class="mono neg">${fmt(mid.scrapAdj)}</td><td class="mono">${fmt(mid.afterScrap)}</td><td class="mono ${mid.pa>=0?'pos':'neg'}">${fmt(mid.pa)}</td><td class="mono ${mid.totalAdj>=0?'pos':'neg'}">${fmt(mid.totalAdj)}</td><td>${mid.status}</td></tr>
+    <tr><td>End Shift</td><td class="mono neg">${fmt(end.scrapAdj)}</td><td class="mono">${fmt(end.afterScrap)}</td><td class="mono ${end.pa>=0?'pos':'neg'}">${fmt(end.pa)}</td><td class="mono ${end.totalAdj>=0?'pos':'neg'}">${fmt(end.totalAdj)}</td><td>${end.status}</td></tr>
+    <tr><td><strong>Total</strong></td><td class="mono neg"><strong>${fmt(totals.scrapAdj)}</strong></td><td>—</td><td class="mono ${totals.pa>=0?'pos':'neg'}"><strong>${fmt(totals.pa)}</strong></td><td class="mono ${totals.totalAdj>=0?'pos':'neg'}"><strong>${fmt(totals.totalAdj)}</strong></td><td>—</td></tr>
+  </tbody></table>`;
+}
+function resetPch() {
+  ['MidCompletion','MidSistema','MidFisico','MidScrapUsed','MidScrap','MidAfterScrap','MidAdj','MidTotalAdj','EndCompletion','EndSistema','EndFisico','EndScrapUsed','EndScrap','EndAfterScrap','EndAdj','EndTotalAdj'].forEach(id => { const el = document.getElementById('pch'+id); if(el) el.value=''; });
+  ['pchMidComments','pchEndComments'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  calcPchAll(); toast('Pouches reset');
+}
+function savePch() {
+  saveReport({id:String(Date.now()),module:'pouches',date:document.getElementById('pchDate').value,shift:document.getElementById('pchShift').value,building:'L1',item:document.getElementById('pchItem').value,data:{mid:pchData('mid'),end:pchData('end')},savedAt:new Date().toISOString()});
+  document.getElementById('nb-pch').textContent = getReports().filter(r=>r.module==='pouches').length;
+}
+
+// ══════════════════════ PASS OFF ══════════════════════
+function poUpdateFields() {
+  const type = document.getElementById('poType').value;
+  let html = '';
+  if(type==='mov') html = `<div class="g2 field"><div class="field"><label>Item</label><input type="text" id="poManItem" placeholder="Item #" list="prodList"></div><div class="field"><label>LPN</label><input type="text" id="poManLpn" placeholder="R..."></div><div class="field"><label>From Location</label><input type="text" id="poMovFrom" placeholder="e.g. LESL2 Kitchen"></div><div class="field"><label>To Location</label><input type="text" id="poMovTo" placeholder="e.g. LEHold Area"></div></div>`;
+  else if(type==='cycle') html = `<div class="g2 field"><div class="field"><label>Item</label><input type="text" id="poManItem" placeholder="Item #" list="prodList"></div><div class="field"><label>LPN</label><input type="text" id="poManLpn" placeholder="R..."></div><div class="field"><label>Fully Found?</label><select id="poCycleFound"><option>YES</option><option>NO</option></select></div><div class="field"><label>Detail</label><input type="text" id="poCycleDetail" placeholder="e.g. Everything found"></div></div>`;
+  document.getElementById('poExtraFields').innerHTML = html;
+}
+function poLivePreview() {
+  const text = document.getElementById('poPaste').value;
+  const p = parseIMS(text);
+  const prev = document.getElementById('poPreview');
+  if(!p.item && !p.qty && !p.lpn) { prev.style.display='none'; return; }
+  prev.style.display='block';
+  prev.innerHTML = `🔍 Detected: <strong>${p.item||'—'}</strong> · Qty: <strong>${p.qty||'—'} ${p.units||''}</strong> · LPN: <strong>${p.lpn||'—'}</strong>`;
+}
+function parseIMS(text) {
+  const r={item:'',qty:'',units:'',lpn:'',lot:''};
+  const itemM = text.match(/Item\s*#?\s*\n?\s*([A-Z0-9]+(?:-[A-Z0-9]+)*)/i);
+  if(itemM) r.item = itemM[1];
+  const qtyM = text.match(/Quantity\s*\n?\s*([+-]?\s*\d[\d,]*(?:\.\d+)?)/i);
+  if(qtyM) r.qty = qtyM[1].replace(/\s/g,'');
+  const unitsM = text.match(/Units?\s*\n?\s*([A-Za-z]+)/i);
+  if(unitsM) { const u=unitsM[1].toLowerCase(); r.units=u==='pound'?'lb':u==='gallon'?'gal':u==='each'?'each':unitsM[1]; }
+  const lpnM = text.match(/\b(R\d{3,})\b/i);
+  if(lpnM) r.lpn = lpnM[1].toUpperCase();
+  return r;
+}
+function poAddEntry() {
+  const text = document.getElementById('poPaste').value;
+  const type = document.getElementById('poType').value;
+  const reason = document.getElementById('poReason').value;
+  const p = parseIMS(text);
+  const manItem = document.getElementById('poManItem')?.value||'';
+  const manLpn = document.getElementById('poManLpn')?.value||'';
+  const entry = {...p, item:manItem||p.item, lpn:manLpn||p.lpn, reason};
+  if(type==='mov') {
+    entry.from = document.getElementById('poMovFrom')?.value||''; entry.to = document.getElementById('poMovTo')?.value||'';
+    if(!entry.item) { toast('⚠️ Item required'); return; }
+  } else if(type==='cycle') {
+    entry.found = document.getElementById('poCycleFound')?.value||'YES'; entry.detail = document.getElementById('poCycleDetail')?.value||reason;
+    if(!entry.item) { toast('⚠️ Item required'); return; }
+  } else { if(!entry.item && !entry.qty) { toast('⚠️ No valid data detected'); return; } }
+  poEntries[type].push(entry);
+  renderPoTables();
+  document.getElementById('poPaste').value=''; document.getElementById('poPreview').style.display='none';
+  toast('✅ Entry added');
+  updatePoBadges();
+}
+function renderPoTables() {
+  const emptyMsg = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--ink3)">No entries yet</td></tr>`;
+  const del = (type,i) => `<button class="btn btn-red btn-sm" onclick="poDel('${type}',${i})">✕</button>`;
+  ['adj','scrap'].forEach(t => {
+    document.getElementById(`po-body-${t}`).innerHTML = poEntries[t].length ? poEntries[t].map((e,i) =>
+      `<tr><td class="mono">${e.item||'—'}</td><td class="mono ${parseFloat(e.qty)<0?'neg':'pos'}">${e.qty||'—'} ${e.units||''}</td><td class="mono" style="font-size:11px">${e.lpn||'—'}</td><td style="color:var(--ink2);font-size:11px">${e.reason||''}</td><td>${del(t,i)}</td></tr>`
+    ).join('') : emptyMsg;
+  });
+  document.getElementById('po-body-mov').innerHTML = poEntries.mov.length ? poEntries.mov.map((e,i) =>
+    `<tr><td class="mono">${e.item||'—'}</td><td class="mono" style="font-size:11px">${e.lpn||'—'}</td><td>${e.from||'—'}</td><td>${e.to||'—'}</td><td style="color:var(--ink2);font-size:11px">${e.reason||''}</td><td>${del('mov',i)}</td></tr>`
+  ).join('') : emptyMsg;
+  document.getElementById('po-body-cycle').innerHTML = poEntries.cycle.length ? poEntries.cycle.map((e,i) =>
+    `<tr><td class="mono">${e.item||'—'}</td><td><span class="tag ${e.found==='YES'?'tag-green':'tag-red'}">${e.found||'—'}</span></td><td class="mono" style="font-size:11px">${e.lpn||'—'}</td><td style="color:var(--ink2);font-size:11px">${e.detail||e.reason||''}</td><td>${del('cycle',i)}</td></tr>`
+  ).join('') : emptyMsg;
+  updatePoBadges();
+}
+function poDel(type, i) { poEntries[type].splice(i,1); renderPoTables(); }
+function updatePoBadges() {
+  ['adj','scrap','mov','cycle'].forEach(t => { document.getElementById(`po-cnt-${t}`).textContent = poEntries[t].length; });
+  const total = Object.values(poEntries).reduce((a,b)=>a+b.length,0);
+  document.getElementById('nb-po').textContent = total;
+}
+function poTab(tab, btn) {
+  poActiveTab = tab;
+  document.querySelectorAll('#panel-passoff .inner-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#panel-passoff .inner-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(`po-panel-${tab}`).classList.add('active');
+}
+function resetPo() {
+  poEntries={adj:[],scrap:[],mov:[],cycle:[]};
+  renderPoTables(); toast('Pass Off reset');
+  ['poOp','poProduct','poItem1','poQty1','poItem2','poQty2','poNotes','poObs','poPaste'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+}
+function savePo() {
+  saveReport({id:String(Date.now()),module:'passoff',date:document.getElementById('poDate').value,shift:document.getElementById('poShift').value,building:document.getElementById('poBuilding').value,operator:document.getElementById('poOp').value,entries:JSON.parse(JSON.stringify(poEntries)),obs:document.getElementById('poObs').value,savedAt:new Date().toISOString()});
+}
+
+// ══════════════════════ LOCAL STORAGE ══════════════════════
+function getReports() { try { return JSON.parse(localStorage.getItem('shifthub_pro_v1')||'[]'); } catch{ return []; } }
+function setReports(r) { localStorage.setItem('shifthub_pro_v1', JSON.stringify(r)); }
+function saveReport(report) { const arr=getReports(); arr.push(report); setReports(arr); toast('💾 Report saved'); renderDash(); }
+
+// ══════════════════════ DASHBOARD ══════════════════════
+function renderDash() {
+  if(!tlUnlocked) {
+    document.getElementById('dashList').innerHTML = '<div style="text-align:center;padding:2rem;color:var(--ink3)">Dashboard locked. Enter Team Lead PIN 7890.</div>';
+    return;
+  }
+  let arr = getReports();
+  const d = document.getElementById('dashDate')?.value || '';
+  const sft = document.getElementById('dashShift')?.value || '';
+  const bld = document.getElementById('dashBuilding')?.value || '';
+  if(d) arr = arr.filter(r=>r.date===d);
+  if(bld) arr = arr.filter(r=>(r.building||'')===bld);
+  if(sft) arr = arr.filter(r=>r.shift===sft||r.shift==='All');
+  document.getElementById('ds-reports').textContent = arr.length;
+  document.getElementById('ds-adj').textContent = arr.filter(r=>['daily','chocolate','ingredients','pouches'].includes(r.module)).length;
+  document.getElementById('ds-pch').textContent = arr.filter(r=>r.module==='pouches').length;
+  document.getElementById('ds-scrap').textContent = arr.reduce((a,r)=>a+(r.entries?.scrap?.length||0)+(Math.abs(r.data?.mid?.scrapAdj||0)>0?1:0)+(Math.abs(r.data?.end?.scrapAdj||0)>0?1:0),0);
+  const list = document.getElementById('dashList');
+  const employees = {};
+  const high = [];
+  arr.forEach(r=>{
+    if(r.operator) employees[r.operator]=(employees[r.operator]||0)+1;
+    if(r.data?.tl) employees[r.data.tl]=(employees[r.data.tl]||0)+1;
+    if(r.data?.shifts){
+      r.data.shifts.forEach(sh=>sh.rows.forEach(row=>{
+        if(row.user) employees[row.user]=(employees[row.user]||0)+1;
+        ['dark','milk','white'].forEach(k=>{ const v=Math.abs(parseFloat(row[k])||0); if(v>=500) high.push({type:'Daily',date:r.date,building:r.building,shift:'Shift '+sh.shift,detail:`${row.line} · ${row.user||'No user'} · ${k.toUpperCase()} ${fmt(v)} lbs`}); });
+      }));
+    }
+    if(r.module==='pouches' && r.data){
+      ['mid','end'].forEach(sec=>{ const x=r.data[sec]; if(!x) return; if(x.status==='Critical' || Math.abs(x.totalAdj||0)>=500) high.push({type:'Pouches',date:r.date,building:r.building,shift:r.shift,detail:`${sec==='mid'?'Mid Shift':'End Shift'} · Item ${r.item||''} · ${x.status} · Total Adj ${fmt(x.totalAdj)} · ${((x.pct||0)*100).toFixed(2)}%`}); });
+    }
+    if(r.module==='chocolate' && r.data){
+      const total=(r.data.rows||[]).reduce((a,x)=>a+(parseFloat(String(x.qty||'0').replace(/,/g,''))||0),0);
+      const sys=parseFloat(r.data.system)||0; const diff=total-sys;
+      if(Math.abs(diff)>=500) high.push({type:'Chocolate',date:r.date,building:r.building,shift:r.shift,detail:`${r.data.line} · Item ${r.data.item} · Diff ${fmt(diff)} lbs`});
+    }
+    if(r.module==='passoff' && r.entries){
+      ['adj','scrap'].forEach(t=>(r.entries[t]||[]).forEach(e=>{ const v=Math.abs(parseFloat(String(e.qty||'0').replace(/,/g,''))||0); if(v>=500) high.push({type:t==='adj'?'Adjustment':'Scrap',date:r.date,building:r.building,shift:r.shift,detail:`${r.operator||'No operator'} · Item ${e.item||''} · Qty ${e.qty||''} ${e.units||''} · LP ${e.lpn||''}`}); }));
+    }
+  });
+  if(!arr.length) { list.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--ink3)">No reports for this filter.</div>'; }
+  else {
+    const modIcons = {daily:'📋',chocolate:'🍫',ingredients:'🥜',pouches:'📦',passoff:'🧾'};
+    list.innerHTML = arr.slice().reverse().map(r =>
+      `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;background:var(--surface2)">
+        <div><span style="font-size:16px">${modIcons[r.module]||'📄'}</span> <strong>${r.module.toUpperCase()}</strong> <span style="color:var(--ink3);font-size:12px">${r.date} · ${r.shift||''} · ${r.building||''} ${r.operator?'· '+r.operator:''}</span></div>
+        <span style="color:var(--ink3);font-size:11px;font-family:'DM Mono',monospace">${new Date(r.savedAt).toLocaleTimeString()}</span>
+      </div>`
+    ).join('');
+  }
+  const empBox=document.getElementById('dashEmployees');
+  const empRows=Object.entries(employees).sort((a,b)=>b[1]-a[1]);
+  empBox.innerHTML = empRows.length ? `<div class="tbl-wrap"><table><thead><tr><th>Employee/User</th><th>Reports/Entries</th></tr></thead><tbody>${empRows.map(([name,count])=>`<tr><td>${name}</td><td class="mono">${count}</td></tr>`).join('')}</tbody></table></div>` : '<div style="color:var(--ink3)">No employee/user data in this filter.</div>';
+  const hiBox=document.getElementById('dashHighAdjustments');
+  hiBox.innerHTML = high.length ? `<div class="tbl-wrap"><table><thead><tr><th>Type</th><th>Date</th><th>Building</th><th>Shift</th><th>Detail</th></tr></thead><tbody>${high.slice(-30).reverse().map(h=>`<tr><td><span class="tag tag-red">${h.type}</span></td><td>${h.date}</td><td>${h.building||''}</td><td>${h.shift||''}</td><td>${h.detail}</td></tr>`).join('')}</tbody></table></div>` : '<div style="color:var(--ink3)">No high adjustments found for this filter.</div>';
+}
+
+// ══════════════════════ WORD EXPORT ENGINE ══════════════════════
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function wPara(text,opts={}){ const {bold,size=22,color='111827',align='left',spaceAfter=120}=opts; return `<w:p><w:pPr><w:jc w:val="${align}"/><w:spacing w:after="${spaceAfter}"/></w:pPr><w:r><w:rPr>${bold?'<w:b/>':''}<w:color w:val="${color}"/><w:sz w:val="${size}"/></w:rPr><w:t xml:space="preserve">${esc(text)}</w:t></w:r></w:p>`; }
+function wHdr(text){ return wPara(text,{bold:true,size:28,color:'1E3A5F',spaceAfter:160}); }
+function wSec(text){ return wPara(text,{bold:true,size:22,color:'7c3aed',spaceAfter:100}); }
+function wCell(text,w,opts={}){ const {bold,fill='FFFFFF',center}=opts; return `<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/><w:shd w:val="clear" w:color="auto" w:fill="${fill}"/><w:tcMar><w:top w:w="60" w:type="dxa"/><w:left w:w="100" w:type="dxa"/><w:bottom w:w="60" w:type="dxa"/><w:right w:w="100" w:type="dxa"/></w:tcMar></w:tcPr><w:p><w:pPr>${center?'<w:jc w:val="center"/>':''}</w:pPr><w:r><w:rPr>${bold?'<w:b/>':''}<w:sz w:val="18"/></w:rPr><w:t xml:space="preserve">${esc(text)}</w:t></w:r></w:p></w:tc>`; }
+function wHdrCell(text,w){ return wCell(text,w,{bold:true,fill:'1E3A5F',center:true}).replace(/w:val="1E3A5F"/,'w:val="FFFFFF" w:themeColor="dark1"').replace('<w:color w:val="111827"/>','<w:color w:val="FFFFFF"/>'); }
+// simpler hdr
+function thCell(text,w){ return `<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/><w:shd w:val="clear" w:color="auto" w:fill="1E3A5F"/></w:tcPr><w:p><w:r><w:rPr><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr><w:t xml:space="preserve">${esc(text)}</w:t></w:r></w:p></w:tc>`; }
+function tdCell(text,w,even){ return `<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/><w:shd w:val="clear" w:color="auto" w:fill="${even?'F1F5F9':'FFFFFF'}"/></w:tcPr><w:p><w:r><w:rPr><w:sz w:val="18"/></w:rPr><w:t xml:space="preserve">${esc(text)}</w:t></w:r></w:p></w:tc>`; }
+function wRow(cells){ return `<w:tr>${cells}</w:tr>`; }
+function borders(){ return `<w:tblBorders><w:top w:val="single" w:sz="4" w:color="AAAAAA"/><w:left w:val="single" w:sz="4" w:color="AAAAAA"/><w:bottom w:val="single" w:sz="4" w:color="AAAAAA"/><w:right w:val="single" w:sz="4" w:color="AAAAAA"/><w:insideH w:val="single" w:sz="4" w:color="AAAAAA"/><w:insideV w:val="single" w:sz="4" w:color="AAAAAA"/></w:tblBorders>`; }
+function wTable(cols, widths, rows, totalW){ const grid=widths.map(w=>`<w:gridCol w:w="${w}"/>`).join(''); return `<w:tbl><w:tblPr><w:tblW w:w="${totalW}" w:type="dxa"/>${borders()}</w:tblPr><w:tblGrid>${grid}</w:tblGrid>${rows}</w:tbl>`; }
+
+async function buildDocx(bodyXml, landscape=false) {
+  const margins = landscape ? 'w:top="720" w:right="720" w:bottom="720" w:left="720"' : 'w:top="1080" w:right="1080" w:bottom="1080" w:left="1080"';
+  const pageSize = landscape ? '<w:pgSz w:w="15840" w:h="12240" w:orient="landscape"/>' : '<w:pgSz w:w="12240" w:h="15840"/>';
+  const doc = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+<w:body>${bodyXml}<w:sectPr>${pageSize}<w:pgMar ${margins} w:header="720" w:footer="720" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+  const rels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`;
+  const styles = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/><w:sz w:val="20"/></w:rPr></w:rPrDefault></w:docDefaults></w:styles>`;
+  const ct = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>`;
+  const rootRels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>`;
+  if(typeof JSZip === 'undefined') { toast('❌ JSZip not loaded'); return null; }
+  const zip = new JSZip();
+  zip.file('[Content_Types].xml', ct);
+  zip.file('_rels/.rels', rootRels);
+  zip.file('word/document.xml', doc);
+  zip.file('word/_rels/document.xml.rels', rels);
+  zip.file('word/styles.xml', styles);
+  return await zip.generateAsync({type:'blob',mimeType:'application/vnd.openxmlformats-officedocument.wordprocessingml.document',compression:'DEFLATE',compressionOptions:{level:6}});
+}
+
+function dlBlob(blob, name) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download=name; a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+// ── Daily Word ──
+async function exportDailyWord() {
+  const d = getDailyData();
+  const lines = ['SOLLICH 1','SOLLICH 2','SOLLICH 3','CYCLE COUNT'];
+  const tw = 11880, cols = [1500,1000,1000,1000,1200,1000,1000,1180];
+  let body = wHdr(`REPORTE AJUSTE DE CHOCOLATE — ${d.date}`) +
+    wPara(`Building: ${d.building}   Team Lead: ${d.tl}   Generated: ${new Date().toLocaleString()}`, {size:18,color:'555555'});
+  d.shifts.forEach(s => {
+    body += wSec(`Shift ${s.shift}`);
+    const hdr = wRow(['Line','Item','Start','End','User','Dark','Milk','White'].map((h,i)=>thCell(h,cols[i])).join(''));
+    const rows = s.rows.map((r,ri) => wRow([r.line,r.item,r.start,r.end,r.user,r.dark,r.milk,r.white].map((v,ci)=>tdCell(v,cols[ci],ri%2===1)).join(''))).join('');
+    body += wTable(8, cols, hdr+rows, tw);
+    body += wPara('', {spaceAfter:200});
+  });
+  const blob = await buildDocx(body, true);
+  if(blob) dlBlob(blob, `DailyReport_${d.date}.docx`);
+  toast('✅ Daily Report exported!');
+}
+
+// ── Chocolate Word ──
+async function exportChocWord() {
+  const data = getChocData();
+  const cols = [3000,2000,2000,1500,2000]; const tw = 10500;
+  const hdr = wRow(['Area / Tank','Fixed Weight (lbs)','Physical Input','Mode','Total lbs'].map((h,i)=>thCell(h,cols[i])).join(''));
+  const rows = data.rows.map((r,i)=>wRow([r.area,r.fixed,r.input,r.mode||'—',r.qty].map((v,ci)=>tdCell(v||'—',cols[ci],i%2===1)).join(''))).join('');
+  const body = wHdr(`Chocolate Adjustment — ${data.line}`) + wPara(`Date: ${data.date}   Shift: ${data.shift}   Item: ${data.item}   Choc: ${data.chocItem}   System: ${data.system} lbs`,{size:18,color:'555555'}) + wTable(5,cols,hdr+rows,tw);
+  const blob = await buildDocx(body, true);
+  if(blob) dlBlob(blob, `Chocolate_${data.date}.docx`);
+  toast('✅ Chocolate exported!');
+}
+
+// ── Ingredients Word ──
+async function exportIngWord() {
+  const rows_html = document.querySelectorAll('#ingBody tr');
+  const cols = [4000,1500,2000,2000]; const tw = 9500;
+  const hdr = wRow(['Detail','Qty Physical','Per Pallet/Fixed (lbs)','Quantity lbs'].map((h,i)=>thCell(h,cols[i])).join(''));
+  const rows = Array.from(rows_html).map((tr,i)=>{
+    const cells = tr.querySelectorAll('td,input'); 
+    const detail = tr.cells[0].textContent;
+    const qty = tr.querySelector('.ing-qty')?.value||'';
+    const fixed = tr.dataset.fixed||'';
+    const lbs = tr.querySelector('.ing-lbs')?.textContent||'';
+    return wRow([detail,qty,fixed,lbs].map((v,ci)=>tdCell(v,cols[ci],i%2===1)).join(''));
+  }).join('');
+  const body = wHdr('Ingredients Adjustment — L1') + wPara(`Date: ${document.getElementById('ingDate').value}   Shift: ${document.getElementById('ingShift').value}`,{size:18,color:'555555'}) + wTable(4,cols,hdr+rows,tw);
+  const blob = await buildDocx(body, false);
+  if(blob) dlBlob(blob, `Ingredients_${document.getElementById('ingDate').value}.docx`);
+  toast('✅ Ingredients exported!');
+}
+
+// ── Pouches Word ──
+async function exportPchWord() {
+  calcPchAll();
+  const date = document.getElementById('pchDate').value;
+  const item = document.getElementById('pchItem').value;
+  const desc = document.getElementById('pchDesc').value;
+  const mid = pchData('mid'), end = pchData('end');
+  const cols = [2600,2200,2200,2200,2200,1800]; const tw = 13200;
+  const mkSection = (d, label) => {
+    const hdr = wRow(['Field','Completion','System','Physical','Scrap IMS','PA'].map((h,i)=>thCell(h,cols[i])).join(''));
+    const rr = [
+      [label, d.completion, d.system, d.physical, d.scrapAdj, d.pa],
+      ['System After Scrap / Total', '—', d.afterScrap, '—', '—', d.totalAdj],
+      ['Adjustment % / Status', `${(d.pct*100).toFixed(2)}%`, '—', '—', '—', d.status]
+    ].map((r,i)=>wRow(r.map((v,ci)=>tdCell(String(v),cols[ci],i%2===1)).join(''))).join('');
+    const comments = document.getElementById(`pch${d.cap}Comments`)?.value||'';
+    return wSec(label) + wTable(6,cols,hdr+rr,tw) + wPara(comments,{size:18,color:'555555',spaceAfter:200});
+  };
+  const totalScrap = mid.scrapAdj + end.scrapAdj;
+  const totalPA = mid.pa + end.pa;
+  const grandTotal = mid.totalAdj + end.totalAdj;
+  const totalHdr = wRow(['Total Scrap IMS','Total PA','Grand Total IMS Adjustment'].map((h,i)=>thCell(h,[3500,3500,3500][i])).join(''));
+  const totalRow = wRow([totalScrap,totalPA,grandTotal].map((v,i)=>tdCell(String(pchNumber(v)),[3500,3500,3500][i],false)).join(''));
+  const body = wHdr(`Pouches Daily Adjustments — ${date}`) +
+    wPara(`Item: ${item}   Desc: ${desc}   Shift: ${document.getElementById('pchShift').value}   Line: ${document.getElementById('pchLine').value}`,{size:18,color:'555555'}) +
+    mkSection(mid,'⏱ Mid Shift') + mkSection(end,'✅ End of Shift') +
+    wSec('Σ Totals — Adjustments Only') + wTable(3,[3500,3500,3500],totalHdr+totalRow,10500);
+  const blob = await buildDocx(body, true);
+  if(blob) dlBlob(blob, `Pouches_${date}.docx`);
+  toast('✅ Pouches exported!');
+}
+
+// ── Pass Off Word ──
+async function exportPoWord() {
+  const date = document.getElementById('poDate').value;
+  const op = document.getElementById('poOp').value;
+  const mkTable = (entries, type) => {
+    if(!entries.length) return wPara('No entries.',{size:18,color:'999999'});
+    if(type==='mov') {
+      const cols=[2000,1500,2000,2000,2500]; const tw=10000;
+      const hdr=wRow(['Item','LPN','From','To','Reason'].map((h,i)=>thCell(h,cols[i])).join(''));
+      const rows=entries.map((e,i)=>wRow([e.item,e.lpn,e.from,e.to,e.reason].map((v,ci)=>tdCell(v||'—',cols[ci],i%2===1)).join(''))).join('');
+      return wTable(5,cols,hdr+rows,tw);
+    }
+    if(type==='cycle') {
+      const cols=[2500,1500,1500,3000]; const tw=8500;
+      const hdr=wRow(['Item','Found?','LPN','Detail'].map((h,i)=>thCell(h,cols[i])).join(''));
+      const rows=entries.map((e,i)=>wRow([e.item,e.found,e.lpn,e.detail||e.reason].map((v,ci)=>tdCell(v||'—',cols[ci],i%2===1)).join(''))).join('');
+      return wTable(4,cols,hdr+rows,tw);
+    }
+    const cols=[2000,1500,1500,3500]; const tw=8500;
+    const hdr=wRow(['Item','Qty','LPN','Reason'].map((h,i)=>thCell(h,cols[i])).join(''));
+    const rows=entries.map((e,i)=>wRow([e.item,`${e.qty||''} ${e.units||''}`,e.lpn,e.reason].map((v,ci)=>tdCell(v||'—',cols[ci],i%2===1)).join(''))).join('');
+    return wTable(4,cols,hdr+rows,tw);
+  };
+  const body = wHdr('PASS OFF — Shift Handoff Report') +
+    wPara(`Date: ${date}   Operator: ${op}   Shift: ${document.getElementById('poShift').value}   Building: ${document.getElementById('poBuilding').value}   Area: ${document.getElementById('poArea').value}`,{size:18,color:'555555'}) +
+    wSec('Production Summary') + wPara(`Item 1: ${document.getElementById('poItem1').value||'—'} · Qty: ${document.getElementById('poQty1').value||'—'}   Item 2: ${document.getElementById('poItem2').value||'—'} · Qty: ${document.getElementById('poQty2').value||'—'}`,{size:18}) +
+    wPara(document.getElementById('poNotes').value||'',{size:18,color:'555555',spaceAfter:200}) +
+    wSec('🔧 Adjustments') + mkTable(poEntries.adj,'adj') + wPara('',{spaceAfter:160}) +
+    wSec('♻️ Scrap') + mkTable(poEntries.scrap,'scrap') + wPara('',{spaceAfter:160}) +
+    wSec('🔄 Movements') + mkTable(poEntries.mov,'mov') + wPara('',{spaceAfter:160}) +
+    wSec('📦 Cycle Count') + mkTable(poEntries.cycle,'cycle') + wPara('',{spaceAfter:160}) +
+    wSec('General Observations') + wPara(document.getElementById('poObs').value||'No observations.',{size:18,color:'555555'});
+  const blob = await buildDocx(body, true);
+  if(blob) dlBlob(blob, `PassOff_${date}_${op.replace(/\s/g,'_')}.docx`);
+  toast('✅ Pass Off exported!');
+}
+
+async function exportDayWord() {
+  const arr = getReports();
+  const date = document.getElementById('dashDate').value;
+  const filtered = date ? arr.filter(r=>r.date===date) : arr;
+  if(!filtered.length) { toast('No reports to export'); return; }
+  const body = wHdr(`ShiftHub Pro — Day Export ${date||'All'}`) + wPara(`Generated: ${new Date().toLocaleString()} · ${filtered.length} reports`,{size:18,color:'555555'}) +
+    filtered.map(r => wSec(`${r.module.toUpperCase()} — ${r.date} ${r.shift||''} ${r.building||''}`)).join('');
+  const blob = await buildDocx(body, true);
+  if(blob) dlBlob(blob, `ShiftHub_Day_${date||'All'}.docx`);
+  toast('✅ Day export done!');
+}
+
+// ══════════════════════ BOOT ══════════════════════
+window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
