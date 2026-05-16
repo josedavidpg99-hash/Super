@@ -582,6 +582,930 @@ input[readonly], .fixed-cell { background:#f1f5f9!important; color:#334155!impor
   body.print-pouches input, body.print-pouches textarea { border:none!important; background:transparent!important; }
 }
 
+
+/* ── FINAL TOOL POLISH / MOBILE ── */
+@media(max-width:700px){
+  .nav { gap:0; padding:0 .5rem; }
+  .nav-btn { padding:12px 10px; font-size:12px; }
+  .card-head { flex-wrap:wrap; }
+  .row-actions { width:100%; }
+  .row-actions .btn { flex:1; justify-content:center; }
+  input, select, textarea { font-size:16px!important; }
+}
+
+/* ── POUCHES EXCEL-STYLE WORKSHEET ── */
+.pouch-sheet {
+  background:#ffffff;
+  border:1px solid #1f2937;
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 8px 18px rgba(15,23,42,.08);
+  max-width:980px;
+  margin:0 auto;
+}
+.pouch-sheet-title {
+  text-align:center;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size:26px;
+  font-weight:700;
+  padding:14px 10px 8px;
+  color:#111827;
+  border-bottom:1px solid #1f2937;
+  background:#ffffff;
+}
+.pouch-form-grid {
+  display:grid;
+  grid-template-columns: 150px 1fr 110px 120px 100px 160px;
+  gap:0;
+  border-bottom:1px solid #1f2937;
+}
+.pouch-form-grid > div {
+  border-right:1px solid #cbd5e1;
+  border-bottom:1px solid #e5e7eb;
+  padding:8px;
+  min-height:42px;
+}
+.pouch-form-grid label {
+  display:block;
+  font-size:11px;
+  text-transform:uppercase;
+  color:#475569;
+  font-weight:800;
+  letter-spacing:.4px;
+}
+.pouch-form-grid input,
+.pouch-form-grid select {
+  border:none!important;
+  box-shadow:none!important;
+  min-height:28px!important;
+  padding:2px 0!important;
+  width:100%;
+  font-weight:700;
+  background:#fff!important;
+}
+.pouch-desc-cell { grid-column: span 5; }
+.pouch-main {
+  display:grid;
+  grid-template-columns: 190px 1fr 1fr 1fr 210px;
+  border-bottom:1px solid #1f2937;
+}
+.pouch-main > div {
+  border-right:1px solid #cbd5e1;
+  border-bottom:1px solid #e5e7eb;
+  padding:8px;
+  min-height:40px;
+}
+.pouch-label {
+  background:#f8fafc;
+  font-weight:800;
+  color:#111827;
+}
+.pouch-head {
+  background:#e0f2fe;
+  font-weight:900;
+  text-align:center;
+  color:#0f172a;
+}
+.pouch-comment-head {
+  background:#fef3c7;
+  font-weight:900;
+  text-align:center;
+}
+.pouch-main input {
+  text-align:right;
+  font-family:'DM Mono', monospace;
+  font-weight:700;
+  border:1px solid #cbd5e1!important;
+  min-height:32px!important;
+}
+.pouch-output {
+  background:#f8fafc!important;
+  border-style:dashed!important;
+}
+.pouch-total {
+  background:#fff7cc!important;
+  font-weight:900;
+}
+.pouch-status-box {
+  display:inline-block;
+  padding:5px 10px;
+  border-radius:0;
+  font-size:12px;
+  font-weight:900;
+  text-align:center;
+  min-width:96px;
+}
+.pouch-acceptable { background:#86efac; color:#111827; }
+.pouch-attention { background:#fde047; color:#111827; }
+.pouch-critical { background:#ef4444; color:#ffffff; }
+.pouch-positive { background:#dcfce7!important; color:#047857!important; }
+.pouch-negative { background:#fee2e2!important; color:#b91c1c!important; }
+.pouch-notes {
+  padding:12px 16px;
+  background:#ffffff;
+}
+.pouch-notes h4 {
+  margin:0 0 6px;
+  font-size:13px;
+  color:#111827;
+}
+.pouch-notes p {
+  margin:3px 0;
+  font-size:12px;
+  color:#334155;
+}
+.pouch-preview-final {
+  margin-top:12px;
+  border:1px solid #94a3b8;
+  background:#f8fafc;
+  padding:10px 12px;
+  font-family:'DM Mono', monospace;
+  font-size:12px;
+  line-height:1.5;
+}
+@media(max-width:900px){
+  .pouch-form-grid { grid-template-columns: 1fr 1fr; }
+  .pouch-desc-cell { grid-column: span 1; }
+  .pouch-main { grid-template-columns: 150px 1fr 1fr 1fr; }
+  .pouch-main .pouch-comments-col { grid-column:1 / -1; }
+}
+@media(max-width:600px){
+  .pouch-form-grid { grid-template-columns: 1fr; }
+  .pouch-main { grid-template-columns: 130px 1fr 1fr; font-size:12px; }
+  .pouch-main > div { padding:6px; }
+  .pouch-head:nth-child(4), .pouch-total-col { display:none; }
+}
+
+/* ── KITCHEN MODULE ── */
+.kit-upload-box {
+  background:#ffffff;
+  border:1px dashed #94a3b8;
+  border-radius:var(--r-sm);
+  padding:14px;
+  margin-bottom:14px;
+}
+.kit-note { font-size:12px; color:var(--ink3); line-height:1.5; margin-top:8px; }
+.kit-status { display:none; margin-top:10px; padding:10px 12px; border-radius:var(--r-sm); font-size:12px; border:1px solid var(--blue-dim); background:var(--blue-bg); color:var(--blue); }
+.kit-status.ok { display:block; background:var(--green-bg); color:var(--green); border-color:var(--green-dim); }
+.kit-status.error { display:block; background:var(--red-bg); color:var(--red); border-color:var(--red-dim); }
+.kit-table table { min-width:1180px; }
+.kit-table th { font-size:9px; }
+.kit-table td { font-size:11px; }
+.kit-table input, .kit-table select { min-height:32px; padding:5px 7px; font-size:12px; }
+.kit-yes { color:#047857; font-weight:800; }
+.kit-no { color:#b91c1c; font-weight:800; }
+.kit-pending { color:#b45309; font-weight:800; }
+.kit-review-row td { background:#fee2e2!important; }
+.kit-adjust-row td { background:#ecfdf5!important; }
+.kit-summary { margin-top:12px; border:1px solid var(--border); border-radius:var(--r-sm); background:#ffffff; padding:12px; font-size:13px; line-height:1.7; }
+.kit-summary-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:10px; }
+.kit-summary-card { border:1px solid var(--border); border-radius:var(--r-sm); padding:10px; background:#f8fafc; }
+.kit-summary-card .label { color:var(--ink3); font-size:10px; text-transform:uppercase; letter-spacing:.5px; font-weight:700; }
+.kit-summary-card .value { font-family:'DM Mono', monospace; font-size:22px; font-weight:800; margin-top:3px; }
+
+@media(max-width:700px){ .kit-summary-grid{grid-template-columns:1fr 1fr;} }
+
+@media print {
+  body.print-pouches .topbar,
+  body.print-pouches .nav,
+  body.print-pouches #toast,
+  body.print-pouches .lock-overlay,
+  body.print-pouches .modal-bg,
+  body.print-pouches .btn,
+  body.print-pouches .row-actions,
+  body.print-pouches .help-box,
+  body.print-pouches .warn-box { display:none!important; }
+  body.print-pouches .panel { display:none!important; }
+  body.print-pouches #panel-pouches { display:block!important; padding:0!important; margin:0!important; max-width:none!important; }
+  body.print-pouches #panel-pouches .card { border:none!important; box-shadow:none!important; margin:0!important; }
+  body.print-pouches #panel-pouches .card-head { display:none!important; }
+  body.print-pouches #panel-pouches .card-body { padding:0!important; }
+  body.print-pouches .pouch-sheet { border:1px solid #111!important; box-shadow:none!important; border-radius:0!important; max-width:none!important; }
+  body.print-pouches input, body.print-pouches select, body.print-pouches textarea { border:none!important; background:transparent!important; }
+
+  body.print-kitchen .topbar,
+  body.print-kitchen .nav,
+  body.print-kitchen #toast,
+  body.print-kitchen .lock-overlay,
+  body.print-kitchen .modal-bg,
+  body.print-kitchen .btn,
+  body.print-kitchen .row-actions,
+  body.print-kitchen .kit-upload-box,
+  body.print-kitchen .no-print { display:none!important; }
+  body.print-kitchen .panel { display:none!important; }
+  body.print-kitchen #panel-kitchen { display:block!important; padding:0!important; max-width:none!important; }
+  body.print-kitchen #panel-kitchen .card { border:none!important; box-shadow:none!important; margin:0!important; }
+  body.print-kitchen #panel-kitchen .card-head { border-bottom:2px solid #111!important; }
+  body.print-kitchen #panel-kitchen .card-body { padding:0!important; }
+  body.print-kitchen table { display:table!important; width:100%!important; min-width:0!important; }
+  body.print-kitchen th, body.print-kitchen td { font-size:8px!important; padding:3px!important; }
+  body.print-kitchen input, body.print-kitchen select, body.print-kitchen textarea { border:none!important; background:transparent!important; font-size:8px!important; padding:0!important; min-height:0!important; }
+}
+
+
+/* ── POUCHES FINAL SINGLE REPORT STYLE ── */
+.pouch-final-box{
+  background:#fff;
+  border:2px solid #111;
+  max-width:900px;
+  margin:0 auto;
+  box-shadow:0 8px 18px rgba(15,23,42,.08);
+}
+.pouch-final-title{
+  text-align:center;
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:34px;
+  font-weight:800;
+  padding:8px 10px 4px;
+  border-bottom:2px solid #0f5f7a;
+  letter-spacing:.5px;
+}
+.pouch-final-meta{
+  padding:6px 28px 2px;
+  text-align:center;
+  font-size:16px;
+}
+.pouch-final-meta strong{font-weight:900}
+.pouch-final-info{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:18px;
+  padding:2px 60px 4px;
+  font-size:16px;
+}
+.pouch-final-desc{
+  text-align:center;
+  padding:2px 20px 8px;
+  font-size:18px;
+}
+.pouch-final-desc strong{font-weight:900}
+.pouch-final-body{
+  display:grid;
+  grid-template-columns: 1fr 300px;
+  gap:60px;
+  padding:0 35px 28px;
+  align-items:center;
+}
+.pouch-final-table{
+  border-collapse:collapse;
+  width:100%;
+  font-size:18px;
+}
+.pouch-final-table th,
+.pouch-final-table td{
+  border:1px dotted #777;
+  padding:4px 8px;
+}
+.pouch-final-table th{
+  text-align:right;
+  font-weight:900;
+  background:#fff;
+  width:58%;
+}
+.pouch-final-table td{
+  text-align:right;
+  font-family:'DM Mono', monospace;
+  font-weight:800;
+  background:#fff;
+}
+.pouch-final-table input{
+  border:none!important;
+  background:transparent!important;
+  text-align:right;
+  font-family:'DM Mono', monospace;
+  font-weight:800;
+  min-height:24px!important;
+  padding:0!important;
+  font-size:16px!important;
+}
+.pouch-final-row-adjust th{background:#fff2e8!important;}
+.pouch-final-row-total th,
+.pouch-final-row-total td{background:#fff6cc!important;}
+.pouch-final-row-pct td{background:#fff200!important;}
+.pouch-mini-pct{
+  display:inline-block;
+  min-width:58px;
+  text-align:center;
+  font-family:'DM Mono', monospace;
+  font-weight:900;
+  border:1px dotted #777;
+  padding:4px 6px;
+}
+.pouch-mini-green{background:#86efac!important;color:#111;}
+.pouch-mini-yellow{background:#fde047!important;color:#111;}
+.pouch-mini-red{background:#ef4444!important;color:#fff;}
+.pouch-comment-grid{
+  display:grid;
+  grid-template-columns:105px 1fr;
+  gap:0;
+  align-items:start;
+  font-size:16px;
+}
+.pouch-comment-title{
+  grid-column:1/-1;
+  text-align:center;
+  font-weight:900;
+  font-style:italic;
+  padding-bottom:8px;
+}
+.pouch-comment-label{
+  font-weight:900;
+  padding:5px 8px;
+  color:#111;
+  border:1px dotted #777;
+}
+.pouch-comment-text{
+  padding:5px 8px;
+  font-weight:800;
+}
+.pouch-report-line{
+  margin:12px auto 0;
+  max-width:900px;
+  font-size:15px;
+  color:#172033;
+  font-family:'DM Sans',sans-serif;
+}
+.pouch-report-line textarea{
+  min-height:70px;
+  font-family:'DM Mono',monospace;
+  font-size:12px!important;
+}
+@media(max-width:800px){
+  .pouch-final-title{font-size:26px;}
+  .pouch-final-info{grid-template-columns:1fr;gap:4px;padding:4px 18px;}
+  .pouch-final-body{grid-template-columns:1fr;gap:16px;padding:0 14px 20px;}
+  .pouch-final-table{font-size:15px;}
+  .pouch-final-meta{font-size:14px;}
+  .pouch-final-desc{font-size:15px;}
+}
+@media print{
+  body.print-pouches .pouch-final-box{box-shadow:none!important;border:2px solid #111!important;max-width:none!important;}
+  body.print-pouches .pouch-report-line textarea{border:none!important;}
+}
+
+
+/* ── FINAL TWO-REPORT POUCHES + CHOCOLATE REPORT FORM ── */
+.dual-report-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  align-items:start;
+}
+@media(max-width:950px){
+  .dual-report-grid{grid-template-columns:1fr;}
+}
+.pouch-final-box.compact{
+  max-width:760px;
+}
+.pouch-final-box.compact .pouch-final-title{
+  font-size:28px;
+}
+.pouch-final-box.compact .pouch-final-body{
+  grid-template-columns:1fr 210px;
+  gap:24px;
+  padding:0 20px 22px;
+}
+.pouch-final-box.compact .pouch-final-info{
+  padding:2px 30px 4px;
+  gap:10px;
+}
+.pouch-final-box.compact .pouch-final-table{
+  font-size:15px;
+}
+.pouch-final-box.compact .pouch-comment-grid{
+  font-size:13px;
+  grid-template-columns:90px 1fr;
+}
+@media(max-width:700px){
+  .pouch-final-box.compact .pouch-final-body{grid-template-columns:1fr;}
+}
+
+.choc-report-box{
+  background:#fff;
+  border:2px solid #111;
+  max-width:1050px;
+  margin:16px auto 0;
+  box-shadow:0 8px 18px rgba(15,23,42,.08);
+}
+.choc-report-title{
+  text-align:center;
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:32px;
+  font-weight:800;
+  padding:8px 10px 4px;
+  border-bottom:2px solid #0f5f7a;
+}
+.choc-report-meta{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  padding:10px 18px;
+  border-bottom:1px solid #111;
+  font-size:13px;
+}
+.choc-report-meta strong{font-weight:900;}
+.choc-report-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:12px;
+}
+.choc-report-table th,
+.choc-report-table td{
+  border:1px dotted #777;
+  padding:5px 7px;
+}
+.choc-report-table th{
+  background:#f8fafc;
+  text-align:left;
+  font-weight:900;
+}
+.choc-report-table td{
+  font-family:'DM Mono',monospace;
+  text-align:right;
+  font-weight:700;
+}
+.choc-report-table td:first-child,
+.choc-report-table td:nth-child(4){
+  text-align:left;
+  font-family:'DM Sans',sans-serif;
+}
+.choc-report-summary{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  border-top:2px solid #111;
+}
+.choc-report-summary div{
+  padding:10px;
+  border-right:1px dotted #777;
+  text-align:center;
+}
+.choc-report-summary strong{
+  display:block;
+  font-size:11px;
+  text-transform:uppercase;
+  color:#475569;
+}
+.choc-report-summary span{
+  font-family:'DM Mono',monospace;
+  font-size:20px;
+  font-weight:900;
+}
+@media(max-width:850px){
+  .choc-report-meta{grid-template-columns:1fr 1fr;}
+  .choc-report-title{font-size:26px;}
+  .choc-report-summary{grid-template-columns:1fr;}
+}
+@media print{
+  body.print-pouches .dual-report-grid{grid-template-columns:1fr 1fr!important;gap:10px!important;}
+  body.print-pouches .pouch-final-box.compact{box-shadow:none!important;break-inside:avoid;}
+  body.print-chocolate .topbar,
+  body.print-chocolate .nav,
+  body.print-chocolate #toast,
+  body.print-chocolate .lock-overlay,
+  body.print-chocolate .modal-bg,
+  body.print-chocolate .btn,
+  body.print-chocolate .row-actions,
+  body.print-chocolate .help-box,
+  body.print-chocolate #chTable,
+  body.print-chocolate #chSummary,
+  body.print-chocolate .card-head { display:none!important; }
+  body.print-chocolate .panel{display:none!important;}
+  body.print-chocolate #panel-chocolate{display:block!important;padding:0!important;max-width:none!important;}
+  body.print-chocolate #panel-chocolate .card{border:none!important;box-shadow:none!important;margin:0!important;}
+  body.print-chocolate #panel-chocolate .card-body{padding:0!important;}
+  body.print-chocolate .choc-report-box{box-shadow:none!important;max-width:none!important;margin:0!important;}
+}
+
+
+/* ── FINAL SINGLE POUCHES BOX DIVIDED IN TWO ── */
+.pouch-combined-box{
+  background:#fff;
+  border:2px solid #111;
+  max-width:1180px;
+  margin:0 auto;
+  box-shadow:0 8px 18px rgba(15,23,42,.08);
+}
+.pouch-combined-title{
+  text-align:center;
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:34px;
+  font-weight:800;
+  padding:8px 10px 4px;
+  border-bottom:2px solid #0f5f7a;
+  letter-spacing:.5px;
+}
+.pouch-combined-top{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  padding:8px 22px;
+  border-bottom:1px solid #111;
+  font-size:15px;
+}
+.pouch-combined-desc{
+  grid-column:1/-1;
+  text-align:center;
+  font-size:17px;
+}
+.pouch-combined-top strong{font-weight:900;}
+.pouch-split{
+  display:grid;
+  grid-template-columns:1fr 1fr 230px;
+  gap:0;
+}
+.pouch-section-box{
+  border-right:2px solid #111;
+}
+.pouch-section-title{
+  text-align:center;
+  font-weight:900;
+  font-size:18px;
+  padding:7px;
+  background:#f1f5f9;
+  border-bottom:1px solid #111;
+}
+.pouch-section-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:15px;
+}
+.pouch-section-table th,
+.pouch-section-table td{
+  border:1px dotted #777;
+  padding:5px 7px;
+}
+.pouch-section-table th{
+  text-align:right;
+  font-weight:900;
+  width:55%;
+}
+.pouch-section-table td{
+  text-align:right;
+  font-family:'DM Mono',monospace;
+  font-weight:800;
+}
+.pouch-section-table input{
+  border:none!important;
+  background:transparent!important;
+  text-align:right;
+  font-family:'DM Mono',monospace;
+  font-weight:800;
+  min-height:24px!important;
+  padding:0!important;
+  font-size:15px!important;
+}
+.pouch-final-row-adjust th{background:#fff2e8!important;}
+.pouch-final-row-total th,
+.pouch-final-row-total td{background:#fff6cc!important;}
+.pouch-final-row-pct th,
+.pouch-final-row-pct td{background:#fff200!important;}
+.pouch-comments-panel{
+  padding:12px;
+  align-self:stretch;
+}
+.pouch-comments-title{
+  text-align:center;
+  font-weight:900;
+  font-style:italic;
+  margin-bottom:10px;
+  font-size:16px;
+}
+.pouch-comment-grid{
+  display:grid;
+  grid-template-columns:105px 1fr;
+  gap:0;
+  font-size:14px;
+}
+.pouch-comment-label{
+  font-weight:900;
+  padding:6px 8px;
+  color:#111;
+  border:1px dotted #777;
+}
+.pouch-comment-text{
+  padding:6px 8px;
+  font-weight:800;
+}
+.pouch-mini-pct{
+  display:inline-block;
+  min-width:56px;
+  text-align:center;
+  font-family:'DM Mono',monospace;
+  font-weight:900;
+  border:1px dotted #777;
+  padding:4px 6px;
+}
+.pouch-mini-green{background:#86efac!important;color:#111;}
+.pouch-mini-yellow{background:#fde047!important;color:#111;}
+.pouch-mini-red{background:#ef4444!important;color:#fff;}
+.pouch-report-line{
+  margin:12px auto 0;
+  max-width:1180px;
+}
+.pouch-report-line textarea{
+  min-height:70px;
+  font-family:'DM Mono',monospace;
+  font-size:12px!important;
+}
+@media(max-width:1000px){
+  .pouch-split{grid-template-columns:1fr;}
+  .pouch-section-box{border-right:none;border-bottom:2px solid #111;}
+  .pouch-combined-top{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:650px){
+  .pouch-combined-title{font-size:26px;}
+  .pouch-combined-top{grid-template-columns:1fr;font-size:14px;}
+  .pouch-section-table{font-size:13px;}
+  .pouch-section-table input{font-size:13px!important;}
+}
+@media print{
+  body.print-pouches .pouch-combined-box{
+    box-shadow:none!important;
+    border:2px solid #111!important;
+    max-width:none!important;
+  }
+  body.print-pouches .pouch-split{
+    grid-template-columns:1fr 1fr 230px!important;
+  }
+  body.print-pouches .pouch-section-box{
+    border-right:2px solid #111!important;
+    border-bottom:none!important;
+  }
+}
+
+
+/* ── POUCHES TOTALS CORRECTION ── */
+.pouch-grand-total{
+  border-top:2px solid #111;
+  background:#fff;
+  padding:10px 14px;
+}
+.pouch-grand-total-title{
+  text-align:center;
+  font-weight:900;
+  font-size:17px;
+  margin-bottom:8px;
+}
+.pouch-grand-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+  border:1px dotted #777;
+}
+.pouch-grand-cell{
+  padding:8px;
+  border-right:1px dotted #777;
+  text-align:center;
+}
+.pouch-grand-cell:last-child{border-right:none;}
+.pouch-grand-cell strong{
+  display:block;
+  font-size:11px;
+  text-transform:uppercase;
+  color:#475569;
+}
+.pouch-grand-cell span{
+  display:block;
+  font-family:'DM Mono',monospace;
+  font-size:20px;
+  font-weight:900;
+  margin-top:3px;
+}
+.pouch-total-percent-cell{
+  background:#fff200;
+}
+@media(max-width:800px){
+  .pouch-grand-grid{grid-template-columns:1fr 1fr;}
+  .pouch-grand-cell{border-bottom:1px dotted #777;}
+}
+
+
+/* ── POUCHES SIGNED EXCEL LOGIC ── */
+.pouch-status-good{background:#86efac!important;color:#111!important;}
+.pouch-status-attention{background:#fde047!important;color:#111!important;}
+.pouch-status-critical{background:#ef4444!important;color:#fff!important;}
+.pouch-grand-status-note{
+  font-size:12px;
+  font-weight:800;
+  text-align:center;
+  padding:6px;
+  border-top:1px dotted #777;
+}
+
+
+/* ── DESKTOP CLEAN POUCHES LAYOUT ── */
+#panel-pouches.content{
+  max-width:1500px;
+}
+.pouch-clean-box{
+  background:#fff;
+  border:2px solid #111827;
+  max-width:1320px;
+  margin:0 auto;
+  box-shadow:0 10px 24px rgba(15,23,42,.10);
+}
+.pouch-clean-title{
+  text-align:center;
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:36px;
+  font-weight:800;
+  padding:10px 10px 6px;
+  border-bottom:3px solid #0f5f7a;
+  color:#0f172a;
+}
+.pouch-clean-header{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap:0;
+  border-bottom:1px solid #111827;
+}
+.pouch-clean-header div{
+  padding:9px 16px;
+  font-size:16px;
+  border-right:1px dotted #94a3b8;
+}
+.pouch-clean-header div:last-child{border-right:none;}
+.pouch-clean-desc{
+  grid-column:1 / -1;
+  text-align:center;
+  border-top:1px dotted #94a3b8;
+  font-size:17px!important;
+}
+.pouch-clean-header strong{font-weight:900;}
+
+.pouch-clean-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr 250px;
+  border-bottom:2px solid #111827;
+}
+.pouch-clean-section{
+  border-right:2px solid #111827;
+}
+.pouch-clean-section-title{
+  background:#f1f5f9;
+  text-align:center;
+  font-size:22px;
+  font-weight:900;
+  padding:10px;
+  border-bottom:2px solid #111827;
+}
+.pouch-clean-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:16px;
+}
+.pouch-clean-table th,
+.pouch-clean-table td{
+  border:1px dotted #94a3b8;
+  padding:8px 10px;
+}
+.pouch-clean-table th{
+  width:56%;
+  text-align:right;
+  text-transform:uppercase;
+  font-size:13px;
+  letter-spacing:.4px;
+  color:#334155;
+  font-weight:900;
+}
+.pouch-clean-table td{
+  text-align:right;
+  font-family:'DM Mono',monospace;
+  font-size:18px;
+  font-weight:900;
+}
+.pouch-clean-table input{
+  width:100%;
+  border:none!important;
+  background:transparent!important;
+  text-align:right;
+  font-family:'DM Mono',monospace;
+  font-size:18px!important;
+  font-weight:900;
+  padding:0!important;
+  min-height:26px!important;
+}
+.pouch-row-scrap th{background:#fff2e8!important;}
+.pouch-row-pa th{background:#fff2e8!important;}
+.pouch-row-total th,
+.pouch-row-total td{background:#fff7cc!important;}
+.pouch-row-pct th,
+.pouch-row-pct td{background:#fff200!important;}
+
+.pouch-clean-comments{
+  padding:14px;
+}
+.pouch-clean-comments-title{
+  text-align:center;
+  font-size:18px;
+  font-weight:900;
+  font-style:italic;
+  margin-bottom:12px;
+}
+.pouch-legend-row{
+  display:grid;
+  grid-template-columns:110px 1fr;
+  margin-bottom:0;
+  font-size:15px;
+}
+.pouch-legend-label{
+  padding:8px;
+  font-weight:900;
+  border:1px dotted #777;
+}
+.pouch-legend-text{
+  padding:8px 10px;
+  font-weight:800;
+}
+.good-bg{background:#86efac!important;color:#111!important;}
+.att-bg{background:#fde047!important;color:#111!important;}
+.crit-bg{background:#ef4444!important;color:#fff!important;}
+.pouch-positive{color:#047857!important;}
+.pouch-negative{color:#b91c1c!important;}
+
+.pouch-clean-grand{
+  padding:14px 20px 18px;
+}
+.pouch-clean-grand-title{
+  text-align:center;
+  font-weight:900;
+  font-size:20px;
+  margin-bottom:12px;
+}
+.pouch-clean-grand-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  border:1px dotted #777;
+}
+.pouch-clean-grand-cell{
+  text-align:center;
+  border-right:1px dotted #777;
+  padding:12px;
+}
+.pouch-clean-grand-cell:last-child{border-right:none;}
+.pouch-clean-grand-cell strong{
+  display:block;
+  text-transform:uppercase;
+  font-size:12px;
+  color:#334155;
+  margin-bottom:5px;
+}
+.pouch-clean-grand-cell span{
+  font-family:'DM Mono',monospace;
+  font-size:26px;
+  font-weight:900;
+}
+.pouch-clean-note{
+  text-align:center;
+  margin-top:10px;
+  padding:8px;
+  font-weight:900;
+  border:1px dotted #777;
+}
+
+.pouch-input-grid-desktop{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-bottom:14px;
+}
+.pouch-input-grid-desktop .field input{
+  font-size:15px!important;
+}
+.pouch-passoff-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  max-width:1320px;
+  margin:14px auto 0;
+}
+@media(max-width:1100px){
+  .pouch-clean-grid{grid-template-columns:1fr;}
+  .pouch-clean-section{border-right:none;border-bottom:2px solid #111827;}
+  .pouch-clean-grand-grid{grid-template-columns:1fr 1fr;}
+}
+@media print{
+  body.print-pouches .pouch-clean-box{box-shadow:none!important;max-width:none!important;}
+  body.print-pouches .pouch-clean-grid{grid-template-columns:1fr 1fr 250px!important;}
+  body.print-pouches .pouch-clean-section{border-right:2px solid #111827!important;border-bottom:none!important;}
+}
+
+
+/* ── EXCEL MATCH COLORS / STATUS ── */
+.adjusted-in-bg{
+  background:#5bc0eb!important;
+  color:#001529!important;
+}
+.pouch-row-pct td input.adjusted-in-bg,
+.pouch-row-pct td.adjusted-in-bg{
+  background:#5bc0eb!important;
+  color:#001529!important;
+}
+.pouch-clean-table input.good-bg{background:#86efac!important;color:#111!important;}
+.pouch-clean-table input.att-bg{background:#fde047!important;color:#111!important;}
+.pouch-clean-table input.crit-bg{background:#ef4444!important;color:#fff!important;}
+.pouch-legend-label.adjusted-in-bg{background:#5bc0eb!important;color:#001529!important;}
+
 </style>
 </head>
 <body>
@@ -591,13 +1515,13 @@ input[readonly], .fixed-cell { background:#f1f5f9!important; color:#334155!impor
   <div class="lock-card">
     <div class="lock-icon">🔐</div>
     <div class="lock-title">Team Lead Access</div>
-    <div class="lock-sub">Enter your 4-digit PIN to access the Daily Report module. Other modules are always accessible.</div>
+    <div class="lock-sub">Enter the authorized access code to open Team Lead modules.</div>
     <div class="lock-input-row">
-      <input type="password" inputmode="numeric" pattern="[0-9]*" class="lock-input" id="pinInput" maxlength="4" placeholder="7890" oninput="this.value=this.value.replace(/[^0-9]/g,''); if(this.value.length===4) checkPin();">
+      <input type="password" inputmode="numeric" pattern="[0-9]*" class="lock-input" id="pinInput" maxlength="4" placeholder="••••" oninput="this.value=this.value.replace(/[^0-9]/g,''); if(this.value.length===4) checkPin();">
       <button class="btn btn-gold" onclick="checkPin()">Enter</button>
     </div>
     <div class="lock-err" id="pinErr">❌ Incorrect PIN. Try again.</div>
-    <div class="lock-hint">Team Lead PIN: 7890</div>
+    <div class="lock-hint">Authorized Team Lead access only.</div>
     <div style="margin-top:16px">
       <button class="btn btn-outline btn-sm" onclick="skipToMain()">↩ Go to other modules</button>
     </div>
@@ -608,17 +1532,25 @@ input[readonly], .fixed-cell { background:#f1f5f9!important; color:#334155!impor
 <div class="modal-bg" id="guideModal">
   <div class="modal-box">
     <div class="modal-head">
-      <div class="modal-title">📖 ShiftHub Pro — Guía de Uso</div>
-      <button class="btn btn-outline btn-sm" onclick="closeGuide()">✕ Cerrar</button>
+      <div class="modal-title">📖 ShiftHub Pro — User Guide / User Guide / Guía de Uso</div>
+      <button class="btn btn-outline btn-sm" onclick="closeGuide()">✕ Close / Close</button>
     </div>
-    <div class="guide-step"><h4>🔐 Daily Report / Dashboard — Solo Team Lead</h4><p>El PIN de Team Lead es 7890. El Dashboard y el Daily Report son solo para revisar reportes por edificio, por turno, por empleado y para detectar ajustes altos.</p></div>
-    <div class="guide-step"><h4>🍫 Chocolate Adjustment</h4><p>Selecciona la línea, el item que está corriendo y el chocolate. Los tanques, enrobers/pipes y bed vienen en 100% por defecto porque casi siempre se reportan completos. Solo modifica ese porcentaje si la línea terminó producción y se hizo retorno o si de verdad no está al 100%.</p></div>
-    <div class="guide-step"><h4>🥜 Ingredients Adjustment</h4><p>Escoge la plantilla correcta y escribe la cantidad física. Las libras fijas ya vienen cargadas para evitar errores. La herramienta calcula la diferencia contra sistema.</p></div>
-    <div class="guide-step"><h4>📦 Pouches Adjustment</h4><p>La lógica correcta es: primero se hace el scrap que reporta producción. Después el sistema queda en System After Scrap. Luego se calcula el PA necesario para llegar a lo físico. Ejemplo: System 700, Scrap 150 → después del scrap quedan 550. Si físico es 850, el PA debe ser +300.</p></div>
-    <div class="guide-step"><h4>⏱ Mid Shift / ✅ End Shift</h4><p>Mid Shift usa solamente completion, sistema, físico y scrap de Mid Shift. End Shift usa solamente los datos de End Shift. En Totals solo se suman los ajustes IMS: Scrap IMS + PA. No se suma completion.</p></div>
-    <div class="guide-step"><h4>🟢🟡🔴 Estatus</h4><p>No cambies esta lógica: Acceptable ≤5%, Attention mayor de 5% y menor o igual a 8%, Critical mayor de 8%.</p></div>
-    <div class="guide-step"><h4>🧾 Pass Off Builder</h4><p>Pega texto de IMS para detectar Item, LPN y Qty. Recuerda: el LP importante normalmente empieza con R. Agrega ajustes, scrap, movimientos o cycle count y exporta a Word.</p></div>
-    <div class="guide-step"><h4>📤 Exportar</h4><p>Usa Word para generar reportes. Antes de limpiar datos, guarda o exporta el reporte.</p></div>  </div>
+
+    <div class="guide-step"><h4>English — General Use</h4><p>Use ShiftHub Pro to prepare daily reports, chocolate adjustments, kitchen LP verification, ingredient adjustments, pouch adjustments, and pass off reports. Enter numbers directly. Export before clearing data.</p></div>
+    <div class="guide-step"><h4>Español — Uso General</h4><p>Usa ShiftHub Pro para preparar reportes diarios, ajustes de chocolate, verificación de LP en Kitchen, ajustes de ingredientes, pouches y pass off. Escribe los números directamente. Exporta antes de limpiar los datos.</p></div>
+
+    <div class="guide-step"><h4>🔐 Team Lead Access / Acceso Team Lead</h4><p><strong>EN:</strong> Dashboard and Daily Report are Team Lead modules. Use the internal Team Lead access code.<br><strong>ES:</strong> Dashboard y Daily Report son módulos para Team Lead. Usa el código interno autorizado de Team Lead.</p></div>
+
+    <div class="guide-step"><h4>🍫 Chocolate</h4><p><strong>EN:</strong> Only ENROBERS AND PIPES and BED default to 100%. Tanks, AD, Decorators and Morcos must be entered manually. Change the 100% only if production ended, return was made, or it is not really full.<br><strong>ES:</strong> Solo ENROBERS AND PIPES y BED vienen en 100%. Tanks, AD, Decorators y Morcos se llenan manualmente. Cambia el 100% solo si la línea terminó producción, hubo retorno o no está realmente completo.</p></div>
+
+    <div class="guide-step"><h4>🍳 Kitchen LP Verification</h4><p><strong>EN:</strong> Upload Excel/CSV from IMS or NetSuite. Required columns: Item, Inventory Number, LP Number and Qty/Sum of On Hand. Enter Physical Qty, LP Match and Adjust manually. R LP is the priority.<br><strong>ES:</strong> Sube Excel/CSV de IMS o NetSuite. Columnas requeridas: Item, Inventory Number, LP Number y Qty/Sum of On Hand. Escribe Physical Qty, LP Match y Adjust manualmente. El LP con R es la prioridad.</p></div>
+
+    <div class="guide-step"><h4>📦 Pouches</h4><p><strong>EN:</strong> Enter Completion, System Qty, Physical Qty and Scrap Reported. The tool applies scrap first, calculates Production Adjustment, then Total Adjustment and Status. Status logic: Acceptable ≤5%, Attention >5% and ≤8%, Critical >8%.<br><strong>ES:</strong> Escribe Completion, Qty en Sistema, Qty en Físico y Scrap reportado. La herramienta aplica scrap primero, calcula Production Adjustment, luego Total Adjustment y Status. Lógica: Acceptable ≤5%, Attention >5% y ≤8%, Critical >8%.</p></div>
+
+    <div class="guide-step"><h4>🧾 Pass Off</h4><p><strong>EN:</strong> Paste IMS text to detect Item, Qty and LPN. Add entries to Adjustments, Scrap, Movements or Cycle Count, then export Word.<br><strong>ES:</strong> Pega texto de IMS para detectar Item, Qty y LPN. Agrega entradas en Adjustments, Scrap, Movements o Cycle Count, y luego exporta a Word.</p></div>
+
+    <div class="guide-step"><h4>📤 Export / Exportar</h4><p><strong>EN:</strong> Use Word or Print/PDF for professional reports. Pouches and Kitchen print in landscape automatically.<br><strong>ES:</strong> Usa Word o Print/PDF para reportes profesionales. Pouches y Kitchen se imprimen en horizontal automáticamente.</p></div>
+  </div>
 </div>
 
 <!-- TOP BAR -->
@@ -644,6 +1576,7 @@ input[readonly], .fixed-cell { background:#f1f5f9!important; color:#334155!impor
   <button class="nav-btn active" onclick="switchPanel('dashboard',this)">📊 Dashboard <span class="nav-badge">🔒 TL</span></button>
   <button class="nav-btn" onclick="switchPanel('daily',this)">📋 Daily Report <span class="nav-badge" id="nb-daily">🔒 TL</span></button>
   <button class="nav-btn" onclick="switchPanel('chocolate',this)">🍫 Chocolate <span class="nav-badge" id="nb-choc">0</span></button>
+  <button class="nav-btn" onclick="switchPanel('kitchen',this)">🍳 Kitchen <span class="nav-badge" id="nb-kit">0</span></button>
   <button class="nav-btn" onclick="switchPanel('ingredients',this)">🥜 Ingredients <span class="nav-badge" id="nb-ing">0</span></button>
   <button class="nav-btn" onclick="switchPanel('pouches',this)">📦 Pouches <span class="nav-badge" id="nb-pch">0</span></button>
   <button class="nav-btn" onclick="switchPanel('passoff',this)">🧾 Pass Off <span class="nav-badge" id="nb-po">0</span></button>
@@ -742,7 +1675,7 @@ input[readonly], .fixed-cell { background:#f1f5f9!important; color:#334155!impor
         <div class="field"><label>Chocolate Item</label><select id="chChocItem"></select></div>
         <div class="field"><label>Total in System (lbs)</label><input type="number" id="chSystem" placeholder="e.g. 16638" oninput="calcChoc()"></div>
       </div>
-      <div class="help-box"><strong>Nota importante:</strong> Tanks / AD / Enrobers & Pipes / Bed quedan en <strong>100%</strong> por defecto. Solo modifica el porcentaje si la línea terminó producción, se hizo retorno, o si realmente no está al 100%. FG Pallets = cantidad de pallets. Boxes on the Floor = cantidad de cajas.</div>
+      <div class="help-box"><strong>Important note:</strong> Only <strong>ENROBERS AND PIPES</strong> and <strong>BED</strong> default to <strong>100%</strong>. Tanks / AD / Decorators / Morcos must be entered manually. FG Pallets = pallet count. Boxes on the Floor = box count.</div>
       <div class="tbl-wrap">
         <table id="chTable">
           <thead><tr><th>Area / Tank</th><th>Fixed Weight (lbs)</th><th>Physical Input</th><th>Mode</th><th>Total lbs</th></tr></thead>
@@ -750,9 +1683,100 @@ input[readonly], .fixed-cell { background:#f1f5f9!important; color:#334155!impor
         </table>
       </div>
       <div class="g3" id="chSummary" style="margin-top:12px"></div>
+
+      <div class="row-actions" style="justify-content:center;margin-top:14px">
+        <button class="btn btn-blue btn-sm" onclick="printChocolateReport()">🖨 Print Chocolate Report / PDF</button>
+      </div>
+
+      <div class="choc-report-box" id="chocPrintable">
+        <div class="choc-report-title">Chocolate Adjustment</div>
+        <div class="choc-report-meta">
+          <div><strong>Date:</strong> <span id="chRptDate">—</span></div>
+          <div><strong>Shift:</strong> <span id="chRptShift">—</span></div>
+          <div><strong>Line:</strong> <span id="chRptLine">—</span></div>
+          <div><strong>Running Item:</strong> <span id="chRptItem">—</span></div>
+          <div><strong>Chocolate:</strong> <span id="chRptChoc">—</span></div>
+        </div>
+        <table class="choc-report-table">
+          <thead>
+            <tr><th>Area / Tank</th><th>Fixed Weight</th><th>Input</th><th>Mode</th><th>Total lbs</th></tr>
+          </thead>
+          <tbody id="chRptBody"></tbody>
+        </table>
+        <div class="choc-report-summary">
+          <div><strong>Total Physical Inventory</strong><span id="chRptTotal">0.00 lbs</span></div>
+          <div><strong>System Qty</strong><span id="chRptSystem">0.00 lbs</span></div>
+          <div><strong>Adjustment Needed</strong><span id="chRptDiff">0.00 lbs</span></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
+
+
+<!-- ══════════════════════ KITCHEN LP VERIFICATION ══════════════════════ -->
+<div id="panel-kitchen" class="panel content">
+  <div class="card">
+    <div class="card-head">
+      <span class="card-icon">🍳</span>
+      <span class="card-title">Kitchen — Inventory LP Verification</span>
+      <div class="row-actions" style="margin:0">
+        <button class="btn btn-outline btn-sm" onclick="resetKitchen()">↺ Reset</button>
+        <button class="btn btn-blue btn-sm" onclick="printKitchen()">🖨 Print / PDF</button>
+        <button class="btn btn-green btn-sm" onclick="exportKitchenCSV()">⬇ CSV</button>
+        <button class="btn btn-green btn-sm" onclick="exportKitchenWord()">⬇ Word</button>
+        <button class="btn btn-gold btn-sm" onclick="saveKitchen()">💾 Save</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="help-box">
+        <strong>Kitchen Logic:</strong> Upload Excel/CSV from IMS/NetSuite. The tool reads Item, Description, Inventory Number, Expiration Date, LP Number and System Qty.
+        Then enter Physical Qty, LP Match and Adjust manually. System Lot comes from Inventory Number. R LP is the priority.
+      </div>
+
+      <div class="g4">
+        <div class="field"><label>Kitchen / Area</label><input id="kitArea" placeholder="LESL2 Kitchen"></div>
+        <div class="field"><label>Shift</label><input id="kitShift" placeholder="Start / End Shift"></div>
+        <div class="field"><label>Date</label><input id="kitDate" readonly></div>
+        <div class="field"><label>Prepared By</label><input id="kitPreparedBy" placeholder="Name"></div>
+      </div>
+
+      <div class="kit-upload-box no-print">
+        <strong>Upload Excel / CSV</strong><br><br>
+        <input type="file" id="kitFile" accept=".csv,.xls,.xlsx" onchange="loadKitchenFile(event)">
+        <p class="kit-note">Required columns: <strong>Item</strong>, <strong>Inventory Number</strong>, <strong>LP Number</strong>, <strong>Qty / Sum of On Hand</strong>. Optional: <strong>Description</strong>, <strong>Expiration Date</strong>.</p>
+        <div id="kitStatus" class="kit-status"></div>
+
+        <div class="row-actions">
+          <button class="btn btn-outline btn-sm" onclick="toggleKitchenPaste()">Paste CSV Instead</button>
+          <button class="btn btn-blue btn-sm" onclick="loadKitchenSample()">Load Sample</button>
+        </div>
+
+        <div id="kitPasteArea" style="display:none;margin-top:12px">
+          <div class="field">
+            <label>Paste CSV / copied Excel table</label>
+            <textarea id="kitPasteBox" placeholder="Paste rows copied from Excel. First row must be headers." style="font-family:'DM Mono',monospace;min-height:120px"></textarea>
+          </div>
+          <button class="btn btn-blue btn-sm" onclick="loadKitchenPastedData()">Load Pasted Data</button>
+        </div>
+      </div>
+
+      <div class="tbl-wrap kit-table">
+        <table id="kitTable" style="display:none">
+          <thead>
+            <tr>
+              <th>Item</th><th>Description</th><th>Inventory Number<br>(System Lot)</th><th>Expiration Date</th><th>System LP</th><th>System Qty</th><th>Physical Qty</th><th>Difference</th><th>LP Match?</th><th>Adjust?</th><th>Review Needed</th><th>Notes</th>
+            </tr>
+          </thead>
+          <tbody id="kitBody"></tbody>
+        </table>
+      </div>
+      <div id="kitSummary" class="kit-summary" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
 
 <!-- ══════════════════════ INGREDIENTS ══════════════════════ -->
 <div id="panel-ingredients" class="panel content">
@@ -796,7 +1820,7 @@ input[readonly], .fixed-cell { background:#f1f5f9!important; color:#334155!impor
   <div class="card">
     <div class="card-head">
       <span class="card-icon">📦</span>
-      <span class="card-title">Pouches Adjustments — One Page Pass Off Style</span>
+      <span class="card-title">Pouches Daily Adjustments</span>
       <div class="row-actions" style="margin:0">
         <button class="btn btn-outline btn-sm" onclick="resetPch()">↺ Reset</button>
         <button class="btn btn-gold btn-sm" onclick="savePch()">💾 Save</button>
@@ -804,93 +1828,108 @@ input[readonly], .fixed-cell { background:#f1f5f9!important; color:#334155!impor
         <button class="btn btn-green btn-sm" onclick="exportPchWord()">⬇ Word</button>
       </div>
     </div>
+
     <div class="card-body">
-      <div class="help-box"><strong>Lógica correcta:</strong> primero se hace el Scrap reportado por Production. Después el sistema calcula el PA necesario para llegar al físico real. Ejemplo: System 700 · Scrap 150 → After Scrap 550 · Physical 850 → PA +300.</div>
+      <div class="help-box">
+        <strong>Excel Logic:</strong> Scrap Reported is shown as negative in the report. PA = Physical − (System − Scrap Reported). Total Adjustment = Scrap + PA. If Total Adjustment is positive, it is Adjusted IN / Good.
+      </div>
 
-      <div class="pouch-onepage" id="pouchPrintable">
-        <div class="pouch-title">Pouches Adjustments</div>
+      <div class="g4" style="margin-bottom:12px">
+        <div class="field"><label>Date</label><input type="date" id="pchDate"></div>
+        <div class="field"><label>Shift</label><select id="pchShift"><option>Shift 1</option><option>Shift 2</option><option selected>Shift 3</option></select></div>
+        <div class="field"><label>Line</label><select id="pchLine"><option>Sollich 1</option><option selected>Sollich 2</option><option>Sollich 3</option><option>Pack 1</option><option>Pack 2</option><option>Pack 3</option></select></div>
+        <div class="field"><label>Item</label><select id="pchItem" onchange="pchUpdateDesc()"></select></div>
+        <div class="field" style="grid-column:span 3"><label>Description</label><input type="text" id="pchDesc" readonly></div>
+        <div class="field"><label>BOM</label><input type="number" id="pchBom" value="1" readonly></div>
+      </div>
 
-        <div class="pouch-meta">
-          <div><b>Date:</b> <input type="date" id="pchDate" style="width:150px"></div>
-          <div><b>Shift:</b> <select id="pchShift" style="width:140px"><option>Shift 1</option><option>Shift 2</option><option>Shift 3</option></select></div>
-          <div><b>Line:</b> <select id="pchLine" style="width:150px"><option>Sollich 1</option><option>Sollich 2</option><option>Sollich 3</option><option>Pack 1</option><option>Pack 2</option><option>Pack 3</option></select></div>
-          <div><b>Item:</b> <select id="pchItem" onchange="pchUpdateDesc()" style="width:170px"></select></div>
-          <div style="grid-column:span 2"><b>Description:</b> <input type="text" id="pchDesc" readonly style="width:78%"></div>
-          <div><b>BOM:</b> <input type="number" id="pchBom" value="1" readonly style="width:70px"> Ea</div>
+      <div class="section-label">Mid Shift Inputs</div>
+      <div class="pouch-input-grid-desktop">
+        <div class="field"><label>Completion</label><input type="number" id="pchMidCompletion" oninput="calcPchAll()" placeholder="0"></div>
+        <div class="field"><label>Qty in System</label><input type="number" id="pchMidSistema" oninput="calcPchAll()" placeholder="0"></div>
+        <div class="field"><label>Qty in Physical</label><input type="number" id="pchMidFisico" oninput="calcPchAll()" placeholder="0"></div>
+        <div class="field"><label>Scrap Reported by Production</label><input type="number" id="pchMidScrapUsed" oninput="calcPchAll()" placeholder="0"></div>
+      </div>
+
+      <div class="section-label">End of Shift Inputs</div>
+      <div class="pouch-input-grid-desktop">
+        <div class="field"><label>Completion</label><input type="number" id="pchEndCompletion" oninput="calcPchAll()" placeholder="13050"></div>
+        <div class="field"><label>Qty in System</label><input type="number" id="pchEndSistema" oninput="calcPchAll()" placeholder="3450"></div>
+        <div class="field"><label>Qty in Physical</label><input type="number" id="pchEndFisico" oninput="calcPchAll()" placeholder="2915"></div>
+        <div class="field"><label>Scrap Reported by Production</label><input type="number" id="pchEndScrapUsed" oninput="calcPchAll()" placeholder="327"></div>
+      </div>
+
+      <div class="pouch-clean-box" id="pouchPrintable">
+        <div class="pouch-clean-title">Pouches Adjustments</div>
+
+        <div class="pouch-clean-header">
+          <div><strong>Item:</strong> <span id="pchViewItem">—</span></div>
+          <div><strong>Shift:</strong> <span id="pchViewShift">—</span></div>
+          <div><strong>Line:</strong> <span id="pchViewLine">—</span></div>
+          <div><strong>BOM:</strong> <span id="pchViewBom">1</span> Ea</div>
+          <div class="pouch-clean-desc"><strong>Description:</strong> <span id="pchViewDesc">—</span></div>
         </div>
 
-        <div class="pouch-grid">
-          <!-- MID SHIFT -->
-          <div class="pouch-section">
-            <h3>Mid Shift</h3>
-            <table class="pouch-table">
-              <tr><th>Completion</th><td><input type="number" id="pchMidCompletion" oninput="calcPchAll()" placeholder="0"></td></tr>
-              <tr><th>Qty in System</th><td><input type="number" id="pchMidSistema" oninput="calcPchAll()" placeholder="0"></td></tr>
-              <tr><th>Qty in Physical</th><td><input type="number" id="pchMidFisico" oninput="calcPchAll()" placeholder="0"></td></tr>
-              <tr><th>Scrap Reported</th><td><input type="number" id="pchMidScrapUsed" oninput="calcPchAll()" placeholder="0"></td></tr>
-              <tr><th>Scrap IMS Adjustment</th><td><input type="number" id="pchMidScrap" readonly></td></tr>
-              <tr><th>System After Scrap</th><td><input type="number" id="pchMidAfterScrap" readonly></td></tr>
-              <tr><th>PA / Production Adjustment</th><td><input type="number" id="pchMidAdj" readonly></td></tr>
-              <tr class="pouch-total-row"><th>Total IMS Adjustment</th><td><input type="number" id="pchMidTotalAdj" readonly></td></tr>
-              <tr><th>Adjustment %</th><td><span id="pchMidPct">0.00%</span></td></tr>
-              <tr><th>Status</th><td><span id="pchMidStatus" class="pouch-status pouch-acceptable">Acceptable</span></td></tr>
+        <div class="pouch-clean-grid">
+          <div class="pouch-clean-section">
+            <div class="pouch-clean-section-title">Mid Shift</div>
+            <table class="pouch-clean-table">
+              <tr><th>Completion</th><td><input id="pchMidViewCompletion" readonly></td></tr>
+              <tr><th>Qty in System</th><td><input id="pchMidViewSystem" readonly></td></tr>
+              <tr><th>Qty in Physical</th><td><input id="pchMidViewPhysical" readonly></td></tr>
+              <tr class="pouch-row-scrap"><th>Scrap Reported</th><td><input id="pchMidViewScrap" readonly></td></tr>
+              <tr class="pouch-row-pa"><th>PA</th><td><input id="pchMidViewPA" readonly></td></tr>
+              <tr class="pouch-row-total"><th>Total Adjustment</th><td><input id="pchMidViewTotalAdj" readonly></td></tr>
+              <tr class="pouch-row-pct"><th>Adjustment %</th><td><input id="pchMidViewAdjPct" readonly></td></tr>
             </table>
           </div>
 
-          <!-- END SHIFT -->
-          <div class="pouch-section">
-            <h3>End of Shift</h3>
-            <table class="pouch-table">
-              <tr><th>Completion</th><td><input type="number" id="pchEndCompletion" oninput="calcPchAll()" placeholder="0"></td></tr>
-              <tr><th>Qty in System</th><td><input type="number" id="pchEndSistema" oninput="calcPchAll()" placeholder="0"></td></tr>
-              <tr><th>Qty in Physical</th><td><input type="number" id="pchEndFisico" oninput="calcPchAll()" placeholder="0"></td></tr>
-              <tr><th>Scrap Reported</th><td><input type="number" id="pchEndScrapUsed" oninput="calcPchAll()" placeholder="0"></td></tr>
-              <tr><th>Scrap IMS Adjustment</th><td><input type="number" id="pchEndScrap" readonly></td></tr>
-              <tr><th>System After Scrap</th><td><input type="number" id="pchEndAfterScrap" readonly></td></tr>
-              <tr><th>PA / Production Adjustment</th><td><input type="number" id="pchEndAdj" readonly></td></tr>
-              <tr class="pouch-total-row"><th>Total IMS Adjustment</th><td><input type="number" id="pchEndTotalAdj" readonly></td></tr>
-              <tr><th>Adjustment %</th><td><span id="pchEndPct">0.00%</span></td></tr>
-              <tr><th>Status</th><td><span id="pchEndStatus" class="pouch-status pouch-acceptable">Acceptable</span></td></tr>
+          <div class="pouch-clean-section">
+            <div class="pouch-clean-section-title">End of Shift</div>
+            <table class="pouch-clean-table">
+              <tr><th>Completion</th><td><input id="pchEndViewCompletion" readonly></td></tr>
+              <tr><th>Qty in System</th><td><input id="pchEndViewSystem" readonly></td></tr>
+              <tr><th>Qty in Physical</th><td><input id="pchEndViewPhysical" readonly></td></tr>
+              <tr class="pouch-row-scrap"><th>Scrap Reported</th><td><input id="pchEndViewScrap" readonly></td></tr>
+              <tr class="pouch-row-pa"><th>PA</th><td><input id="pchEndViewPA" readonly></td></tr>
+              <tr class="pouch-row-total"><th>Total Adjustment</th><td><input id="pchEndViewTotalAdj" readonly></td></tr>
+              <tr class="pouch-row-pct"><th>Adjustment %</th><td><input id="pchEndViewAdjPct" readonly></td></tr>
             </table>
           </div>
-        </div>
 
-        <!-- TOTALS -->
-        <div class="pouch-totals">
-          <h3>Totals — Adjustments Only</h3>
-          <table class="pouch-table">
-            <tr>
-              <th>Total Scrap IMS</th>
-              <td><input type="number" id="pchTotalScrapIMS" readonly></td>
-              <th>Total PA</th>
-              <td><input type="number" id="pchTotalPA" readonly></td>
-            </tr>
-            <tr class="pouch-total-row">
-              <th>Grand Total IMS Adjustment</th>
-              <td colspan="3"><input type="number" id="pchGrandTotalIMS" readonly style="font-size:18px;font-weight:800"></td>
-            </tr>
-          </table>
-        </div>
-
-        <div class="pouch-preview" id="pchReportPreview">
-          <strong>Report preview will appear here.</strong>
-        </div>
-
-        <div class="pouch-comments">
-          <div class="g2">
-            <div class="field"><label>Comments Mid Shift</label><textarea id="pchMidComments" placeholder="Mid shift comments..."></textarea></div>
-            <div class="field"><label>Comments End of Shift</label><textarea id="pchEndComments" placeholder="End shift comments..."></textarea></div>
+          <div class="pouch-clean-comments">
+            <div class="pouch-clean-comments-title">Comments</div>
+            <div class="pouch-legend-row"><div class="pouch-legend-label good-bg">Acceptable</div><div class="pouch-legend-text">&lt;=5%</div></div>
+            <div class="pouch-legend-row"><div class="pouch-legend-label att-bg">Attention</div><div class="pouch-legend-text">&gt;5% and &lt;=8%</div></div>
+            <div class="pouch-legend-row"><div class="pouch-legend-label crit-bg">Critical</div><div class="pouch-legend-text">&gt;8%</div></div>
+            <div class="pouch-legend-row"><div class="pouch-legend-label adjusted-in-bg">Adjusted IN</div><div class="pouch-legend-text">Positive Adjustment</div></div>
           </div>
+        </div>
+
+        <div class="pouch-clean-grand">
+          <div class="pouch-clean-grand-title">Grand Totals — Net Adjustments</div>
+          <div class="pouch-clean-grand-grid">
+            <div class="pouch-clean-grand-cell"><strong>Total Scrap</strong><span id="pchGrandScrapImpact">0</span></div>
+            <div class="pouch-clean-grand-cell"><strong>Total PA</strong><span id="pchGrandPAImpact">0</span></div>
+            <div class="pouch-clean-grand-cell"><strong>Grand Total Adjustment</strong><span id="pchGrandTotalImpact">0</span></div>
+            <div class="pouch-clean-grand-cell"><strong>Grand Adjustment %</strong><span id="pchGrandAdjPct">0%</span></div>
+          </div>
+          <div id="pchGrandStatusNote" class="pouch-clean-note good-bg">Grand Status: Acceptable</div>
         </div>
       </div>
 
-      <div id="pchMidSummary" style="display:none"></div>
-      <div id="pchEndSummary" style="display:none"></div>
-      <div id="pchTotalsSummary" style="display:none"></div>
-      <div id="pchTotalsTable" style="display:none"></div>
+      <div class="pouch-passoff-grid">
+        <div class="field"><label>Mid Shift Pass Off Line</label><textarea id="pchMidReportPreview" readonly></textarea></div>
+        <div class="field"><label>End Shift Pass Off Line</label><textarea id="pchEndReportPreview" readonly></textarea></div>
+      </div>
+      <div class="pouch-passoff-grid">
+        <div class="field"><label>Mid Shift Comments</label><textarea id="pchMidComments" placeholder="Mid shift notes..."></textarea></div>
+        <div class="field"><label>End Shift Comments</label><textarea id="pchEndComments" placeholder="End of shift notes..."></textarea></div>
+      </div>
     </div>
   </div>
 </div>
+
 
 <!-- ══════════════════════ PASS OFF ══════════════════════ -->
 <div id="panel-passoff" class="panel content">
@@ -1042,16 +2081,7 @@ const ING_ITEMS = [
   {id:'10223',name:'PISTACHIO (SMALL)',pal:35,bed:800,band:187},
   {id:'10206',name:'PRETZEL',pal:0,bed:0,band:0}
 ];
-const POUCH_ITEMS = [
-  {id:'40623',desc:'PKG-Pouch 11oz-FD-Choc Car-Vanilla-Dark-Thin (12g)'},{id:'40666',desc:'PKG-Pouch 6.5oz-FD-Pecan Cluster-Choc-MK'},
-  {id:'40667',desc:'PKG-Pouch 11oz-FD-Choc Car-Vanilla-Milk-Thin (12g)'},{id:'40674',desc:'PKG-Pouch 26.3oz-KKL-Cluster-Smore-Milk'},
-  {id:'40826',desc:'PKG-Pouch 6oz-TJ-Cluster-Brookie-Dark'},{id:'40836',desc:'PKG-Pouch 6oz-SRS-Cluster-Pecan-Milk'},
-  {id:'41032',desc:'PKG-Pouch 19.2oz-MMK-Enrobed-Pretzel Thins-Dark'},{id:'40863-V3',desc:'PKG-Pouch-MMK-Choc Car-Vanilla-SS-Milk-21.57oz-Recyclable'},
-  {id:'41055-V2',desc:'PKG-Pouch 16.25oz-MMK-Truf Bite-Assorted-RA Update'},{id:'41067-V1',desc:'PKG-Pouch 16oz-CPK-Cluster-Pistachio-Dark-V1'},
-  {id:'40899',desc:'PKG-Pouch 10oz-TJ-Choc Car-Vanilla-Dark (12g Piece)'},{id:'40963',desc:'PKG-Pouch 6.6oz-BET-Cluster-Pecan-Milk'},
-  {id:'41147',desc:'PKG-Pouch 5oz-TAT-Cookie Bark-Milk'},{id:'41151',desc:'PKG-Pouch 5oz-TAT-Cookie Bark-SS-Dark'},
-  {id:'40976',desc:'PKG-Pouch 5.1oz-HER-Choc Bar-Dark-Zero Sugar-8g'},{id:'41128',desc:'PKG-Pouch 5.1oz-HER-ZS-CookiesNCream-8g'}
-];
+const POUCH_ITEMS = [{"id": "40001", "desc": "MYLAR POUCH"}, {"id": "40034", "desc": "PET Jar - Tall"}, {"id": "40035", "desc": "PET Jar - Short"}, {"id": "40036", "desc": "PET Jar Lid - VENTED BLACK"}, {"id": "40077", "desc": "Wax Wrap - White"}, {"id": "40090-V2", "desc": "LABEL-PET 20oz-TAR-Wrap Car-Sea Salt"}, {"id": "40090-V3", "desc": "LABEL-PET 20oz-TAR-Wrap Car-Sea Salt"}, {"id": "40105-V1", "desc": "PET Jar - Round 110mm 36oz Straight Sided Clear PET (54oz VOLUME)"}, {"id": "40105-V2", "desc": "PET Jar - Round 110mm 36oz Straight Sided Clear PET (54oz VOLUME)-50% PCR"}, {"id": "40105-V3", "desc": "PET Jar - Round 110mm Straight Sided Clear PET - 54oz VOLUME -100% PCR"}, {"id": "40106", "desc": "PET Jar Lid - VENTED for 40105/40716 Round Jars"}, {"id": "40114-V1", "desc": "PKG-Flow Wrap-UTT-Truf Bar-Plain-Milk"}, {"id": "40115-V3", "desc": "PKG-Flow Wrap-UTT-Truf Bar-Mint-Milk"}, {"id": "40115-V4", "desc": "PKG-Flow Wrap-UTT-Truf Bar-Mint-Milk"}, {"id": "40200-V3", "desc": "PKG-Flow Wrap-UTT-Truf Bar-Raspberry-Milk"}, {"id": "40201-V2", "desc": "PKG-Flow Wrap-UTT-Truf Bar-Toffee-SS-Milk"}, {"id": "40231-V3", "desc": "PKG-Bag 16oz-UTT-Truf Bite-Mint-Milk V3"}, {"id": "40231-V4", "desc": "PKG-Bag 16oz-UTT-Truf Bite-Mint-Milk V4"}, {"id": "40243", "desc": "Bucket - White Plastic 1 Gallon"}, {"id": "40244", "desc": "Bucket - White Plastic 2 Gallon"}, {"id": "40245", "desc": "Bucket - White Plastic 5 Gallon"}, {"id": "40246", "desc": "Bucket Lid - White Plastic 1 Gallon"}, {"id": "40247", "desc": "Bucket Lid - White Plastic 2 Gallon"}, {"id": "40248", "desc": "Bucket Lid- White Plastic 5 Gallon"}, {"id": "40279-V2", "desc": "LABEL-PET 31oz-PRS-Choc Car-Vanilla-SS-Dark-HOLIDAY EDITION"}, {"id": "40280-V2", "desc": "LABEL-PET 31oz-PRS-Choc Car-Vanilla-SS-Milk-HOLIDAY EDITION"}, {"id": "40337-V2", "desc": "PKG-Flow Wrap-SRS-Choc Car-Vanilla-SS-Milk"}, {"id": "40338-V2", "desc": "PKG-Flow Wrap-SRS-Choc Car-Vanilla-SS-Dark"}, {"id": "40357-V1", "desc": "PKG-Bag 16oz-UTT-Truf Bite-Toffee-SS-Milk"}, {"id": "40357-V2", "desc": "PKG-Bag 16oz-UTT-Truf Bite-Toffee-SS-Milk"}, {"id": "40357-V3", "desc": "PKG-Bag 16oz-UTT-Truf Bite-Toffee-SS-Milk"}, {"id": "40400", "desc": "Shipping Box 6 count Gable Box 8 1/8 x 6 x 7 1/2 Kraft No Print"}, {"id": "40401", "desc": "Shipping Box 6 count - 8 1/8 x 7 13/16 x 7 7/16 Kraft No Print"}, {"id": "40402", "desc": "Shipping Box 12 cnt Gable / Tara's 6 cnt 12 x 8 x 8 Kraft No Print"}, {"id": "40405", "desc": "Shipping Box 12 count Tub 14 x 14 x 8 1/2 Kraft Printed Mrs Calls"}, {"id": "40409", "desc": "Shipping Box 12 Count POP Box UT Bites 16 x 11 x 10 7/8 Kraft No Print"}, {"id": "40410", "desc": "Shipping Box 12 cnt UT Bar/Caramel POP 13 x 11 x 11 Kraft No Print"}, {"id": "40412", "desc": "Shipping Box 2 count Crumbl 2 Gallon Pails 20 x 10 x 10 Kraft No Print"}, {"id": "40415", "desc": "Shipping Box 12 count PET Jar 15 3/4 x 12 3/8 x 7 1/2 Kraft No Print"}, {"id": "40419", "desc": "Shipping Box Master Case for Pouches 14 x 14 x 10 Kraft No Print"}, {"id": "40422", "desc": "Shipping Box Lid for 12cnt Jar Black Tray Kraft No Print LARGE"}, {"id": "40423", "desc": "Shipping Tray 12cnt Jar BLACK No Print LARGE"}, {"id": "40436", "desc": "Shipping Box - For POP Surge/Buc-ees Unprinted Kraft"}, {"id": "40439", "desc": "Shipping Box for 12cnt Great Value Pouches Kraft No Print Tear Away"}, {"id": "40444-V2", "desc": "Display Header Jar Copper Kettle Printed Lowes-V2"}, {"id": "40446", "desc": "Overbox for Copper Kettle PET Jar Quarter Pallets"}, {"id": "40474", "desc": "Box Foam Assembly CC03 15.5 x 9 x 9.75 Kraft No Print"}, {"id": "40488", "desc": "Shipping Tray Copper Kettle Milk Chocolate Caramels 24 Count"}, {"id": "40492", "desc": "Shipping Box 8 x 8 x 8"}, {"id": "40497", "desc": "Tray KS Macadamia 8 count Jars"}, {"id": "40498", "desc": "Shipping Box Lid 23 5/8 x 16 x 11 3/4 20-129905"}, {"id": "40552-V1", "desc": "Tray - 16 Utah Truffle Pouches"}, {"id": "40552-V2", "desc": "Tray - 16 Utah Truffle Pouches"}, {"id": "40566-V2", "desc": "LABEL-PET 31oz-CPK-Choc Car-Vanilla-SS-Milk-V2"}, {"id": "40566-V3", "desc": "LABEL-PET 31oz-CPK-Choc Car-Vanilla-SS-Milk-V3"}, {"id": "40567-V2", "desc": "LABEL-PET 31oz-CPK-Choc Car-Vanilla-SS-Dark"}, {"id": "40613-V3", "desc": "PKG-Flow Wrap-CPK-Choc Car-Vanilla-SS-Dark Core"}, {"id": "40623-V1", "desc": "PKG-Pouch 11oz-FD-Choc Car-Vanilla-Dark-Thin (12g pieces)"}, {"id": "40623-V2", "desc": "PKG-Pouch 11oz-FD-Choc Car-Vanilla-Dark-Thin (12g pieces)-V2"}, {"id": "40649-V2", "desc": "Tray-MMK-Choc Car-Vanilla-SS-Dark-8 Count"}, {"id": "40649-V3", "desc": "Tray-MMK-Choc Car-Vanilla-SS-Dark-8 Count"}, {"id": "40649-V4", "desc": "Tray-MMK-Choc Car-Vanilla-SS-Dark-8 Count V4"}, {"id": "40650-V2", "desc": "LABEL-PET Jar 36oz-MMK-Choc Car-Vanilla-SS-Dark"}, {"id": "40650-V3", "desc": "LABEL-PET Jar 36oz-MMK-Choc Car-Vanilla-SS-Dark"}, {"id": "40655", "desc": "PET Jar - Square 36oz Clear PET (58oz VOLUME)"}, {"id": "40656", "desc": "PET Jar Lid - BLANK VENTED BLUE C-110-8-4800-41TR V"}, {"id": "40657", "desc": "PET Jar Lid - VENTED PURPLE C-110-8-4803-41TR V"}, {"id": "40658", "desc": "Corner Board - Edward Marc 3 X 3 X 32"}, {"id": "40659", "desc": "CHEP Pallet"}, {"id": "40660-V2", "desc": "PKG-Pouch 6.53oz-PRS-Milk-Macadamia Cluster"}, {"id": "40660-V3", "desc": "PKG-Pouch 6.53oz-PRS-Milk-Macadamia Cluster V3"}, {"id": "40660-V4", "desc": "PKG-Pouch 6.53oz-PRS-Milk-Macadamia Cluster V4"}, {"id": "40664-V1", "desc": "PKG-Flow Wrap-FD-Truffle Bite-Choc-DK-SS"}, {"id": "40664-V2", "desc": "PKG-Flow Wrap-FD-Truffle Bite-Choc-DK-SS-V2"}, {"id": "40665-V1", "desc": "PKG-Pouch 3.5oz-FD-Truffle Bite-Plain-SS-Dark"}, {"id": "40665-V2", "desc": "PKG-Pouch 3.5oz-FD-Truf Bite-Plain-SS-Dark"}, {"id": "40665-V3", "desc": "PKG-Pouch 3.5oz-FD-Truf Bite-Plain-SS-Dark"}, {"id": "40665-V4", "desc": "PKG-Pouch 3.5oz-FD-Truf Bite-Plain-SS-Dark-V4"}, {"id": "40666-V1", "desc": "PKG-Pouch 6.5oz-FD-Pecan Cluster-Choc-MK"}, {"id": "40666-V2", "desc": "PKG-Pouch 6.5oz-FD-Pecan Cluster-Choc-MK-V2"}, {"id": "40667-V1", "desc": "PKG-Pouch 11oz-FD-Choc Car-Vanilla-Milk-Thin (12g pieces)"}, {"id": "40667-V2", "desc": "PKG-Pouch 11oz-FD-Choc Car-Vanilla-Milk-Thin (12g pieces)-V2"}, {"id": "40674", "desc": "PKG-Pouch 26.3oz-KKL-Cluster-Smore-Milk"}, {"id": "40688", "desc": "PKG- Cornerboard 3x3x42"}, {"id": "40694-V2", "desc": "PKG-Tray 26.3oz-KKL-Cluster-Smore-Milk-V2"}, {"id": "40696", "desc": "Corner Board - Edward Marc 3 X 3 X 37.5"}, {"id": "40711", "desc": "Slip Sheets-36 1/2 x 46"}, {"id": "40712-V2", "desc": "PKG-Flow Wrap-SRS-Truf Bite-Toffee-SS-Milk"}, {"id": "40714-V2", "desc": "PKG-Flow Wrap-SRS-Truf Bite-Plain-SS-Dark"}, {"id": "40721-V2", "desc": "PKG-Flow Wrap-PRS-Choc Car-Vanilla-SS-Milk"}, {"id": "40721-V3", "desc": "PKG-Flow Wrap-PRS-Choc Car-Vanilla-SS-Milk"}, {"id": "40723-V2", "desc": "PKG-Flow Wrap-PRS-Choc Car-Vanilla-SS-Dark"}, {"id": "40723-V3", "desc": "PKG-Flow Wrap-PRS-Choc Car-Vanilla-SS-Dark"}, {"id": "40725", "desc": "Corner Board - 3\" x 3\" x 48\" -.225\" Thick"}, {"id": "40726", "desc": "Corner Board - 3\" x 3\" x 29.5\""}, {"id": "40728", "desc": "PET Jar Lid - Kirkland Vented Purple - C-110-57-4803-41TR V"}, {"id": "40729-V1", "desc": "LABEL-PET Jar 32oz-KS-Macadamia-Milk"}, {"id": "40729-V2", "desc": "LABEL-PET Jar 32oz-KS-Macadamia-Milk-V2"}, {"id": "40730", "desc": "PKG-Pouch 26.3oz-KKL-Cluster-Smore-Milk Canada"}, {"id": "40730-V2", "desc": "PKG-Pouch 26.3oz-KKL-Cluster-Smore-Milk Canada-V2"}, {"id": "40731-V2", "desc": "PKG-Tray 26.3oz-KKL-Cluster-Smore-Milk Canada"}, {"id": "40732-V1", "desc": "PKG-Flow Wrap-PRS-Choc Car-Vanilla-SS-Dark Holiday"}, {"id": "40733-V2", "desc": "PKG-Pouch-PRS-Choc Car-SS-Dark 23.7oz Holiday"}, {"id": "40733-V3", "desc": "PKG-Pouch-PRS-Choc Car-SS-Dark 23.7oz Holiday"}, {"id": "40734", "desc": "Tray - PRS Holiday Generic"}, {"id": "40735-V2", "desc": "PKG-Pouch-PRS-Choc Car-SS-Milk 23.7oz Holiday"}, {"id": "40735-V3", "desc": "PKG-Pouch-PRS-Choc Car-SS-Milk 23.7oz Holiday"}, {"id": "40736-V1", "desc": "PKG-Flow Wrap-PRS-Choc Car-Vanilla-SS-Milk Holiday"}, {"id": "40739", "desc": "Pallet - Quarter"}, {"id": "40741", "desc": "PKG-Flow Wrap-UTT-Bite-Mint-Milk for Costco Canada"}, {"id": "40742", "desc": "PKG-Pouch-UTT-Choc-Mint-Milk 16oz for Costco Canada"}, {"id": "40745", "desc": "Corner Board - 3\" x 3\" x 34.5\" 61-100855"}, {"id": "40746", "desc": "Die Cut Tie Sheets - NOT SLIP SHEETS"}, {"id": "40747", "desc": "PKG-Flow Wrap-PRS-Truf Bite-Plain-SS-Dark"}, {"id": "40749", "desc": "PKG-Flow Wrap-PRS-Truf Bite-Toffee-SS-Milk"}, {"id": "40754", "desc": "PET Jar Lid - VENTED WHITE"}, {"id": "40759", "desc": "Overbox for Copper Kettle Pouch Quarter Pallets"}, {"id": "40762-V3", "desc": "PKG-Pouch-MRC-WH Wrap-Sea Salt 25oz"}, {"id": "40763", "desc": "Shipping Tray 16cnt 25oz Pouch Mrs Calls Sea Salt Caramels"}, {"id": "40765", "desc": "Inner Tray Pad"}, {"id": "40766", "desc": "CHEP Pallet - Phytosanitary"}, {"id": "40767", "desc": "PKG-Plastic White Bag Generic"}, {"id": "40768", "desc": "PKG - Bulk Box 16 x 24 x 6.5"}, {"id": "40769", "desc": "PKG-Plastic Clear Bag Generic (Minimum 24 x 16 x 28) 1.25m"}, {"id": "40770", "desc": "PKG - Bulk Layer Tray"}, {"id": "40771", "desc": "PKG - Bulk Parchment Paper"}, {"id": "40775", "desc": "Banding"}, {"id": "40776", "desc": "Pallet - New"}, {"id": "40779", "desc": "Corner Board - 3\" x 3\" x 60\""}, {"id": "40787-V2", "desc": "PKG-Flow Wrap-UTT-Truf Bite-Mint-Milk V2"}, {"id": "40787-V3", "desc": "PKG-Flow Wrap-UTT-Truf Bite-Mint-Milk V3"}, {"id": "40787-V4", "desc": "PKG-Flow Wrap-UTT-Truf Bite-Mint-Milk V4"}, {"id": "40788-V3", "desc": "PKG-Flow Wrap-MMK-Truf Bite-Toffee-SS-Milk"}, {"id": "40788-V5", "desc": "PKG-Flow Wrap-MMK-Truf Bite-Toffee-SS-Milk"}, {"id": "40789-V3", "desc": "PKG-Bag 19oz-MMK-Truf Bite-Toffee-SS-Milk"}, {"id": "40789-V4", "desc": "PKG-Bag 19oz-MMK-Truf Bite-Toffee-SS-Milk-Recyclable"}, {"id": "40789-V5", "desc": "PKG-Bag 19oz-MMK-Truf Bite-Toffee-SS-Milk-Recyclable"}, {"id": "40793-V2", "desc": "PKG-Flow Wrap-UTT-Truf Bite-Toffee-SS-Milk"}, {"id": "40793-V3", "desc": "PKG-Flow Wrap-UTT-Truf Bite-Toffee-SS-Milk"}, {"id": "40795-V3", "desc": "LABEL-PET Jar 30.16oz-MMK-Cluster-Pecan-Milk"}, {"id": "40795-V4", "desc": "LABEL-PET Jar 30.16oz-MMK-Cluster-Pecan-Milk"}, {"id": "40797-V3", "desc": "LABEL-PET Jar 36oz-MMK-Choc Car-Vanilla-SS-Milk"}, {"id": "40797-V4", "desc": "LABEL-PET Jar 36oz-MMK-Choc Car-Vanilla-SS-Milk"}, {"id": "40800", "desc": "PKG-Flow Wrap-HER-Molded Bar Small-Milk"}, {"id": "40801", "desc": "Shipping Box Hersey's 19.625 x 11.625 x 11.125"}, {"id": "40802-V3", "desc": "Tray-MMK-Truf Bite-Toffee-SS-16 Count"}, {"id": "40802-V4", "desc": "Tray-MMK-Truf Bite-Toffee-SS-16 Count"}, {"id": "40803-V3", "desc": "Tray-MMK-Cluster-Pecan-Milk"}, {"id": "40803-V4", "desc": "Tray-MMK-Cluster-Pecan-Milk"}, {"id": "40804-V3", "desc": "Tray-MMK-Choc Car-Vanilla-SS-Milk-8 Count"}, {"id": "40804-V4", "desc": "Tray-MMK-Choc Car-Vanilla-SS-Milk-8 Count"}, {"id": "40805", "desc": "PKG-POP 50 CT-UTT-Truf Bite-GENERIC V2"}, {"id": "40806", "desc": "PKG-POP 24 CT-UTT-Truf Bar-Mint-Milk V2"}, {"id": "40807", "desc": "PET Jar - Round 25oz Clear PET - 4.34 x 6 x 4.34 - Zenith Item # 2329"}, {"id": "40808", "desc": "PET Jar Lid - Cream for 40807 Round Jars"}, {"id": "40809-V1", "desc": "LABEL-PET 25oz-FD-Choc Car-Vanilla-SS-MK"}, {"id": "40809-V2", "desc": "LABEL-PET 25oz-FD-Choc Car-Vanilla-SS-MK-V2"}, {"id": "40810-V1", "desc": "LABEL-PET 25oz-FD-Choc Car-Vanilla-SS-DK"}, {"id": "40810-V2", "desc": "LABEL-PET 25oz-FD-Choc Car-Vanilla-SS-DK-V2"}, {"id": "40811", "desc": "Shipping Box - 9 1/8\" X 13 5/8\" x 6 3/8\""}, {"id": "40812", "desc": "Overbox - 19 1/8\" x 9 5/8\" x 8\""}, {"id": "40813-V5", "desc": "PKG-Flow Wrap-UTT-Truf Bite-Plain-SS-Dark-RA"}, {"id": "40813-V6", "desc": "PKG-Flow Wrap-UTT-Truf Bite-Plain-SS-Dark-RA"}, {"id": "40814-V5", "desc": "PKG-Pouch 16oz-UTT-Truf Bite-Plain-SS-Dark-RA"}, {"id": "40814-V6", "desc": "PKG-Pouch 16oz-UTT-Truf Bite-Plain-SS-Dark-RA"}, {"id": "40817-V2", "desc": "PKG-Flow Wrap-UTT-Truf Bite-Plain-SS-Dark-CA-RA"}, {"id": "40818-V3", "desc": "PKG-Pouch 16oz-UTT-Truf Bite-Plain-SS-Dark-CA-RA"}, {"id": "40819-V3", "desc": "LABEL-PET 20oz-TAR-Wrap Car-Vanilla"}, {"id": "40820", "desc": "Hershey's Slip Sheet-43\" x 51\" die cut #701-24052-006"}, {"id": "40821-V2", "desc": "PKG-Gable Box 6.8oz-PS-Chocolate Caramel-Vanilla-SS-Milk"}, {"id": "40822-V1", "desc": "PKG-Gable Box 6.8oz-PS-Chocolate Caramel-Vanilla-SS-Dark"}, {"id": "40822-V2", "desc": "PKG-Gable Box 6.8oz-PS-Chocolate Caramel-Vanilla-SS-Dark"}, {"id": "40823-V2", "desc": "Tray - Truf Bite-SS-Dark-Pouch 16oz"}, {"id": "40824-V2", "desc": "PKG-Gable Box 5oz-PS-Truffle Bite-Plain-SS-Dark"}, {"id": "40825-V1", "desc": "PKG-Gable Box 5oz-PS-Truffle Bite-Toffee-SS-Milk"}, {"id": "40825-V2", "desc": "PKG-Gable Box 5oz-PS-Truffle Bite-Toffee-SS-Milk"}, {"id": "40826", "desc": "PKG-Pouch 6oz-TJ-Cluster-Brookie-Dark"}, {"id": "40827", "desc": "Shipping Box 15 X 18 X 9"}, {"id": "40830", "desc": "PKG-Flow Wrap-BUC-Choc Car-Vanilla-SS-Dark"}, {"id": "40830-V2", "desc": "PKG-Flow Wrap-BUC-Choc Car-Vanilla-SS-Dark-V2"}, {"id": "40831", "desc": "PKG-Flow Wrap-BUC-Choc Car-Vanilla-SS-Milk"}, {"id": "40831-V2", "desc": "PKG-Flow Wrap-BUC-Choc Car-Vanilla-SS-Milk-V2"}, {"id": "40836", "desc": "PKG-Pouch 6oz-SRS-Cluster-Pecan-Milk"}, {"id": "40837", "desc": "PKG-Pouch 6oz-SRS-Cluster-Cookies & Cream-Milk"}, {"id": "40838-V5", "desc": "LABEL-PET Jar 20oz-TR-Caramel - Wrapped-Vanilla-xx-xx-Sugar Free"}, {"id": "40844", "desc": "Shipping Box - 10.5 x 10.1 x 6.6"}, {"id": "40845-V2", "desc": "PKG-Flow Wrap-CPK-Truf Bite-Plain-SS-Dark-RA"}, {"id": "40846-V3", "desc": "PKG-Pouch 16oz-CPK-Truf Bite-Plain-SS-Dark-RA"}, {"id": "40853", "desc": "PKG-Pouch-MRC-WH Wrap-Sea Salt 25oz-Canada"}, {"id": "40854", "desc": "Tray-MMK-Cluster-Triple Chocolate-Milk-8 Count PET"}, {"id": "40855", "desc": "LABEL-MMK-Cluster-Triple Chocolate-Milk-PET-23.46oz"}, {"id": "40860", "desc": "PKG-Pouch 26.3oz-KKL-Cluster-Smore-Milk-Mexico"}, {"id": "40861-V1", "desc": "PKG-Flow Wrap-MMK-Choc Car-Vanilla-SS-Milk-12g"}, {"id": "40861-V2", "desc": "PKG-Flow Wrap-MMK-Choc Car-Vanilla-SS-Milk-12g"}, {"id": "40862-V2", "desc": "Tray-MMK-Choc Car-Vanilla-SS-Milk-16 Count Pouch"}, {"id": "40863-V2", "desc": "PKG-Pouch-MMK-Choc Car-Vanilla-SS-Milk-12g Piece-21.57oz-Recyclable"}, {"id": "40863-V3", "desc": "PKG-Pouch-MMK-Choc Car-Vanilla-SS-Milk-12g Piece-21.57oz-Recyclable"}, {"id": "40867", "desc": "PKG-Pouch 20oz-CPK-Cracker-Animal-Milk"}, {"id": "40868", "desc": "Tray-CPK-Cracker-Animal-Milk-16 Count"}, {"id": "40870", "desc": "Tray-CPK-Cluster-Fruit & Nut-Dark-16 Count"}, {"id": "40871", "desc": "PKG-Pouch 26oz-CPK-Cluster-Fruit & Nut-Dark"}, {"id": "40872", "desc": "PKG-Pouch 26oz-CPK-Cluster-Fruit & Nut-Dark-Canada"}, {"id": "40873-V1", "desc": "LABEL-BET-Choc Car-Vanilla-SS-Milk-PET 24.3oz"}, {"id": "40873-V2", "desc": "LABEL-BET-Choc Car-Vanilla-SS-Milk-PET 24.3oz"}, {"id": "40874", "desc": "Shipping Box - 13.875 x 4.8 x 6.8"}, {"id": "40875-V1", "desc": "LABEL-BET-Choc Car-Vanilla-SS-Dark-PET 24.3oz"}, {"id": "40875-V2", "desc": "LABEL-BET-Choc Car-Vanilla-SS-Dark-PET 24.3oz"}, {"id": "40876", "desc": "PKG-Pouch 20oz-CPK-Cracker-Animal-Milk-Canada"}, {"id": "40877", "desc": "LABEL-CPK-Choc Car-Vanilla-SS-Dark-PET 36oz (12g Piece)"}, {"id": "40878", "desc": "Tray-CPK-Choc Car-Vanilla-SS-Dark-PET 36oz (12g Piece)-8 Count"}, {"id": "40879", "desc": "LABEL-CPK-Choc Car-Vanilla-SS-Milk-PET 36oz (12g Piece)-Canada"}, {"id": "40880", "desc": "Tray-CPK-Choc Car-Vanilla-SS-Milk-PET 36oz (12g Piece)-8 Count"}, {"id": "40883", "desc": "PKG-Flow Wrap-CPK-Truf Bite-Peppermint-Dark-Wrapped"}, {"id": "40886", "desc": "PKG-Flow Wrap-CPK-Choc Car-Vanilla-SS-Dark (12g Piece)"}, {"id": "40887", "desc": "PKG-Pouch 21.5oz-CPK-Choc Car-Vanilla-SS-Dark-Wrapped (12g Piece)"}, {"id": "40888", "desc": "Tray-CPK-Choc Car-Vanilla-SS-Dark-Wrapped-Pouch 21.5oz-16 Count"}, {"id": "40889", "desc": "PKG-Flow Wrap-MMK-Truf Bite-Marshmallow-Peppermint-Dark"}, {"id": "40890", "desc": "PKG-Pouch 16oz-MMK-Truf Bite-Marshmallow-Peppermint-Dark-Recyclable"}, {"id": "40891", "desc": "Tray-MMK-Truf Bite-Marshmallow-Peppermint-Dark-Pouch 16oz-16 Count"}, {"id": "40892", "desc": "PKG-Pouch 6.8oz-PRS-Choc Car-Vanilla-SS-Milk"}, {"id": "40893", "desc": "PKG-Pouch 6.8oz-PRS-Choc Car-Vanilla-SS-Dark"}, {"id": "40894", "desc": "PKG-Pouch 5oz-PRS-Truf Bite-Toffee-SS-Milk"}, {"id": "40895", "desc": "PKG-Pouch 5oz-PRS-Truf Bite-Plain-SS-Dark"}, {"id": "40896", "desc": "PKG-Flow Wrap-HER-Choc Car-SS-Milk"}, {"id": "40896-V2", "desc": "PKG-Flow Wrap-HER-Choc Car-SS-Milk"}, {"id": "40897", "desc": "PKG-Pouch 12oz-HER-Choc Car-SS-Milk"}, {"id": "40897-V2", "desc": "PKG-Pouch 12oz-HER-Choc Car-SS-Milk"}, {"id": "40898", "desc": "PKG-Flow Wrap-TUC-Choc Car-Vanilla-SS-Milk (12g Piece)"}, {"id": "40899", "desc": "PKG-Pouch 10oz-TJ-Choc Car-Vanilla-Dark (12g Piece)"}, {"id": "40900", "desc": "Shipping Box-17.5 x 12 x 9"}, {"id": "40901", "desc": "PKG-Flow Wrap-Mothers Day-UTT-Choc Car-Vanilla-SS-Dark"}, {"id": "40902", "desc": "PKG-Pouch 21oz-Mothers Day-UTT-Choc Car-Vanilla-SS-Dark"}, {"id": "40903", "desc": "Tray-Mothers Day-UTT-Choc Car-Vanilla-SS-Dark-16 Count"}, {"id": "40904", "desc": "PKG-Pouch 16oz-CPK-Cluster-Popcorn-Coconut Cashew-Milk-Canada"}, {"id": "40905", "desc": "Tray-CPK-Cluster-Popcorn-Coconut Cashew-Milk-16 Count"}, {"id": "40906-V2", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-35g"}, {"id": "40906-V3", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-35g"}, {"id": "40906-V5", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-35g #1101-3501-0105"}, {"id": "40906-V6", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-35g #1101-3501-0106"}, {"id": "40907-V1", "desc": "PKG-Display Box 24ct-FEA-Choc Bar-Milk-35g"}, {"id": "40907-V2", "desc": "PKG-Display Box 24ct-FEA-Choc Bar-Milk-35g V2 #1101-3501-0202"}, {"id": "40907-V3", "desc": "PKG-Display Box 24ct-FEA-Choc Bar-Milk-35g V3 #1101-3501-0203"}, {"id": "40908", "desc": "Sticker Seal for Display Box"}, {"id": "40909", "desc": "Master Case-FEA-Choc Bar-35g"}, {"id": "40909-V2", "desc": "Master Case-FEA-Choc Bar-35G V2"}, {"id": "40910-V2", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-60g"}, {"id": "40910-V3", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-60g"}, {"id": "40910-V4", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-60g #1101-6001-0105"}, {"id": "40910-V5", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-60g V5 #1101-6001-0105"}, {"id": "40910-V6", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-60g #1101-6001-0106"}, {"id": "40911-V1", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-Milk-60g"}, {"id": "40911-V2", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-Milk-60g #1101-6001-0202"}, {"id": "40911-V3", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-Milk-60g V3 #1101-6001-0203"}, {"id": "40912-V1", "desc": "PKG-Master Case-FEA-Choc Bar-60g"}, {"id": "40912-V2", "desc": "PKG-Master Case-FEA-Choc Bar-60g"}, {"id": "40913-V1", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-Crunch-35g"}, {"id": "40913-V2", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-Crunch-35g"}, {"id": "40913-V3", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-Crunch-35g #1101-3503-0105"}, {"id": "40913-V5", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-Crunch-35g"}, {"id": "40914-V1", "desc": "PKG-Display Box 24ct-FEA-Choc Bar-Milk-Crunch-35g"}, {"id": "40914-V3", "desc": "PKG-Display Box 24ct-FEA-Choc Bar-Milk-Crunch-35g V3 #1101-3503-0203"}, {"id": "40915-V2", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-Crunch-60g"}, {"id": "40915-V3", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-Crunch-60g #1101-6003-0105"}, {"id": "40915-V5", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-Crunch-60g #1101-6003-0105"}, {"id": "40915-V6", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-Crunch-60g #1101-6003-0106"}, {"id": "40916-V1", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-Milk-Crunch-60g #1101-6003-0201"}, {"id": "40916-V2", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-Milk-Crunch-60g #1101-6003-0202"}, {"id": "40916-V3", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-Milk-Crunch-60g #1101-6003-0203"}, {"id": "40917", "desc": "PKG-Pouch 19oz-MMK-Truf Bite-Toffee-SS-Milk-China"}, {"id": "40918", "desc": "PKG-Master Case-FEA-Choc Bar-35g-Bulk Box"}, {"id": "40919-V2", "desc": "PKG-Pouch 21oz-CPK-Cluster-Pecan-Unenrobed-Milk"}, {"id": "40920", "desc": "Tray-CPK-Cluster-Pecan-Unenrobed-Milk-16 Count"}, {"id": "40921", "desc": "PKG-Pouch 5.7oz-SRS-Choc Car-Vanilla-SS-Milk-Wrapped"}, {"id": "40922", "desc": "PKG-Pouch 5.7oz-SRS-Choc Car-Vanilla-SS-Dark-Wrapped"}, {"id": "40923", "desc": "PKG-Pouch 4oz-SRS-Truf Bite-Toffee-SS-Milk-Wrapped"}, {"id": "40924", "desc": "PKG-Pouch 4oz-SRS-Truf Bite-Plain-SS-Dark-Wrapped"}, {"id": "40925", "desc": "PKG-Pouch 18oz-CPK-Cluster-Cookies & Cream-Milk"}, {"id": "40927", "desc": "PKG-Pouch 16oz-CPK-Cluster-Popcorn-M&M-Milk"}, {"id": "40929", "desc": "PKG-Pouch 14oz-CPK-Truf Bite-Peppermint-Dark-Wrapped"}, {"id": "40931", "desc": "Display Header CPK-Cookies & Cream Clusters-Lowes"}, {"id": "40931-V2", "desc": "PKG-Headercard-CPK-Cluster-Cookies & Cream-Pouch 16oz-Lowes"}, {"id": "40932", "desc": "Display Header CPK-Popcorn Clusters-Lowes"}, {"id": "40933", "desc": "Display Header CPK-Peppermint Truffles-Lowes"}, {"id": "40934", "desc": "Tray-CPK-Quarter Pallet-Lowes"}, {"id": "40935", "desc": "PKG-Pouch 16oz-CPK-Cluster-Popcorn-Coconut Cashew-Milk"}, {"id": "40936", "desc": "PKG-Master Case-FEA-Choc Bar-Milk-60g-Bulk Box"}, {"id": "40937-V1", "desc": "PKG-Flow Wrap-CCO-Truf Bite-Plain-SS-Dark-PLMA-Holiday"}, {"id": "40937-V2", "desc": "PKG-Flow Wrap-CCO-Truf Bite-Plain-SS-Dark-PLMA-Holiday"}, {"id": "40938-V1", "desc": "PKG-Flow Wrap-UTT-Truf Bite-Mint-Milk-PLMA-Holiday"}, {"id": "40938-V2", "desc": "PKG-Flow Wrap-UTT-Truf Bite-Mint-Milk-PLMA-Holiday"}, {"id": "40939-V1", "desc": "PKG-Flow Wrap-CCO-Cluster-Pecan-Milk-PLMA-Holiday"}, {"id": "40939-V2", "desc": "PKG-Flow Wrap-CCO-Cluster-Pecan-Milk-PLMA-Holiday"}, {"id": "40940-V1", "desc": "PKG-Flow Wrap-CCO-Choc Car-Vanilla-SS-Milk-12g-PLMA-Holiday"}, {"id": "40940-V2", "desc": "PKG-Flow Wrap-CCO-Choc Car-Vanilla-SS-Milk-12g-PLMA-Holiday"}, {"id": "40941-V1", "desc": "PKG-Flow Wrap-CCO-Choc Car-Vanilla-SS-Dark-12g-PLMA-Holiday"}, {"id": "40941-V2", "desc": "PKG-Flow Wrap-CCO-Choc Car-Vanilla-SS-Dark-12g-PLMA-Holiday"}, {"id": "40942", "desc": "PKG-Pouch 22.7oz-CPK-Cluster-Triple Chocolate-Milk-Canada"}, {"id": "40943", "desc": "Tray-CPK-Cluster-Triple Chocolate-Milk-Pouch 22.7oz-Canada"}, {"id": "40944-V1", "desc": "PKG-Layflat Caddie 24ct-FEA-Choc Bar-Milk-60g V1 #1101-6001-0701"}, {"id": "40944-V2", "desc": "PKG-Layflat Caddie 24ct-FEA-Choc Bar-Milk-60g"}, {"id": "40945", "desc": "PKG-Master Case-Layflat-FEA-Choc Bar-60g"}, {"id": "40946", "desc": "PKG-Bento Box - 2 x 11 x 9.75\""}, {"id": "40949", "desc": "PKG-Layflat Caddie 24ct-FEA-Choc Bar-Milk-Crunch-60g #1101-6003-0701"}, {"id": "40951", "desc": "Shipping Box - Utah Plain Truffle - 6 Count"}, {"id": "40952", "desc": "LABEL-HER-Choc Car-SS-Milk-Wrapped-Bulk 150 Pieces"}, {"id": "40952-V2", "desc": "LABEL-HER-Choc Car-SS-Milk-Wrapped-Bulk 150 Pieces"}, {"id": "40954", "desc": "PKG-Flow Wrap-HER-Milk-Zero Sugar-28.35g"}, {"id": "40955", "desc": "PKG-Display Box 12ct-HER-Choc Bar-Milk-Zero Sugar-28.35g"}, {"id": "40956", "desc": "PKG-Master Case-HER-Choc Bar-Milk-Zero Sugar-28.35g"}, {"id": "40957", "desc": "PKG-Master Case-Layflat- 11 x 14 x 8.5 -Unprinted"}, {"id": "40958", "desc": "Steel Drum - 55 Gallon"}, {"id": "40959", "desc": "Steel Drum Lid - 55 Gallon"}, {"id": "40960", "desc": "PKG-Pouch 6.03oz-PRS-Cluster-Pecan-Milk"}, {"id": "40961", "desc": "PKG-Pouch 6oz-PRS-Cluster-Brookie-Milk"}, {"id": "40962", "desc": "Block Pallet 48x40 \u2013 White Wood \u2013 Heat Treated \u2013 Phytosanitary- ISPM 15"}, {"id": "40963", "desc": "PKG-Pouch 6.6oz-BET-Cluster-Pecan-Milk"}, {"id": "40964", "desc": "PKG-BET-Pecan Cluster Case"}, {"id": "40965", "desc": "PKG-Pouch 5.1oz-BET-Wrap Car-Vanilla"}, {"id": "40966", "desc": "PKG-Flow Wrap-HER-Choc Bar-Milk-Zero Sugar-8g - #701-22925-004"}, {"id": "40967", "desc": "PKG-Pouch 3oz-HER-Choc Bar-Milk-Zero Sugar-8g - #701-27001-020"}, {"id": "40968", "desc": "PKG-Pouch 5.1oz-HER-Choc Bar-Milk-Zero Sugar-8g - #701-93837-007"}, {"id": "40969", "desc": "PKG-Case 12ct-Pouch 3oz-HER-Choc Bar-Milk-Almond-Zero Sugar-8.5g #701-27013-001"}, {"id": "40970", "desc": "PKG-Case 10ct-Pouch 3oz-HER-Choc Bar-Zero Sugar-8g"}, {"id": "40971", "desc": "PKG-Case 8ct-Pouch 5.1oz-HER-Choc Bar-Milk-Almond-Zero Sugar-8.5g #701-93848-001"}, {"id": "40972", "desc": "PKG-Supersack 900lb-WIP-Hershey #701-86824-000"}, {"id": "40973", "desc": "PKG-Flow Wrap-HER-Choc Bar-Dark-Zero Sugar-8g - #701-27026-005"}, {"id": "40974", "desc": "PKG-Pouch 2.1oz-HER-Choc Bar-Dark-Zero Sugar-8g"}, {"id": "40975", "desc": "PKG-Pouch 3oz-HER-Choc Bar-Dark-Zero Sugar-8g - #701-27021-018"}, {"id": "40976", "desc": "PKG-Pouch 5.1oz-HER-Choc Bar-Dark-Zero Sugar-8g - #701-93838-006"}, {"id": "40977", "desc": "PKG-Case 12ct-Pouch 2.1oz-HER-Choc Bar-Zero Sugar-8g"}, {"id": "40978", "desc": "PKG-Flow Wrap-HER-Choc Bar-Milk-Caramel-Zero Sugar-8.5g - #701-24977-016"}, {"id": "40979", "desc": "PKG-Pouch 3oz-HER-Choc Bar-Milk-Caramel-Zero Sugar-8.5g - #701-24977-014"}, {"id": "40980", "desc": "PKG-Pouch 5.1oz-HER-Choc Bar-Milk-Caramel-Zero Sugar-8.5g - #701-94466-002"}, {"id": "40981", "desc": "PKG-Bulk Box 15lb-Hersheys"}, {"id": "40982", "desc": "PKG-Flow Wrap-HER-Choc Bar-Milk-Almond-Zero Sugar-8.5g - #701-27013-004"}, {"id": "40983", "desc": "PKG-Pouch 3oz-HER-Choc Bar-Milk-Almond-Zero Sugar-8.5g - #701-27013-003"}, {"id": "40984", "desc": "PKG-Pouch 5.1oz-HER-Choc Bar-Milk-Almond-Zero Sugar-8.5g - #701-93848-003"}, {"id": "40985", "desc": "PKG-Pouch 15.5oz-HER-Choc Bar-Variety-Zero Sugar-8g-8.5g - #701-22925-001"}, {"id": "40986", "desc": "PKG-Case 5ct-Pouch 15.5oz-HER-Choc Bar-Zero Sugar #701-22925-000"}, {"id": "40987", "desc": "PKG-Label-MMK-Cluster-Pecan-Milk-PET 24.8oz-Mexico"}, {"id": "40988-V1", "desc": "LABEL-PET 32oz-KKL-Cluster-Macadamia-Milk-Mexico"}, {"id": "40988-V2", "desc": "LABEL-PET 32oz-KKL-Cluster-Macadamia-Milk-Mexico-V2"}, {"id": "40989", "desc": "PKG-Food Safe Liner - 20 x 18 x 26 \u00e2\u20ac\u201c 1.5mil"}, {"id": "40990", "desc": "PKG-Bulk Shipping Box - 16 x 16 x 8 - Unprinted Kraft"}, {"id": "40991", "desc": "PKG-Bento Box Tray"}, {"id": "40992", "desc": "PKG-Bento Box Tray Insert - 3 Section"}, {"id": "40993", "desc": "PKG-Shipping Box for Bento Box"}, {"id": "40994", "desc": "PKG - Slip Sheet 32 x 48 Kraft Pad 32ECT CFLUTE"}, {"id": "40995", "desc": "PKG-Pouch 16.93oz-MMK-Cluster-Neapolitan-Milk"}, {"id": "40996", "desc": "Tray-MMK-Cluster-Neapolitan-Milk-Pouch 16.93oz"}, {"id": "40997", "desc": "PKG-Bento Box Tray Insert - 2 Section"}, {"id": "40998", "desc": "PKG-Pouch 22.8oz-CPK-Choc Car-Vanilla-Celtic-SS-Dark-12g"}, {"id": "40999", "desc": "PKG-Flow Wrap-CPK-Choc Car-Vanilla-Celtic-SS-Dark (12g)"}, {"id": "41000", "desc": "Tray-CPK-Choc Car-Vanilla-Celtic-SS-Dark-Pouch 22.8oz"}, {"id": "41001", "desc": "PKG-Pouch 20.3oz-CPK-Cluster-Pretzel-Milk"}, {"id": "41002", "desc": "Tray-CPK-Cluster-Pretzel-Milk-Pouch 20.3oz"}, {"id": "41003", "desc": "PKG-Pouch 23.46oz-MMK-Cluster-Caramel Cookie-Milk"}, {"id": "41004", "desc": "Tray-MMK-Cluster-Caramel Cookie-Milk-Pouch 23.46oz"}, {"id": "41005", "desc": "PKG-BET-Twist Wrap Case"}, {"id": "41006", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-Almond-60g"}, {"id": "41006-V5", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-Almond-60g #1101-6002-0105"}, {"id": "41007-V2", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-Milk-Almond-60g #1101-6002-0202"}, {"id": "41008", "desc": "PKG-Case 12ct-Pouch 3oz-HER-Choc Bar-Milk-Zero Sugar-8g #701-27001-017"}, {"id": "41009", "desc": "PKG-Case 12ct-Pouch 3oz-HER-Choc Bar-Dark-Zero Sugar-8g #701-27021-014"}, {"id": "41010", "desc": "PKG-Case 12ct-Pouch 3oz-HER-Choc Bar-Milk-Caramel-Zero Sugar-8.5g #701-24977-010"}, {"id": "41011", "desc": "PKG-Case 8ct-Pouch 5.1oz-HER-Choc Bar-Dark-Zero Sugar-8g #701-93838-003"}, {"id": "41012", "desc": "PKG-Case 8ct-Pouch 5.1oz-HER-Choc Bar-Milk-Zero Sugar-8g #701-93837-003"}, {"id": "41013", "desc": "PKG-Case 8ct-Pouch 5.1oz-HER-Choc Bar-Milk-Caramel-Zero Sugar-8.5g #701-94466-001"}, {"id": "41014", "desc": "PKG-Bulk Box 15lb-HER-Choc Bar-Milk-Caramel-Zero Sugar-8.5g #701-85839-000"}, {"id": "41015", "desc": "PECO Pallet - Hershey's #701-01663-000"}, {"id": "41016", "desc": "Stretch Film-Ultra Performance Machine - UPMSF 20\"x7500' 61ga"}, {"id": "41017", "desc": "PECO Pallet"}, {"id": "41018", "desc": "LABEL-CPK-Choc Car-Vanilla-SS-Milk-PET 25oz-12g"}, {"id": "41019", "desc": "Tray-CPK-Choc Car-Vanilla-SS-Milk-PET 25oz-12g"}, {"id": "41020", "desc": "PECO-HT Pallet - Mexico"}, {"id": "41021", "desc": "PKG-Pouch 20oz-HER-Cluster-Almond-Milk #701-07855-001"}, {"id": "41022", "desc": "PKG-Case 14ct-HER-Cluster-Almond-Milk-Pouch 20oz #701-07855-000"}, {"id": "41023", "desc": "PKG-Flow Wrap-HER-Choc Car-Vanilla-SS-Milk #701-46139-000"}, {"id": "41024", "desc": "PKG-Pouch 6.4oz-HER-Choc Car-Vanilla-SS-Milk #701-46139-001"}, {"id": "41025", "desc": "PKG-Case 12ct-HER-Choc Car-Vanilla-SS-Milk-Pouch 6.4oz-Walmart #701-46139-003"}, {"id": "41026", "desc": "PKG-Flow Wrap-HER-Choc Car-Vanilla-SS-Dark"}, {"id": "41027", "desc": "PKG-Pouch 6.2oz-HER-Choc Car-Vanilla-SS-Dark"}, {"id": "41028", "desc": "PKG-Case 12ct-HER-Choc Car-Vanilla-SS-Dark-Pouch 6.2oz"}, {"id": "41029", "desc": "PKG-Pouch 14.4oz-JJO-Choc Bar-Dark-Hemp Fruit & Nut-12.4g"}, {"id": "41030-V1", "desc": "PKG-Tray 20ct-JJO-Choc Bar-Dark-Hemp Fruit & Nut"}, {"id": "41030-V2", "desc": "PKG-Tray 20ct-JJO-Choc Bar-Dark-Hemp Fruit & Nut-Pouch 14.4oz"}, {"id": "41031", "desc": "PKG-Tray 8ct-MMK-Cluster-Pecan-Milk-PET 24.8oz-Mexico"}, {"id": "41032", "desc": "PKG-Pouch 19.2oz-MMK-Enrobed-Pretzel Thins-Dark"}, {"id": "41033", "desc": "PKG-Tray 16ct-MMK-Enrobed-Pretzel Thins-Dark-Pouch 19.2oz"}, {"id": "41034", "desc": "PKG-Pouch 20oz-TAR-Wrap Car-Sea Salt"}, {"id": "41035", "desc": "PKG-Pouch 20oz-TAR-Wrap Car-Vanilla"}, {"id": "41036", "desc": "PKG-Pouch 20oz-TAR-Wrap Car-Sugar Free"}, {"id": "41037", "desc": "PKG-Case 6ct-Taras"}, {"id": "41038", "desc": "PKG-Pouch 16oz-LOV-Choc Car-Vanilla-SS-Milk"}, {"id": "41039", "desc": "PKG-Case 12CT Pouch-Love's"}, {"id": "41040", "desc": "PKG-Pouch 16oz-LOV-Choc Car-Vanilla-SS-Dark"}, {"id": "41041", "desc": "PKG-Pouch 16oz-LOV-Cluster-Pecan-SS-Milk"}, {"id": "41042-V1", "desc": "LABEL-PET 25.1oz-LOV-Choc Var-Vanilla SS-Milk"}, {"id": "41042-V2", "desc": "LABEL-PET 25.1oz-LOV-Choc Var-Vanilla SS-Milk"}, {"id": "41043", "desc": "Corner Board \u2013 3 x 3 x 38 .140 WHT \u2013 61-101240"}, {"id": "41044", "desc": "PKG-Case 3CT PET-Love's"}, {"id": "41045", "desc": "PKG-Flow Wrap-MMK-Truf Bite-Plain-Milk"}, {"id": "41046", "desc": "Shipping Box - 13 x 9 x 6\u201d"}, {"id": "41047", "desc": "PKG-Bulk Box Almond 15lb-Hersheys"}, {"id": "41048", "desc": "Slip Sheets-Non-Test 47.875 x 35.875"}, {"id": "41049", "desc": "LABEL-PET 25oz-PRS-Choc Car-Vanilla-SS-Dark-Holiday"}, {"id": "41050", "desc": "TRAY-15ct PET 25oz-PRS"}, {"id": "41051", "desc": "LABEL-PET 25oz-PRS-Choc Car-Vanilla-SS-Milk-Holiday"}, {"id": "41052", "desc": "PKG-Flow Wrap-MMK-Truf Bite-Plain-SS-Dark"}, {"id": "41053", "desc": "PKG-Flow Wrap-MMK-Truf Bite-Toffee-SS-Milk"}, {"id": "41054-V1", "desc": "PKG-Flow Wrap-MMK-Truf Bite-Caramel-Milk-12g"}, {"id": "41054-V2", "desc": "PKG-Flow Wrap-MMK-Truf Bite-Caramel-Milk-12g V2"}, {"id": "41055-V1", "desc": "PKG-Pouch 16.25oz-MMK-Truf Bite-Assorted-Original"}, {"id": "41055-V2", "desc": "PKG-Pouch 16.25oz-MMK-Truf Bite-Assorted-RA Update"}, {"id": "41055-V3", "desc": "PKG-Pouch 16.25oz-MMK-Truf Bite-Assorted-Wrap Update"}, {"id": "41056-V1", "desc": "Tray-MMK-Truf Bite-Assorted-16ct"}, {"id": "41056-V2", "desc": "Tray-MMK-Truf Bite-Assorted-16ct V2"}, {"id": "41057", "desc": "PKG-Pouch 10oz-JJO-Choc Bar-Dark-Hemp Fruit & Nut-12.4g-BJ's"}, {"id": "41058-V1", "desc": "LABEL-PET 16oz-PRS-Cluster-Pecan-Dark"}, {"id": "41058-V2", "desc": "LABEL-PET 16oz-PRS-Cluster-Pecan-Dark"}, {"id": "41059", "desc": "Case-PRS-Indulgent PET 6ct"}, {"id": "41060", "desc": "PET Jar-Compax-Round 6\"x3.7\""}, {"id": "41061", "desc": "PET Jar Lid-Compax-Round 6\"x3.7\""}, {"id": "41062-V1", "desc": "LABEL-PET 11.5oz-PRS-Cluster-Pretzel-SS-Milk"}, {"id": "41062-V2", "desc": "LABEL-PET 11.5oz-PRS-Cluster-Pretzel-SS-Milk"}, {"id": "41063-V1", "desc": "LABEL-PET 16oz-PRS-Choc Car-Vanilla-SS-Dark (12g)"}, {"id": "41063-V2", "desc": "LABEL-PET 16oz-PRS-Choc Car-Vanilla-SS-Dark (12g)"}, {"id": "41064", "desc": "PKG-Flow Wrap-HER-Truf Bite-Toffee-SS-Milk"}, {"id": "41065", "desc": "LABEL-HER-Bulk Box"}, {"id": "41066-V1", "desc": "PKG-Pouch 9.2oz-HER-Truf Bite-Toffee-SS-Milk"}, {"id": "41066-V2", "desc": "PKG-Pouch 9.2oz-HER-Truf Bite-Toffee-SS-Milk"}, {"id": "41067-V1", "desc": "PKG-Pouch 16oz-CPK-Cluster-Pistachio-Dark-V1"}, {"id": "41067-V2", "desc": "PKG-Pouch 16oz-CPK-Cluster-Pistachio-Dark-V2"}, {"id": "41068", "desc": "Tray-CPK-Cluster-Pistachio-20ct"}, {"id": "41069-V1", "desc": "LABEL-PET 10.1oz-PRS-Cluster-Brookie-SS-Dark"}, {"id": "41069-V2", "desc": "LABEL-PET 10.1oz-PRS-Cluster-Brookie-SS-Dark"}, {"id": "41070", "desc": "PKG-Flow Wrap-FEA-Choc Bar-One Shot Caramel-Milk-60g #1101-6028-0101"}, {"id": "41071", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-One Shot Caramel-Milk-60g #1101-6028-0201"}, {"id": "41072", "desc": "PKG-Master Case-FEA-Choc Bar-One Shot Caramel-Milk-60g"}, {"id": "41073", "desc": "PKG-Flow Wrap-UTT-Truf Bite-Raspberry-Milk"}, {"id": "41074", "desc": "PKG-Pouch 5.7oz-CPK-Choc Car-Vanilla-SS-Milk-Lowes"}, {"id": "41075", "desc": "PKG-Pouch 5.7oz-CPK-Choc Car-Vanilla-SS-Dark-Lowes"}, {"id": "41076", "desc": "PKG-Pouch 17.8oz-CPK-Choc Car-Vanilla-SS-Dark-Lowes"}, {"id": "41077", "desc": "PKG-Flow Wrap-CPK-Choc Car-Vanilla-SS-Lowes 2025"}, {"id": "41078", "desc": "PKG-Headercard-CPK-Choc Car-Vanilla-SS-Pouch 17.8oz-Lowes"}, {"id": "41079", "desc": "TRAY-CPK-20 count PET-Lowes"}, {"id": "41080", "desc": "LABEL-25oz PET-CPK-Choc Car-Vanilla-SS-Milk-Lowes"}, {"id": "41081", "desc": "PKG-Headercard-CPK-Choc Car-Vanilla-SS-Milk-PET 25oz-Lowes"}, {"id": "41082", "desc": "PKG-Shroud-CPK-Choc Caramel-Lowes"}, {"id": "41083", "desc": "PKG-Overbox Tray-Hershey Caramels-Hershey #701-46139-002"}, {"id": "41084", "desc": "PKG-Corner Board-Hershey-704-99034-001"}, {"id": "41085", "desc": "PKG-Corner Board Top-Hershey-701-29089-040"}, {"id": "41086", "desc": "PKG-Top Cap-48.25 x 40.5 x 3 #701-98996-004"}, {"id": "41087", "desc": "PKG-Layer Pad-Hershey-701-21542-032"}, {"id": "41088", "desc": "PKG-Corner Footer Post"}, {"id": "41089", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-Comic-Brawlstars-60g"}, {"id": "41090", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-Comic-Beast Labs-60g"}, {"id": "41091", "desc": "PKG-Pouch 16oz-CPK-Cluster-Pecan-Milk-Lowes"}, {"id": "41092", "desc": "PKG-Pouch 16oz-CPK-Cluster-Cookies & Cream-Milk-Lowes"}, {"id": "41093", "desc": "PKG-Flow Wrap-HER-Choc Bar-Dark-Peppermint York-Zero Sugar-12g #701-04911-023"}, {"id": "41094", "desc": "PKG-Pouch 3oz-HER-Choc Bar-Dark-Peppermint York-Zero Sugar-12g #701-04911-026"}, {"id": "41095", "desc": "PKG-Case 12ct-HER-Choc Bar-Dark-Peppermint York-Zero Sugar-Pouch 3oz #701-04911-021"}, {"id": "41096", "desc": "PKG-Pouch 5.1oz-HER-Choc Bar-Dark-Peppermint York-Zero Sugar-12g #701-93840-003"}, {"id": "41097", "desc": "PKG-Case 8ct-HER-Choc Bar-Dark-Peppermint York-Zero Sugar-Pouch 5.1oz #701-93840-001"}, {"id": "41098", "desc": "PKG-Flow Wrap-CPK-Choc Car-Vanilla-SS-Milk-23g"}, {"id": "41099", "desc": "PKG-Overbox-PRS-Holiday Jars"}, {"id": "41100", "desc": "PKG-Pouch 6.3oz-TJ-Cluster-Coconut Cashew-Milk"}, {"id": "41101-V2", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-12g #1101-1201-0902"}, {"id": "41101-V3", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-12g"}, {"id": "41102-V2", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-Crunch-12g #1101-1203-0902"}, {"id": "41103", "desc": "PKG-Overbox12ct-HER-Choc Car-Vanilla-SS-Milk-Pouch 6.4oz-Non Walmart #701-46465-001"}, {"id": "41104", "desc": "PKG-Tray-Hershey Caramels-Non Walmart #701-46465-000"}, {"id": "41105-V1", "desc": "PKG-Flow Wrap-Vented-FEA-Choc Bar-Milk-12g #1101-1201-0101"}, {"id": "41105-V2", "desc": "PKG-Flow Wrap-Vented-FEA-Choc Bar-Milk-12g-1101-1201-0102"}, {"id": "41106", "desc": "PKG-Headercard-CPK-Cluster-Pecan-Milk-Pouch 16oz"}, {"id": "41107", "desc": "PKG-Shroud-CPK-Clusters-Lowes"}, {"id": "41108", "desc": "PKG-Flow Wrap-FEA-One Shot Heart-Choc Bar-Milk-35g #1308-3528-0101"}, {"id": "41109", "desc": "PKG-Display Box 20ct-FEA-One Shot Heart-Choc Bar-Milk-35g #1308-3528-0201"}, {"id": "41110", "desc": "PKG-Master Case-FEA-One Shot Heart-Choc Bar-35g #308-3528-0601"}, {"id": "41111-V2", "desc": "PKG-Display Box 20ct-FEA-One Shot Heart-Choc Bar-Milk-35g-Walmart #1308-3528-0202"}, {"id": "41112", "desc": "PKG-Pouch 16oz-CPK-Cluster-Dubai Chocolate"}, {"id": "41113", "desc": "Tray-CPK-Cluster-Dubai Chocolate"}, {"id": "41114", "desc": "PKG-Flow Wrap-CCO-Truf Bite-Caramel-Milk-Single Piece-12g-PLMA-Holiday"}, {"id": "41116", "desc": "PKG-Master Case-FEA-One Shot Heart-Choc Bar-35g-Walmart-1308-3528-0602"}, {"id": "41117", "desc": "PKG-Flow Wrap-Vented-FEA-Choc Bar-Milk-Crunch-12g #1101-1203-0101"}, {"id": "41118", "desc": "PKG-FEA-Food Safe Liner"}, {"id": "41119", "desc": "Walk Global Pallets"}, {"id": "41120", "desc": "PKG-Flow Wrap-FEA-Choc Bar-One Shot Caramel-Milk-60g-AUS #3101-6028-0101"}, {"id": "41121", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-One Shot Caramel-Milk-60g-AUS #3101-6028-0201"}, {"id": "41122", "desc": "PKG-Master Case-FEA-Choc Bar-60g-AUS-invalid"}, {"id": "41123", "desc": "WIP Box - Reusable - 12 x 8 x 8"}, {"id": "41124", "desc": "PKG-Layflat Caddie 24ct-FEA-Choc Bar-One Shot Caramel-Milk-60g #1101-6028-0701"}, {"id": "41125", "desc": "PKG-Bulk Case ZS York 20lb-Hersheys #701-85989-000"}, {"id": "41126", "desc": "PKG-Pouch 16oz-CPK-Cluster-Pistachio-Dark-Canada"}, {"id": "41127", "desc": "PKG-Case 8ct-HER-ZS-CookiesNCream-Pouch 5.1oz # 701-14245-002"}, {"id": "41128", "desc": "PKG-Pouch 5.1oz-HER-ZS-CookiesNCream-8g #701-14245-001"}, {"id": "41129", "desc": "PKG-Flow Wrap-HER-ZS-CookiesNCream-8g #701-14245-000"}, {"id": "41130", "desc": "Tray-CPK-Cluster-Pistachio-Canada"}, {"id": "41131", "desc": "HER Flow Wrap King Size - Salted Caramel # 701-46836-000"}, {"id": "41132", "desc": "PKG-Caddie 18ct-HER-KS-Salted Caramel #701-46836-001"}, {"id": "41133", "desc": "PKG-Box 8ct-HER-KS-Salted Caramel #701-46836-002"}, {"id": "41134", "desc": "PKG-HER Flow Wrap King Size - Affogato #701-46834-000"}, {"id": "41135", "desc": "PKG-Caddie 18ct-HER-KS-Affogato #701-46834-002"}, {"id": "41136", "desc": "PKG-Box 8ct-HER-KS-Affogato #701-46834-001"}, {"id": "41137", "desc": "PKG-Flow Wrap-HER-Choc Bar-Milk-Caramel-Affogato-13.3g #701-46839-001"}, {"id": "41138", "desc": "PKG-HER Affogato Pouch - 8.4 oz #701-46839-000"}, {"id": "41139", "desc": "PKG-Case 5ct-HER-Choc Bar-Milk-Caramel-Affogato-Pouch 8.4oz #701-46839-002"}, {"id": "41140", "desc": "PKG-Case 8ct-HER-Choc Bar-Milk-Caramel-Affogato-Pouch 8.4oz # 701-46842-000"}, {"id": "41141", "desc": "PKG-Flow Wrap-HER-Choc Bar-Milk-Salted Caramel-13.3g #701-46840-000"}, {"id": "41142", "desc": "PKG-Case 5ct-HER-Choc Bar-Milk-Salted Caramel-Pouch 8.4oz #701-46840-002"}, {"id": "41143", "desc": "PKG-Case 8ct-HER-Choc Bar-Milk-Salted Caramel-Pouch 8.4oz #701-46841-000"}, {"id": "41144", "desc": "PKG-HER Sltd Caramel Pouch - 8.4 oz #701-46840-001"}, {"id": "41145", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-One Shot Caramel-Milk-60g-EU #2101-6028-0201"}, {"id": "41146", "desc": "PKG-Flow Wrap-FEA-Choc Bar-One Shot Caramel-Milk-60g-EU #2101-6028-0101"}, {"id": "41147", "desc": "PKG-Pouch 5oz-TAT-Cookie Bark-Milk"}, {"id": "41148", "desc": "PKG-Case 6ct-TAT-Cookie Bark-Milk-Pouch 5oz"}, {"id": "41149", "desc": "PKG-Pouch 14oz-TAT-Cookie Bark-Milk"}, {"id": "41150", "desc": "PKG-Tray-TAT-Cookie Bark-Milk-Pouch 14oz"}, {"id": "41151", "desc": "PKG-Pouch 5oz-TAT-Cookie Bark-SS-Dark"}, {"id": "41152", "desc": "PKG-Case 6ct-TAT-Cookie Bark-Pouch 5oz"}, {"id": "41153", "desc": "PKG-Pouch 14oz-TAT-Cookie Bark-SS-Dark"}, {"id": "41154", "desc": "PKG-Tray-TAT-Cookie Bark-SS-Dark-Pouch 14oz"}, {"id": "41155", "desc": "PKG-Pouch 6.7oz-HER-Cluster-Almond-Milk"}, {"id": "41156", "desc": "PKG-Tray 12ct-HER-Cluster-Almond-Milk-Pouch 6.7oz"}, {"id": "41157", "desc": "PKG-Case 12ct-HER-Cluster-Almond-Milk-Pouch 6.7oz"}, {"id": "41158", "desc": "PKG-Flow Wrap-HER-Choc Car-SS-Milk-23g"}, {"id": "41159", "desc": "PKG-Pouch 6.4oz-HER-Choc Car-SS-Milk"}, {"id": "41160", "desc": "PKG-Tray 12ct-HER-Choc Car-SS-Milk-Pouch 6.4oz"}, {"id": "41161", "desc": "PKG-Flow Wrap-FEA-Choc Bar-One Shot Caramel-Milk-60g-EU # 2101-6028-0101"}, {"id": "41162", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-One Shot Caramel-Milk-60g-EU"}, {"id": "41163-V2", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-Crunch-35g AUS #3101-3503-0102"}, {"id": "41164", "desc": "PKG-Case-HER-Choc Car-SS-Milk-Pouch 6.4oz"}, {"id": "41165-V2", "desc": "PKG-Display Box 24ct-FEA-Choc Bar-Milk-Crunch-35g AUS #3101-3503-0202"}, {"id": "41166-V2", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-35g AUS #3101-3501-0102"}, {"id": "41167-V2", "desc": "PKG-Display Box 24ct-FEA-Choc Bar-Milk-35g AUS #3101-3501-0202"}, {"id": "41168", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-Crunch-35g MEX #7101-3503-0101"}, {"id": "41169", "desc": "PKG-Display Box 24ct-FEA-Choc Bar-Milk-Crunch-35g MEX 7101-3503-0201"}, {"id": "41170", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-35g MEX #7101-3501-0101"}, {"id": "41171", "desc": "PKG-Display Box 24ct-FEA-Choc Bar-Milk-35g MEX #7101-3501-0201"}, {"id": "41172-V2", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-Crunch-60g AUS #3101-6003-0102"}, {"id": "41173-V2", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-Milk-Crunch-60g AUS #3101-6003-0202"}, {"id": "41174", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-Crunch-60g MEX #7101-6003-0101"}, {"id": "41175", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-Milk-Crunch-60g MEX #7101-6003-0201"}, {"id": "41176-V2", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-60g AUS #3101-6001-0102"}, {"id": "41177-V2", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-Milk-60g AUS #3101-6001-0202"}, {"id": "41178", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-60g MEX #7101-6001-0101"}, {"id": "41179", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-Milk-60g MEX #7101-6001-0201"}, {"id": "41180", "desc": "PKG-HER-ZS York Sticker-Nutritional Label"}, {"id": "41181", "desc": "PKG-Pouch 7.25oz-BET-Choc Car-Vanilla-SS-Milk"}, {"id": "41182", "desc": "PKG-Case 6ct-BET-Choc Car-Vanilla-SS-Milk"}, {"id": "41183", "desc": "PKG-Pouch 7.25oz-BET-Choc Car-Vanilla-SS-Dark"}, {"id": "41184", "desc": "PKG-Case 6ct-BET-Choc Car-Vanilla-SS-Dark"}, {"id": "41185-V4", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-Crunch-60g CAN #4101-6003-0104"}, {"id": "41186-V2", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-Milk-Crunch-60g CAN #4101-6003-0202"}, {"id": "41186-V3", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-Milk-Crunch-60g CAN #4101-6003-0202"}, {"id": "41187", "desc": "PKG-Master Case-FEA-Choc Bar-Milk-60g CAN #1101-40.6018-0601"}, {"id": "41189-V4", "desc": "PKG-Flow Wrap-FEA-Choc Bar-Milk-60g CAN #4101-6001-0104"}, {"id": "41190-V2", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-Milk-60g CAN #4101-6001-0202"}, {"id": "41190-V3", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-Milk-60g CAN #4101-6001-0202"}, {"id": "41191-V4", "desc": "PKG-Flow Wrap-FEA-Choc Bar-White-CNC-60g #1101-6019-0104"}, {"id": "41192-V2", "desc": "PKG-Display Box 24ct-FEA-Choc Bar-White-CNC-60g #1101-6019-0702"}, {"id": "41193-V2", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-White-CNC-60g #1101-6019-0202"}, {"id": "41193-V3", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-White-CNC-60g #1101-6019-0203"}, {"id": "41194", "desc": "PKG-Flow Wrap-MMK-Truf Bite-Peach-Milk"}, {"id": "41195", "desc": "PKG-Flow Wrap-MMK-Truf Bite-Coconut-Dark"}, {"id": "41196", "desc": "PKG-Flow Wrap-MMK-Truf Bite-Strawberry-Milk"}, {"id": "41197", "desc": "PKG-Flow Wrap-HER-Choc Car-SS-Dark"}, {"id": "41198", "desc": "LABEL-HER-Choc Car-SS-Dark-Wrapped-Bulk 150 Pieces"}, {"id": "41199", "desc": "PKG-Pouch 12oz-HER-Choc Car-SS-Dark"}, {"id": "41200", "desc": "PKG-Pouch 16.43oz-MMK-Seasonal Truf Bite-Assorted"}, {"id": "41201", "desc": "Tray-MMK-Seasonal Truf Bite-Assorted-16ct"}, {"id": "41202", "desc": "PKG-Flow Wrap-FEA-Choc Bar-White-CNC-60g-EU #2101-6019-0101"}, {"id": "41203", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-White-CNC-60g-EU #2101-6019-0201"}, {"id": "41204", "desc": "PKG-Supersack - Reusable 900lb-WIP"}, {"id": "41205", "desc": "FEA - Sticker Yellow - Australia"}, {"id": "41206", "desc": "PKG-Pouch 5.7oz-NICE-Choc Car-Vanilla-SS-Dark"}, {"id": "41207", "desc": "PKG-Pouch 5.7oz-NICE-Choc Car-Vanilla-SS-Milk"}, {"id": "41208", "desc": "PKG-Pouch 6.7oz-FEA-Choc Bar-Milk-12g #1106-16.1201-0101"}, {"id": "41209", "desc": "PKG-Case 6ct-FEA-Choc Bar-Milk-12g-Wrapped-Pouch 6.7oz #1106-16.1201-0601"}, {"id": "41210", "desc": "PKG-Flow Wrap-UNR-Choc Patty-Dark-Peppermint-10.7g-Wrapped-Single"}, {"id": "41211", "desc": "PKG-Pouch 2.64oz-UNR-Choc Patty-Dark-Peppermint"}, {"id": "41212", "desc": "PKG-Case 6ct-UNR-Choc Patty-Dark-Peppermint-Pouch 2.64oz"}, {"id": "41213", "desc": "PKG-Flow Wrap-FEA-Choc Bar-White-CNC-60g-AUS #3101-6019-0101"}, {"id": "41214", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-White-CNC-60g-AUS #3101-6019-0201"}, {"id": "41215", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-White-CNC-60g-MEX #7101-6019-0201"}, {"id": "41216", "desc": "PKG-Flow Wrap-FEA-Choc Bar-White-CNC-60g-MEX #7101-6019-0101"}, {"id": "41217", "desc": "PKG-Bulk Box 15lb-HER-ZS-CookiesNCream-8g #701-46583-000"}, {"id": "41218", "desc": "PKG-Supersack 900lb-WIP-Nut Allergen-Hershey"}, {"id": "41219", "desc": "PKG-Flow Wrap-BEQ-Choc Cup-Caramel-Milk-14g"}, {"id": "41220", "desc": "PKG-Pouch 17.1oz-BEQ-Choc Cup-Caramel-Milk"}, {"id": "41221", "desc": "PKG-Tray 15ct-BEQ-Choc Cup-Caramel-Milk-Pouch 17.1oz"}, {"id": "41222", "desc": "Pallet Cap - Bequet"}, {"id": "41223", "desc": "10 x 10 x 10 - 32 ECT C - Kraft Shipping Box"}, {"id": "41224", "desc": "PKG-Flow Wrap-FEA-Choc Bar-One Shot Caramel-Milk-60g-MEX #7101-6028-0101"}, {"id": "41225", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-One Shot Caramel-Milk-60g-MEX # 7101-6028-0201"}, {"id": "41226", "desc": "PKG-Flow Wrap-BEQ-Wrap Car-Sea Salt-12g-Wrapped"}, {"id": "41227", "desc": "PKG-Pouch 17.1oz-BEQ-Wrap Car-Sea Salt-12g-Wrapped"}, {"id": "41228", "desc": "PKG-Corner Board- Bequet TW"}, {"id": "41229", "desc": "PKG-Tray 15ct- BEQ-Wrap Car-Sea Salt-12g-Wrapped-Pouch 17.1oz"}, {"id": "41230", "desc": "Master Case-FEA-Choc Bar-35g-2ct # 1101-48.3518-0601"}, {"id": "41231", "desc": "PKG-Bulk Case ZS York 15lb-Hersheys #701-80534-000"}, {"id": "41232", "desc": "PKG-Pouch 12oz-TAR-HER-Wrap Car-Vanilla-THX"}, {"id": "41233", "desc": "PKG-Pouch 10oz-HER-Cluster-Pecan-SS-DRZ-Milk-THX"}, {"id": "41234", "desc": "PKG-Pouch 6 oz-ALD-Cluster-Milk-Pecan"}, {"id": "41235", "desc": "PKG-Tray 12ct-ALD-Cluster-Milk-Pecan-Pouch 6 oz"}, {"id": "41236", "desc": "PKG-UCard-ALD-Cluster-Milk-Pecan"}, {"id": "41237", "desc": "PKG-Bulk Box 15lb-Reusable"}, {"id": "41238", "desc": "PKG-Bulk Box 30lbs-FEA-Choc Bar-12g"}, {"id": "41239", "desc": "PKG-Flow Wrap-HER-Truf Bite-Milk-SS-Toffee-14.5g"}, {"id": "41240", "desc": "PKG-Pouch 6.13 oz-HER-Truf Bite-Milk-SS-Toffee"}, {"id": "41241", "desc": "PKG-Display Case 12ct-HER-Truf Bite-Milk-SS-Toffee-Wrapped-Pouch 6.13 oz"}, {"id": "41242", "desc": "PKG-Shipping Box-HER-Truf Bite-Milk-SS-Toffee-Wrapped-Pouch 6.13 oz"}, {"id": "41243", "desc": "PKG-Shipping Case 12ct-HER-Choc Car-SS-Milk-Pouch 6.4oz-NonWalmart"}, {"id": "41244", "desc": "PKG-Pouch 15.75oz-MEL-Cluster-Dark-Pistachio"}, {"id": "41245", "desc": "PKG-Case 16ct-MEL-Cluster-Dark-Pistachio-Pouch 15.75oz"}, {"id": "41246", "desc": "PKG-Pouch 9oz-UTT-Truf Bite-Plain-SS-Dark-Wrapped"}, {"id": "41247", "desc": "PKG-Case 6ct-UTT-Truf Bite-Plain-SS-Dark-Wrapped-Pouch 9oz"}, {"id": "41248", "desc": "PKG-Pouch 9oz-UTT-Truf Bite-Mint-Milk-Wrapped"}, {"id": "41249", "desc": "PKG-Case 6ct-UTT-Truf Bite-Mint-Milk-Wrapped-Pouch 9oz"}, {"id": "41250", "desc": "Corner Board - 2\" x 2\" x 42\" -.120 - White"}, {"id": "41251", "desc": "PKG-Flow Wrap-FEA-Choc Bar-White-CNC-60g-CAN #4101-6019-0102"}, {"id": "41252", "desc": "PKG-Display Box 10ct-FEA-Choc Bar-White-CNC-60g-CAN #4101-6019-0202"}, {"id": "41253", "desc": "PKG-Master Case 4ct-FEA-Choc Bar-White-CNC-60g-Wrapped-Display Box 10ct-CAN # 4101-6019-0601"}, {"id": "41254", "desc": "PKG-Case 12ct-HER-Cluster-Almond-Milk-Pouch 6.7oz-NonWalmart"}, {"id": "41255", "desc": "PKG-Flow Wrap-CPK-Choc Car-Milk-SS-12g-Wrapped-250th"}, {"id": "41256", "desc": "PGK-Pouch 16.9oz-CPK-Choc Car-Milk-SS-12g-Wrapped-250th"}, {"id": "41257", "desc": "PKG-Tray 16ct-CPK-Choc Car-Milk-SS-12g-Wrapped-Pouch 16.9oz-250th"}, {"id": "41258", "desc": "Round Bottom Drum Liners - 37 X 40\", 8 MIL"}];
 
 // ══════════════════════ STATE ══════════════════════
 let poEntries = {adj:[],scrap:[],mov:[],cycle:[]};
@@ -1061,7 +2091,7 @@ let pchActiveTab = 'mid';
 // ══════════════════════ INIT ══════════════════════
 function init() {
   const today = new Date().toISOString().slice(0,10);
-  ['chDate','ingDate','pchDate','poDate','dlDate','dashDate'].forEach(id => { const el = document.getElementById(id); if(el) el.value = today; });
+  ['chDate','ingDate','pchDate','poDate','dlDate','dashDate','kitDate'].forEach(id => { const el = document.getElementById(id); if(el) el.value = today; });
 
   // Populate selects
   fillSelect('chItem', PROD_ITEMS, p => p.id, p => `${p.id} — ${p.desc}`);
@@ -1078,6 +2108,8 @@ function init() {
   poUpdateFields();
   renderPoTables();
   renderDash();
+  initKitchen();
+  kitStatus('Ready. Upload Excel/CSV or paste data.', 'ok');
   setInterval(() => {
     document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US',{hour12:false});
     document.getElementById('dateLabel').textContent = new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
@@ -1226,6 +2258,7 @@ function calcChoc() {
     <div class="sum-box"><div class="sum-lbl">Total Physical Inventory</div><div class="sum-val">${fmt(total)} lbs</div></div>
     <div class="sum-box ${actionClass}"><div class="sum-lbl">Qty to ${diff>0?'Increase':diff<0?'Remove':'Adjust'}</div><div class="sum-val ${diff>0?'pos':diff<0?'neg':''}">${fmt(Math.abs(diff))} lbs</div></div>
     <div class="sum-box"><div class="sum-lbl">System Qty</div><div class="sum-val mono">${fmt(sys)} lbs</div></div>`;
+  updateChocolateReport(total, sys, diff);
 }
 function getChocData() {
   const rows = [];
@@ -1236,6 +2269,39 @@ function getChocData() {
 }
 function resetChoc() { document.getElementById('chSystem').value=''; buildChocRows(); toast('Chocolate reset'); }
 function saveChoc() { saveReport({id:String(Date.now()),module:'chocolate',date:document.getElementById('chDate').value,shift:document.getElementById('chShift').value,building:'L1',data:getChocData(),savedAt:new Date().toISOString()}); document.getElementById('nb-choc').textContent = (getReports().filter(r=>r.module==='chocolate').length); }
+
+
+function updateChocolateReport(total, sys, diff){
+  const setTxt = (id, txt) => { const el = document.getElementById(id); if(el) el.textContent = txt; };
+  setTxt('chRptDate', document.getElementById('chDate')?.value || '—');
+  setTxt('chRptShift', document.getElementById('chShift')?.value || '—');
+  setTxt('chRptLine', document.getElementById('chLine')?.value || '—');
+  setTxt('chRptItem', document.getElementById('chItem')?.value || '—');
+  setTxt('chRptChoc', document.getElementById('chChocItem')?.value || '—');
+  setTxt('chRptTotal', `${fmt(total)} lbs`);
+  setTxt('chRptSystem', `${fmt(sys)} lbs`);
+  setTxt('chRptDiff', `${diff>0?'+':''}${fmt(diff)} lbs`);
+
+  const body = document.getElementById('chRptBody');
+  if(!body) return;
+  body.innerHTML = '';
+  document.querySelectorAll('#chBody tr').forEach(tr => {
+    const area = tr.cells[0]?.childNodes[0]?.textContent?.trim() || tr.cells[0]?.textContent?.trim() || '';
+    const fixed = tr.dataset.fixed || '';
+    const input = tr.querySelector('.ch-input')?.value || '';
+    const mode = tr.dataset.mode || '';
+    const qty = tr.querySelector('.ch-qty')?.textContent || '0.00';
+    const row = document.createElement('tr');
+    row.innerHTML = `<td>${area}</td><td>${fmt(fixed)}</td><td>${input || '—'}</td><td>${mode}</td><td>${qty}</td>`;
+    body.appendChild(row);
+  });
+}
+function printChocolateReport(){
+  calcChoc();
+  document.body.classList.add('print-chocolate');
+  window.print();
+  setTimeout(()=>document.body.classList.remove('print-chocolate'), 500);
+}
 
 // ══════════════════════ INGREDIENTS ══════════════════════
 function buildIngRows() {
@@ -1303,123 +2369,184 @@ function calcIngFinal(total) {
 function resetIng() { buildIngRows(); toast('Ingredients reset'); }
 function saveIng() { saveReport({id:String(Date.now()),module:'ingredients',date:document.getElementById('ingDate').value,shift:document.getElementById('ingShift').value,building:'L1',savedAt:new Date().toISOString()}); }
 
+
+
+
+
+
+
+
+
+
 // ══════════════════════ POUCHES ══════════════════════
 function pchUpdateDesc() {
-  const item = POUCH_ITEMS.find(p => p.id === document.getElementById('pchItem').value);
+  const item = POUCH_ITEMS.find(p => String(p.id) === String(document.getElementById('pchItem').value));
   document.getElementById('pchDesc').value = item ? item.desc : '';
+  calcPchAll();
 }
-function pchTab(tab, btn) { calcPchAll(); }
-function pchNumber(n){ return Number.isFinite(n) ? Math.round(n*100)/100 : 0; }
-function pchSet(id, val){ const el=document.getElementById(id); if(el) el.value = (val===0 || val) ? String(pchNumber(val)) : ''; }
+function pchNumber(n){ n = Number(n); if(!Number.isFinite(n)) return 0; return Math.round((n + Number.EPSILON) * 100) / 100; }
+function pchFormat(n){ n = Number(n); if(!Number.isFinite(n)) n = 0; return n.toLocaleString('en-US', {maximumFractionDigits:0}); }
+function pchFormatSigned(n){ n = pchNumber(n); if(n === 0) return '0'; return (n > 0 ? '+' : '') + n.toLocaleString('en-US', {maximumFractionDigits:0}); }
+function pchSetView(id, val){ const el = document.getElementById(id); if(el) el.value = val; }
+function pchSetText(id, val){ const el = document.getElementById(id); if(el) el.textContent = val; }
+function pchSignedClass(n){ return n > 0 ? 'pouch-positive' : n < 0 ? 'pouch-negative' : ''; }
 
-function pchStatusClass(status){
-  return status === 'Acceptable' ? 'pouch-acceptable' : status === 'Attention' ? 'pouch-attention' : 'pouch-critical';
+function pchStatusFromTotal(totalAdjustment, pctAbs){
+  if(totalAdjustment > 0) return {label:'Adjusted IN', cls:'adjusted-in-bg'};
+  if(pctAbs <= .05) return {label:'Acceptable', cls:'good-bg'};
+  if(pctAbs <= .08) return {label:'Attention', cls:'att-bg'};
+  return {label:'Critical', cls:'crit-bg'};
 }
-function updatePouchOnePage(mid, end, totals){
-  const setTxt = (id, txt) => { const el = document.getElementById(id); if(el) el.textContent = txt; };
-  const setStatus = (id, status) => {
+
+function pchSectionData(section){
+  const cap = section === 'mid' ? 'Mid' : 'End';
+  const val = id => parseFloat(document.getElementById(`pch${cap}${id}`)?.value) || 0;
+  const report = section === 'mid' ? 'Mid Shift' : 'End of Shift';
+
+  const completion = val('Completion');
+  const system = val('Sistema');
+  const physical = val('Fisico');
+
+  // Production reports scrap as a positive input.
+  const scrapReported = Math.abs(val('ScrapUsed'));
+
+  // Excel display: scrap is shown negative in the report.
+  const scrapDisplay = -scrapReported;
+
+  // Excel logic:
+  // PA = Physical - (System - Scrap Reported)
+  const pa = physical - (system - scrapReported);
+
+  // Total Adjustment = Scrap + PA, signed. Equivalent to Physical - System.
+  const totalAdjustment = scrapDisplay + pa;
+
+  // Use absolute completion for the denominator because some Excel rows can carry negative completion.
+  const denominator = Math.abs(completion);
+  const adjPctSigned = denominator ? totalAdjustment / denominator : 0;
+  const adjPctAbs = denominator ? Math.abs(totalAdjustment / denominator) : 0;
+  const status = pchStatusFromTotal(totalAdjustment, adjPctAbs);
+
+  return {section, cap, report, completion, system, physical, scrapReported, scrapDisplay, pa, totalAdjustment, adjPctSigned, adjPctAbs, status};
+}
+
+function updatePouchSharedHeader(){
+  pchSetText('pchViewItem', document.getElementById('pchItem')?.value || '—');
+  pchSetText('pchViewShift', (document.getElementById('pchShift')?.value || '').replace('Shift ', '') || '—');
+  pchSetText('pchViewLine', document.getElementById('pchLine')?.value || '—');
+  pchSetText('pchViewBom', document.getElementById('pchBom')?.value || '1');
+  pchSetText('pchViewDesc', document.getElementById('pchDesc')?.value || '—');
+}
+
+function updatePouchSection(prefix, d){
+  pchSetView(`${prefix}ViewCompletion`, pchFormat(d.completion));
+  pchSetView(`${prefix}ViewSystem`, pchFormat(d.system));
+  pchSetView(`${prefix}ViewPhysical`, pchFormat(d.physical));
+  pchSetView(`${prefix}ViewScrap`, pchFormatSigned(d.scrapDisplay));
+  pchSetView(`${prefix}ViewPA`, pchFormatSigned(d.pa));
+  pchSetView(`${prefix}ViewTotalAdj`, pchFormatSigned(d.totalAdjustment));
+  pchSetView(`${prefix}ViewAdjPct`, Math.round(d.adjPctSigned * 100) + '%');
+
+  [`${prefix}ViewScrap`,`${prefix}ViewPA`,`${prefix}ViewTotalAdj`,`${prefix}ViewAdjPct`].forEach(id => {
     const el = document.getElementById(id);
     if(!el) return;
-    el.textContent = status;
-    el.className = 'pouch-status ' + pchStatusClass(status);
-  };
-  setTxt('pchMidPct', (mid.pct*100).toFixed(2)+'%');
-  setTxt('pchEndPct', (end.pct*100).toFixed(2)+'%');
-  setStatus('pchMidStatus', mid.status);
-  setStatus('pchEndStatus', end.status);
-  pchSet('pchTotalScrapIMS', totals.scrapAdj);
-  pchSet('pchTotalPA', totals.pa);
-  pchSet('pchGrandTotalIMS', totals.totalAdj);
+    el.classList.remove('pouch-positive','pouch-negative','good-bg','att-bg','crit-bg','adjusted-in-bg');
+  });
 
-  const item = document.getElementById('pchItem')?.value || '';
-  const line = document.getElementById('pchLine')?.value || '';
-  const shift = document.getElementById('pchShift')?.value || '';
-  const preview = document.getElementById('pchReportPreview');
+  const scrapEl = document.getElementById(`${prefix}ViewScrap`);
+  if(scrapEl) scrapEl.classList.add('pouch-negative');
+
+  const paEl = document.getElementById(`${prefix}ViewPA`);
+  if(paEl) paEl.classList.add(pchSignedClass(d.pa));
+
+  const totalEl = document.getElementById(`${prefix}ViewTotalAdj`);
+  const pctEl = document.getElementById(`${prefix}ViewAdjPct`);
+  [totalEl, pctEl].forEach(el => {
+    if(!el) return;
+    el.classList.add(d.status.cls);
+  });
+
+  const preview = document.getElementById(`${prefix}ReportPreview`);
   if(preview){
-    preview.innerHTML = `
-      <strong>Mid Shift:</strong> Pouches Qty in System: ${fmt(mid.system)} · Qty in Phy: ${fmt(mid.physical)} · Scrap: ${fmt(mid.scrapAdj)} · PA: ${fmt(mid.pa)} · Total Adjustment: ${fmt(mid.totalAdj)}<br>
-      <strong>End of Shift:</strong> Pouches Qty in System: ${fmt(end.system)} · Qty in Phy: ${fmt(end.physical)} · Scrap: ${fmt(end.scrapAdj)} · PA: ${fmt(end.pa)} · Total Adjustment: ${fmt(end.totalAdj)}<br>
-      <strong>Totals:</strong> Scrap IMS: ${fmt(totals.scrapAdj)} · PA: ${fmt(totals.pa)} · Grand Total IMS Adjustment: ${fmt(totals.totalAdj)} · Item ${item} · ${shift} · ${line}
-    `;
+    preview.value = `${d.report} Pouches Qty in System: ${pchFormat(d.system)} Qty in Physical: ${pchFormat(d.physical)} Scrap: ${pchFormatSigned(d.scrapDisplay)} PA: ${pchFormatSigned(d.pa)} Total Adjustment: ${pchFormatSigned(d.totalAdjustment)} Adjustment %: ${Math.round(d.adjPctSigned*100)}% Status: ${d.status.label}`;
   }
+}
+
+function updatePouchGrandTotals(mid, end){
+  const totalScrap = mid.scrapDisplay + end.scrapDisplay;
+  const totalPA = mid.pa + end.pa;
+  const grandTotalAdjustment = mid.totalAdjustment + end.totalAdjustment;
+
+  const totalCompletionForRatio = Math.abs(mid.completion) + Math.abs(end.completion);
+  const grandPctSigned = totalCompletionForRatio ? grandTotalAdjustment / totalCompletionForRatio : 0;
+  const grandPctAbs = totalCompletionForRatio ? Math.abs(grandTotalAdjustment / totalCompletionForRatio) : 0;
+  const grandStatus = pchStatusFromTotal(grandTotalAdjustment, grandPctAbs);
+
+  pchSetText('pchGrandScrapImpact', pchFormatSigned(totalScrap));
+  pchSetText('pchGrandPAImpact', pchFormatSigned(totalPA));
+  pchSetText('pchGrandTotalImpact', pchFormatSigned(grandTotalAdjustment));
+  pchSetText('pchGrandAdjPct', Math.round(grandPctSigned * 100) + '%');
+
+  ['pchGrandScrapImpact','pchGrandPAImpact','pchGrandTotalImpact','pchGrandAdjPct'].forEach(id => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.classList.remove('pouch-positive','pouch-negative','good-bg','att-bg','crit-bg','adjusted-in-bg');
+  });
+
+  const scrapEl = document.getElementById('pchGrandScrapImpact');
+  if(scrapEl) scrapEl.classList.add('pouch-negative');
+
+  const paEl = document.getElementById('pchGrandPAImpact');
+  if(paEl) paEl.classList.add(pchSignedClass(totalPA));
+
+  ['pchGrandTotalImpact','pchGrandAdjPct'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.classList.add(grandStatus.cls);
+  });
+
+  const note = document.getElementById('pchGrandStatusNote');
+  if(note){
+    note.textContent = `Grand Status: ${grandStatus.label}`;
+    note.className = 'pouch-clean-note ' + grandStatus.cls;
+  }
+}
+
+function calcPchAll(){
+  const mid = pchSectionData('mid');
+  const end = pchSectionData('end');
+  updatePouchSharedHeader();
+  updatePouchSection('pchMid', mid);
+  updatePouchSection('pchEnd', end);
+  updatePouchGrandTotals(mid, end);
+}
+
+function resetPch(){
+  ['pchMidCompletion','pchMidSistema','pchMidFisico','pchMidScrapUsed','pchEndCompletion','pchEndSistema','pchEndFisico','pchEndScrapUsed','pchMidComments','pchEndComments'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+  calcPchAll();
+  toast('Pouches reset');
+}
+function savePch(){
+  const mid = pchSectionData('mid');
+  const end = pchSectionData('end');
+  saveReport({
+    id:String(Date.now()),
+    module:'pouches',
+    date:document.getElementById('pchDate').value,
+    shift:document.getElementById('pchShift').value,
+    building:'L1',
+    item:document.getElementById('pchItem').value,
+    data:{mid,end},
+    savedAt:new Date().toISOString()
+  });
+  document.getElementById('nb-pch').textContent = getReports().filter(r=>r.module==='pouches').length;
 }
 function printPouchesOnly(){
   calcPchAll();
   document.body.classList.add('print-pouches');
   window.print();
   setTimeout(()=>document.body.classList.remove('print-pouches'), 500);
-}
-
-function pchData(section) {
-  const cap = section.charAt(0).toUpperCase()+section.slice(1);
-  const val = name => parseFloat(document.getElementById(`pch${cap}${name}`)?.value)||0;
-  const completion = val('Completion');
-  const system = val('Sistema');
-  const physical = val('Fisico');
-  const scrapUsed = Math.abs(val('ScrapUsed'));
-  const scrapAdj = scrapUsed ? -scrapUsed : 0;
-  const afterScrap = system + scrapAdj;
-  const pa = physical - afterScrap;
-  const totalAdj = scrapAdj + pa;
-  const pct = completion ? Math.abs(totalAdj) / completion : 0;
-  const status = pct <= .05 ? 'Acceptable' : pct <= .08 ? 'Attention' : 'Critical';
-  return {section, cap, completion, system, physical, scrapUsed, scrapAdj, afterScrap, pa, totalAdj, pct, status};
-}
-function renderPchSection(d){
-  pchSet(`pch${d.cap}Scrap`, d.scrapAdj);
-  pchSet(`pch${d.cap}AfterScrap`, d.afterScrap);
-  pchSet(`pch${d.cap}Adj`, d.pa);
-  pchSet(`pch${d.cap}TotalAdj`, d.totalAdj);
-  const cls = d.status === 'Acceptable' ? 'tag-green' : d.status === 'Attention' ? 'tag-amber' : 'tag-red';
-  const action = d.totalAdj < 0 ? 'Total Qty to Remove' : d.totalAdj > 0 ? 'Total Qty to Increase' : 'No Adjustment';
-  const actionBox = d.totalAdj < 0 ? 'calc-remove' : d.totalAdj > 0 ? 'calc-increase' : '';
-  const actionCls = d.totalAdj < 0 ? 'neg' : d.totalAdj > 0 ? 'pos' : '';
-  const reportType = d.section === 'mid' ? 'Mid Shift' : 'End of Shift';
-  const item = document.getElementById('pchItem')?.value || '';
-  const line = document.getElementById('pchLine')?.value || '';
-  const shift = document.getElementById('pchShift')?.value || '';
-  const el = document.getElementById(`pch${d.cap}Summary`);
-  if(el) el.innerHTML = `
-    <div class="sum-box ${actionBox}"><div class="sum-lbl">${action}</div><div class="sum-val mono ${actionCls}">${fmt(Math.abs(d.totalAdj))}</div></div>
-    <div class="sum-box"><div class="sum-lbl">Adjustment %</div><div class="sum-val mono">${(d.pct*100).toFixed(2)}%</div></div>
-    <div class="sum-box"><div class="sum-lbl">Status</div><div class="sum-val"><span class="tag ${cls}">${d.status}</span></div></div>
-    <div class="sum-box"><div class="sum-lbl">PA Needed After Scrap</div><div class="sum-val mono ${d.pa>0?'pos':d.pa<0?'neg':''}">${fmt(d.pa)}</div></div>
-    <div class="sum-box" style="grid-column:1/-1"><div class="sum-lbl">Report Line Preview</div><div class="mono" style="font-size:13px;line-height:1.5">${reportType} Pouches Qty in System: ${fmt(d.system)} · Qty in Phy: ${fmt(d.physical)} · Scrap: ${fmt(d.scrapAdj)} · PA: ${fmt(d.pa)} · Total Adjustment: ${fmt(d.totalAdj)} · Item ${item} · ${shift} · ${line}</div></div>`;
-}
-function calcPch(section) { calcPchAll(); }
-function calcPchAll() {
-  const mid = pchData('mid');
-  const end = pchData('end');
-  renderPchSection(mid); renderPchSection(end);
-  const totals = {
-    scrapAdj: mid.scrapAdj + end.scrapAdj,
-    pa: mid.pa + end.pa,
-    totalAdj: mid.totalAdj + end.totalAdj
-  };
-  updatePouchOnePage(mid, end, totals);
-  const action = totals.totalAdj < 0 ? 'Grand Total to Remove' : totals.totalAdj > 0 ? 'Grand Total to Increase' : 'No Total Adjustment';
-  const box = totals.totalAdj < 0 ? 'calc-remove' : totals.totalAdj > 0 ? 'calc-increase' : '';
-  const cls = totals.totalAdj < 0 ? 'neg' : totals.totalAdj > 0 ? 'pos' : '';
-  const sum = document.getElementById('pchTotalsSummary');
-  if(sum) sum.innerHTML = `
-    <div class="sum-box calc-remove"><div class="sum-lbl">Total Scrap IMS</div><div class="sum-val mono neg">${fmt(totals.scrapAdj)}</div></div>
-    <div class="sum-box ${totals.pa>=0?'calc-increase':'calc-remove'}"><div class="sum-lbl">Total PA</div><div class="sum-val mono ${totals.pa>=0?'pos':'neg'}">${fmt(totals.pa)}</div></div>
-    <div class="sum-box ${box}"><div class="sum-lbl">${action}</div><div class="sum-val mono ${cls}">${fmt(totals.totalAdj)}</div></div>`;
-  const tbl = document.getElementById('pchTotalsTable');
-  if(tbl) tbl.innerHTML = `<table><thead><tr><th>Section</th><th>Scrap IMS</th><th>System After Scrap</th><th>PA</th><th>Total IMS Adjustment</th><th>Status</th></tr></thead><tbody>
-    <tr><td>Mid Shift</td><td class="mono neg">${fmt(mid.scrapAdj)}</td><td class="mono">${fmt(mid.afterScrap)}</td><td class="mono ${mid.pa>=0?'pos':'neg'}">${fmt(mid.pa)}</td><td class="mono ${mid.totalAdj>=0?'pos':'neg'}">${fmt(mid.totalAdj)}</td><td>${mid.status}</td></tr>
-    <tr><td>End Shift</td><td class="mono neg">${fmt(end.scrapAdj)}</td><td class="mono">${fmt(end.afterScrap)}</td><td class="mono ${end.pa>=0?'pos':'neg'}">${fmt(end.pa)}</td><td class="mono ${end.totalAdj>=0?'pos':'neg'}">${fmt(end.totalAdj)}</td><td>${end.status}</td></tr>
-    <tr><td><strong>Total</strong></td><td class="mono neg"><strong>${fmt(totals.scrapAdj)}</strong></td><td>—</td><td class="mono ${totals.pa>=0?'pos':'neg'}"><strong>${fmt(totals.pa)}</strong></td><td class="mono ${totals.totalAdj>=0?'pos':'neg'}"><strong>${fmt(totals.totalAdj)}</strong></td><td>—</td></tr>
-  </tbody></table>`;
-}
-function resetPch() {
-  ['MidCompletion','MidSistema','MidFisico','MidScrapUsed','MidScrap','MidAfterScrap','MidAdj','MidTotalAdj','EndCompletion','EndSistema','EndFisico','EndScrapUsed','EndScrap','EndAfterScrap','EndAdj','EndTotalAdj'].forEach(id => { const el = document.getElementById('pch'+id); if(el) el.value=''; });
-  ['pchMidComments','pchEndComments'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
-  calcPchAll(); toast('Pouches reset');
-}
-function savePch() {
-  saveReport({id:String(Date.now()),module:'pouches',date:document.getElementById('pchDate').value,shift:document.getElementById('pchShift').value,building:'L1',item:document.getElementById('pchItem').value,data:{mid:pchData('mid'),end:pchData('end')},savedAt:new Date().toISOString()});
-  document.getElementById('nb-pch').textContent = getReports().filter(r=>r.module==='pouches').length;
 }
 
 // ══════════════════════ PASS OFF ══════════════════════
@@ -1517,7 +2644,7 @@ function saveReport(report) { const arr=getReports(); arr.push(report); setRepor
 // ══════════════════════ DASHBOARD ══════════════════════
 function renderDash() {
   if(!tlUnlocked) {
-    document.getElementById('dashList').innerHTML = '<div style="text-align:center;padding:2rem;color:var(--ink3)">Dashboard locked. Enter Team Lead PIN 7890.</div>';
+    document.getElementById('dashList').innerHTML = '<div style="text-align:center;padding:2rem;color:var(--ink3)">Dashboard locked. Enter Team Lead PIN ****.</div>';
     return;
   }
   let arr = getReports();
@@ -1528,7 +2655,7 @@ function renderDash() {
   if(bld) arr = arr.filter(r=>(r.building||'')===bld);
   if(sft) arr = arr.filter(r=>r.shift===sft||r.shift==='All');
   document.getElementById('ds-reports').textContent = arr.length;
-  document.getElementById('ds-adj').textContent = arr.filter(r=>['daily','chocolate','ingredients','pouches'].includes(r.module)).length;
+  document.getElementById('ds-adj').textContent = arr.filter(r=>['daily','chocolate','ingredients','pouches','kitchen'].includes(r.module)).length;
   document.getElementById('ds-pch').textContent = arr.filter(r=>r.module==='pouches').length;
   document.getElementById('ds-scrap').textContent = arr.reduce((a,r)=>a+(r.entries?.scrap?.length||0)+(Math.abs(r.data?.mid?.scrapAdj||0)>0?1:0)+(Math.abs(r.data?.end?.scrapAdj||0)>0?1:0),0);
   const list = document.getElementById('dashList');
@@ -1557,7 +2684,7 @@ function renderDash() {
   });
   if(!arr.length) { list.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--ink3)">No reports for this filter.</div>'; }
   else {
-    const modIcons = {daily:'📋',chocolate:'🍫',ingredients:'🥜',pouches:'📦',passoff:'🧾'};
+    const modIcons = {daily:'📋',chocolate:'🍫',ingredients:'🥜',pouches:'📦',passoff:'🧾',kitchen:'🍳'};
     list.innerHTML = arr.slice().reverse().map(r =>
       `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;background:var(--surface2)">
         <div><span style="font-size:16px">${modIcons[r.module]||'📄'}</span> <strong>${r.module.toUpperCase()}</strong> <span style="color:var(--ink3);font-size:12px">${r.date} · ${r.shift||''} · ${r.building||''} ${r.operator?'· '+r.operator:''}</span></div>
@@ -1571,6 +2698,397 @@ function renderDash() {
   const hiBox=document.getElementById('dashHighAdjustments');
   hiBox.innerHTML = high.length ? `<div class="tbl-wrap"><table><thead><tr><th>Type</th><th>Date</th><th>Building</th><th>Shift</th><th>Detail</th></tr></thead><tbody>${high.slice(-30).reverse().map(h=>`<tr><td><span class="tag tag-red">${h.type}</span></td><td>${h.date}</td><td>${h.building||''}</td><td>${h.shift||''}</td><td>${h.detail}</td></tr>`).join('')}</tbody></table></div>` : '<div style="color:var(--ink3)">No high adjustments found for this filter.</div>';
 }
+
+
+// ══════════════════════ KITCHEN — INVENTORY LP VERIFICATION ══════════════════════
+let kitRows = [];
+let kitPhysical = {};
+
+function initKitchen(){
+  const d = document.getElementById('kitDate');
+  if(d && !d.value) d.value = new Date().toLocaleDateString('en-US');
+}
+
+function kitStatus(msg, type='ok'){
+  const box = document.getElementById('kitStatus');
+  if(!box) return;
+  box.textContent = msg;
+  box.className = 'kit-status ' + type;
+}
+
+function kitFindCol(headers, names){
+  for(const name of names){
+    const idx = headers.findIndex(h => String(h || '').toLowerCase().trim().includes(name));
+    if(idx !== -1) return idx;
+  }
+  return -1;
+}
+
+
+function loadKitchenFile(event){
+  const file = event.target.files[0];
+  if(!file) return;
+
+  kitStatus('Loading file... Please wait. Large Excel files can take a few seconds on phone.', 'ok');
+
+  const reader = new FileReader();
+  reader.onerror = function(){
+    kitStatus('File could not be opened. Try Paste CSV Instead.', 'error');
+  };
+  reader.onload = function(e){
+    setTimeout(() => {
+      try{
+        if(typeof XLSX === 'undefined'){
+          kitStatus('XLSX library did not load. Use Paste CSV instead or open the page with internet.', 'error');
+          return;
+        }
+
+        kitStatus('Reading spreadsheet...', 'ok');
+        const data = new Uint8Array(e.target.result);
+        const wb = XLSX.read(data, {type:'array', cellDates:true, dense:true});
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const json = XLSX.utils.sheet_to_json(ws, {header:1, defval:'', raw:false});
+
+        setTimeout(() => parseKitchenData(json), 50);
+      }catch(err){
+        console.error(err);
+        kitStatus('Could not read file on this device. Export the sheet as CSV or use Paste CSV Instead.', 'error');
+      }
+    }, 50);
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+
+function parseKitchenData(data){
+  if(!data || !data.length){
+    kitStatus('No data found.', 'error');
+    return;
+  }
+
+  const headers = data[0].map(h => String(h || '').toLowerCase().trim());
+
+  const iItem = kitFindCol(headers, ['item']);
+  const iDesc = kitFindCol(headers, ['description','desc']);
+  const iInventoryNumber = kitFindCol(headers, ['inventory number']);
+  const iExpiration = kitFindCol(headers, ['expiration date','expiration','expiry date','exp date']);
+  const iLP = kitFindCol(headers, ['lp number','bin number','lp']);
+  const iQty = kitFindCol(headers, ['sum of on hand','sum of available','on hand','available','quantity','qty']);
+
+  if(iItem === -1 || iInventoryNumber === -1 || iLP === -1 || iQty === -1){
+    kitStatus('Missing required columns. Need Item, Inventory Number, LP Number, and Qty / Sum of On Hand.', 'error');
+    return;
+  }
+
+  kitRows = data.slice(1)
+    .filter(r => r[iItem] !== '' && r[iItem] !== undefined && !isNaN(parseFloat(kitCleanNum(r[iQty]))))
+    .map((r,index) => ({
+      key:index,
+      item:String(r[iItem] || '').trim(),
+      desc:iDesc !== -1 ? String(r[iDesc] || '').trim() : '',
+      inventoryNumber:String(r[iInventoryNumber] || '').trim(),
+      expirationDate:iExpiration !== -1 ? kitFormatExcelDate(r[iExpiration]) : '',
+      systemLP:String(r[iLP] || '').trim(),
+      systemQty:parseFloat(kitCleanNum(r[iQty]))
+    }));
+
+  if(!kitRows.length){
+    kitStatus('No valid rows found. Check Qty column.', 'error');
+    return;
+  }
+
+  kitPhysical = {};
+  renderKitchenTable();
+  kitStatus(`Loaded ${kitRows.length} rows successfully.`, 'ok');
+
+  const badge = document.getElementById('nb-kit');
+  if(badge) badge.textContent = String(kitRows.length);
+}
+
+function renderKitchenTable(){
+  const tbody = document.getElementById('kitBody');
+  if(!tbody) return;
+  tbody.innerHTML = '';
+
+  kitRows.forEach(row => {
+    const tr = document.createElement('tr');
+    tr.id = 'kit-row-' + row.key;
+    tr.innerHTML = `
+      <td class="mono">${kitEscape(row.item)}</td>
+      <td>${kitEscape(row.desc)}</td>
+      <td class="mono">${kitEscape(row.inventoryNumber)}</td>
+      <td>${kitEscape(row.expirationDate)}</td>
+      <td class="mono"><strong>${kitEscape(row.systemLP)}</strong></td>
+      <td class="mono">${kitFormat(row.systemQty)}</td>
+      <td><input type="number" step="0.01" inputmode="decimal" oninput="setKitchenValue(${row.key}, 'physicalQty', this.value)"></td>
+      <td id="kit-diff-${row.key}" class="mono">—</td>
+      <td><select onchange="setKitchenValue(${row.key}, 'lpMatch', this.value)"><option value="">Select</option><option value="Yes">Yes</option><option value="No">No</option></select></td>
+      <td><select onchange="setKitchenValue(${row.key}, 'adjust', this.value)"><option value="">Select</option><option value="Yes">Yes</option><option value="No">No</option></select></td>
+      <td id="kit-review-${row.key}">—</td>
+      <td><input type="text" placeholder="Notes..." oninput="setKitchenValue(${row.key}, 'notes', this.value)"></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('kitTable').style.display = 'table';
+  document.getElementById('kitSummary').style.display = 'block';
+  updateKitchenSummary();
+}
+
+function setKitchenValue(key, field, value){
+  if(!kitPhysical[key]) kitPhysical[key] = {};
+  kitPhysical[key][field] = value;
+  updateKitchenRow(key);
+  updateKitchenSummary();
+}
+
+function updateKitchenRow(key){
+  const row = kitRows.find(r => r.key === key);
+  const data = kitPhysical[key] || {};
+  if(!row) return;
+
+  const qty = parseFloat(kitCleanNum(data.physicalQty));
+  const diffCell = document.getElementById('kit-diff-' + key);
+  const reviewCell = document.getElementById('kit-review-' + key);
+  const tr = document.getElementById('kit-row-' + key);
+
+  if(!diffCell || !reviewCell || !tr) return;
+
+  if(!isNaN(qty)){
+    const diff = kitRound(qty - row.systemQty);
+    diffCell.textContent = kitFormat(diff);
+    diffCell.style.color = diff === 0 ? '#222' : diff > 0 ? '#047857' : '#b91c1c';
+    diffCell.style.fontWeight = diff === 0 ? 'normal' : '800';
+  } else {
+    diffCell.textContent = '—';
+    diffCell.style.color = '#222';
+    diffCell.style.fontWeight = 'normal';
+  }
+
+  tr.classList.remove('kit-review-row','kit-adjust-row');
+
+  if(data.lpMatch === 'No'){
+    reviewCell.innerHTML = '<span class="kit-no">REVIEW LP</span>';
+    tr.classList.add('kit-review-row');
+  } else if(data.adjust === ''){
+    reviewCell.innerHTML = '<span class="kit-pending">PENDING</span>';
+  } else if(data.adjust === 'Yes'){
+    reviewCell.innerHTML = '<span class="kit-yes">ADJUST</span>';
+    tr.classList.add('kit-adjust-row');
+  } else if(data.adjust === 'No'){
+    reviewCell.innerHTML = '<span class="kit-yes">NO ADJUST</span>';
+  } else {
+    reviewCell.textContent = '—';
+  }
+}
+
+function updateKitchenSummary(){
+  let yes=0, no=0, pendingLP=0, counted=0, adjustYes=0, adjustNo=0, adjustPending=0, totalIncrease=0, totalRemove=0;
+
+  kitRows.forEach(row => {
+    const d = kitPhysical[row.key] || {};
+    const pqty = parseFloat(kitCleanNum(d.physicalQty));
+
+    if(d.physicalQty !== undefined && d.physicalQty !== ''){
+      counted++;
+      if(!isNaN(pqty)){
+        const diff = kitRound(pqty - row.systemQty);
+        if(diff > 0) totalIncrease += diff;
+        if(diff < 0) totalRemove += Math.abs(diff);
+      }
+    }
+
+    if(d.lpMatch === 'Yes') yes++;
+    else if(d.lpMatch === 'No') no++;
+    else pendingLP++;
+
+    if(d.adjust === 'Yes') adjustYes++;
+    else if(d.adjust === 'No') adjustNo++;
+    else adjustPending++;
+  });
+
+  const s = document.getElementById('kitSummary');
+  if(!s) return;
+
+  s.innerHTML = `
+    <div class="kit-summary-grid">
+      <div class="kit-summary-card"><div class="label">Counted</div><div class="value">${counted}/${kitRows.length}</div></div>
+      <div class="kit-summary-card"><div class="label">LP Review</div><div class="value kit-no">${no}</div></div>
+      <div class="kit-summary-card"><div class="label">Adjust Yes</div><div class="value kit-yes">${adjustYes}</div></div>
+      <div class="kit-summary-card"><div class="label">Adjust Pending</div><div class="value kit-pending">${adjustPending}</div></div>
+    </div>
+    <strong>LP Match Yes:</strong> ${yes} |
+    <strong>LP Pending:</strong> ${pendingLP} |
+    <strong>Adjust No:</strong> ${adjustNo}
+    <br>
+    <strong>Total Increase:</strong> <span class="kit-yes">${kitFormat(totalIncrease)}</span> |
+    <strong>Total Remove:</strong> <span class="kit-no">${kitFormat(totalRemove)}</span>
+  `;
+}
+
+function getKitchenRowsForExport(){
+  const area = document.getElementById('kitArea')?.value || '';
+  const shift = document.getElementById('kitShift')?.value || '';
+  const date = document.getElementById('kitDate')?.value || '';
+  const preparedBy = document.getElementById('kitPreparedBy')?.value || '';
+
+  return kitRows.map(row => {
+    const d = kitPhysical[row.key] || {};
+    const pqty = parseFloat(kitCleanNum(d.physicalQty));
+    const diff = !isNaN(pqty) ? kitRound(pqty - row.systemQty) : '';
+
+    let review = '';
+    if(d.lpMatch === 'No') review = 'REVIEW LP';
+    else if(!d.adjust) review = 'PENDING';
+    else if(d.adjust === 'Yes') review = 'ADJUST';
+    else if(d.adjust === 'No') review = 'NO ADJUST';
+
+    return {area, shift, date, preparedBy, item:row.item, desc:row.desc, inventoryNumber:row.inventoryNumber, expirationDate:row.expirationDate, systemLP:row.systemLP, systemQty:row.systemQty, physicalQty:d.physicalQty || '', difference:diff, lpMatch:d.lpMatch || '', adjust:d.adjust || '', review, notes:d.notes || ''};
+  });
+}
+
+function exportKitchenCSV(){
+  const output = [['Area','Shift','Date','Prepared By','Item','Description','Inventory Number (System Lot)','Expiration Date','System LP','System Qty','Physical Qty','Difference','LP Match','Adjust?','Review Needed','Notes']];
+
+  getKitchenRowsForExport().forEach(r => {
+    output.push([r.area,r.shift,r.date,r.preparedBy,r.item,r.desc,r.inventoryNumber,r.expirationDate,r.systemLP,kitExact(r.systemQty),r.physicalQty,r.difference === '' ? '' : kitExact(r.difference),r.lpMatch,r.adjust,r.review,r.notes]);
+  });
+
+  const csv = output.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  dlBlob(blob, 'Kitchen_LP_Verification.csv');
+  toast('✅ Kitchen CSV exported');
+}
+
+async function exportKitchenWord(){
+  if(!kitRows.length){
+    toast('⚠️ Upload Kitchen file first');
+    return;
+  }
+
+  const rows = getKitchenRowsForExport();
+  const cols = [900,1700,1600,1300,1400,1200,1200,1100,1000,1200,1600];
+  const tw = 14000;
+  const header = wRow(['Item','Description','System Lot','Expiration','System LP','System Qty','Physical','Difference','LP Match','Adjust','Review'].map((h,i)=>thCell(h,cols[i])).join(''));
+
+  const bodyRows = rows.map((r,i) => wRow([r.item,r.desc,r.inventoryNumber,r.expirationDate,r.systemLP,kitExact(r.systemQty),r.physicalQty,r.difference === '' ? '' : kitExact(r.difference),r.lpMatch,r.adjust,r.review].map((v,ci)=>tdCell(v || '—', cols[ci], i%2===1)).join(''))).join('');
+
+  const counted = rows.filter(r => r.physicalQty !== '').length;
+  const reviewLP = rows.filter(r => r.review === 'REVIEW LP').length;
+  const adjustYes = rows.filter(r => r.adjust === 'Yes').length;
+  const adjustPending = rows.filter(r => !r.adjust).length;
+
+  const docBody =
+    wHdr(`Kitchen / Inventory LP Verification — ${document.getElementById('kitDate')?.value || ''}`) +
+    wPara(`Area: ${document.getElementById('kitArea')?.value || ''}   Shift: ${document.getElementById('kitShift')?.value || ''}   Prepared By: ${document.getElementById('kitPreparedBy')?.value || ''}`, {size:18,color:'555555'}) +
+    wPara(`Summary: Counted ${counted}/${rows.length} · Review LP ${reviewLP} · Adjust Yes ${adjustYes} · Adjust Pending ${adjustPending}`, {size:18,color:'555555'}) +
+    wSec('Inventory LP Verification Table') +
+    wTable(11, cols, header + bodyRows, tw);
+
+  const blob = await buildDocx(docBody, true);
+  if(blob) dlBlob(blob, 'Kitchen_LP_Verification.docx');
+  toast('✅ Kitchen Word exported');
+}
+
+function saveKitchen(){
+  const data = {date:document.getElementById('kitDate')?.value || '', shift:document.getElementById('kitShift')?.value || '', building:'L1', operator:document.getElementById('kitPreparedBy')?.value || '', area:document.getElementById('kitArea')?.value || '', rows:getKitchenRowsForExport()};
+
+  saveReport({id:String(Date.now()), module:'kitchen', date:data.date, shift:data.shift, building:data.building, operator:data.operator, data, savedAt:new Date().toISOString()});
+
+  const badge = document.getElementById('nb-kit');
+  if(badge) badge.textContent = String(kitRows.length);
+}
+
+function resetKitchen(){
+  kitRows = [];
+  kitPhysical = {};
+  const table = document.getElementById('kitTable');
+  const body = document.getElementById('kitBody');
+  const summary = document.getElementById('kitSummary');
+  const file = document.getElementById('kitFile');
+  const paste = document.getElementById('kitPasteBox');
+
+  if(table) table.style.display = 'none';
+  if(body) body.innerHTML = '';
+  if(summary){ summary.style.display = 'none'; summary.innerHTML = ''; }
+  if(file) file.value = '';
+  if(paste) paste.value = '';
+
+  ['kitArea','kitShift','kitPreparedBy'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+
+  const badge = document.getElementById('nb-kit');
+  if(badge) badge.textContent = '0';
+
+  kitStatus('Ready. Upload Excel/CSV or paste data.', 'ok');
+  toast('Kitchen reset');
+}
+
+function printKitchen(){
+  document.body.classList.add('print-kitchen');
+  window.print();
+  setTimeout(() => document.body.classList.remove('print-kitchen'), 500);
+}
+
+function toggleKitchenPaste(){
+  const el = document.getElementById('kitPasteArea');
+  if(el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+function loadKitchenPastedData(){
+  const text = document.getElementById('kitPasteBox')?.value.trim();
+  if(!text){
+    kitStatus('Paste area is empty.', 'error');
+    return;
+  }
+  parseKitchenData(parseKitchenDelimitedText(text));
+}
+
+function parseKitchenDelimitedText(text){
+  const lines = text.split(/\r?\n/).filter(l => l.trim() !== '');
+  const delimiter = lines[0].includes('\t') ? '\t' : ',';
+  return lines.map(line => delimiter === '\t' ? line.split('\t') : parseKitchenCSVLine(line));
+}
+
+function parseKitchenCSVLine(line){
+  const out = [];
+  let cur = '';
+  let inQuotes = false;
+
+  for(let i=0;i<line.length;i++){
+    const ch = line[i];
+    if(ch === '"' && line[i+1] === '"'){ cur += '"'; i++; }
+    else if(ch === '"'){ inQuotes = !inQuotes; }
+    else if(ch === ',' && !inQuotes){ out.push(cur); cur = ''; }
+    else { cur += ch; }
+  }
+  out.push(cur);
+  return out;
+}
+
+function loadKitchenSample(){
+  const sample = [
+    ['Item','Description','Inventory Number','Expiration Date','LP Number','Sum of On Hand'],
+    ['10024','PECAN','LOT-PEC-001','6/15/2026','R123456','800.25'],
+    ['21084','GRAHAM','LOT-GRA-002','7/10/2026','R654321','450.50'],
+    ['10088','MARSHMALLOW','LOT-MAR-003','8/1/2026','R777888','300.00']
+  ];
+  parseKitchenData(sample);
+}
+
+function kitCleanNum(v){ return String(v ?? '').replace(/,/g,'').trim(); }
+function kitRound(n){ return Math.round((Number(n) + Number.EPSILON) * 100) / 100; }
+function kitFormat(n){ const num = parseFloat(n); if(isNaN(num)) return ''; return num.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+function kitExact(n){ const num = parseFloat(n); if(isNaN(num)) return ''; return num.toFixed(2); }
+function kitFormatExcelDate(value){
+  if(!value) return '';
+  if(value instanceof Date && !isNaN(value)) return value.toLocaleDateString('en-US');
+  if(typeof value === 'number' && typeof XLSX !== 'undefined'){
+    const date = XLSX.SSF.parse_date_code(value);
+    if(date) return `${date.m}/${date.d}/${date.y}`;
+  }
+  return String(value).trim();
+}
+function kitEscape(v){ return String(v || '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;'); }
 
 // ══════════════════════ WORD EXPORT ENGINE ══════════════════════
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -1631,17 +3149,30 @@ async function exportDailyWord() {
   toast('✅ Daily Report exported!');
 }
 
+
 // ── Chocolate Word ──
 async function exportChocWord() {
+  calcChoc();
   const data = getChocData();
   const cols = [3000,2000,2000,1500,2000]; const tw = 10500;
   const hdr = wRow(['Area / Tank','Fixed Weight (lbs)','Physical Input','Mode','Total lbs'].map((h,i)=>thCell(h,cols[i])).join(''));
-  const rows = data.rows.map((r,i)=>wRow([r.area,r.fixed,r.input,r.mode||'—',r.qty].map((v,ci)=>tdCell(v||'—',cols[ci],i%2===1)).join(''))).join('');
-  const body = wHdr(`Chocolate Adjustment — ${data.line}`) + wPara(`Date: ${data.date}   Shift: ${data.shift}   Item: ${data.item}   Choc: ${data.chocItem}   System: ${data.system} lbs`,{size:18,color:'555555'}) + wTable(5,cols,hdr+rows,tw);
+  const rows = data.rows.map((r,i)=>wRow([r.area,r.fixed,r.input||'—',r.mode||'—',r.qty].map((v,ci)=>tdCell(v||'—',cols[ci],i%2===1)).join(''))).join('');
+
+  let total = 0;
+  data.rows.forEach(r => { total += parseFloat(String(r.qty||'0').replace(/,/g,'')) || 0; });
+  const sys = parseFloat(data.system)||0;
+  const diff = total - sys;
+
+  const body = wHdr(`Chocolate Adjustment — ${data.line}`) +
+    wPara(`Date: ${data.date}   Shift: ${data.shift}   Running Item: ${data.item}   Chocolate Item: ${data.chocItem}`,{size:18,color:'555555'}) +
+    wTable(5,cols,hdr+rows,tw) +
+    wSec('Summary') +
+    wPara(`Total Physical Inventory: ${fmt(total)} lbs   System Qty: ${fmt(sys)} lbs   Adjustment Needed: ${diff>0?'+':''}${fmt(diff)} lbs`,{size:20,bold:true});
   const blob = await buildDocx(body, true);
   if(blob) dlBlob(blob, `Chocolate_${data.date}.docx`);
   toast('✅ Chocolate exported!');
 }
+
 
 // ── Ingredients Word ──
 async function exportIngWord() {
@@ -1662,37 +3193,61 @@ async function exportIngWord() {
   toast('✅ Ingredients exported!');
 }
 
+
+
+
+
+
 // ── Pouches Word ──
 async function exportPchWord() {
   calcPchAll();
   const date = document.getElementById('pchDate').value;
   const item = document.getElementById('pchItem').value;
   const desc = document.getElementById('pchDesc').value;
-  const mid = pchData('mid'), end = pchData('end');
-  const cols = [2600,2200,2200,2200,2200,1800]; const tw = 13200;
-  const mkSection = (d, label) => {
-    const hdr = wRow(['Field','Completion','System','Physical','Scrap IMS','PA'].map((h,i)=>thCell(h,cols[i])).join(''));
-    const rr = [
-      [label, d.completion, d.system, d.physical, d.scrapAdj, d.pa],
-      ['System After Scrap / Total', '—', d.afterScrap, '—', '—', d.totalAdj],
-      ['Adjustment % / Status', `${(d.pct*100).toFixed(2)}%`, '—', '—', '—', d.status]
-    ].map((r,i)=>wRow(r.map((v,ci)=>tdCell(String(v),cols[ci],i%2===1)).join(''))).join('');
-    const comments = document.getElementById(`pch${d.cap}Comments`)?.value||'';
-    return wSec(label) + wTable(6,cols,hdr+rr,tw) + wPara(comments,{size:18,color:'555555',spaceAfter:200});
-  };
-  const totalScrap = mid.scrapAdj + end.scrapAdj;
+  const mid = pchSectionData('mid');
+  const end = pchSectionData('end');
+
+  const totalScrap = mid.scrapDisplay + end.scrapDisplay;
   const totalPA = mid.pa + end.pa;
-  const grandTotal = mid.totalAdj + end.totalAdj;
-  const totalHdr = wRow(['Total Scrap IMS','Total PA','Grand Total IMS Adjustment'].map((h,i)=>thCell(h,[3500,3500,3500][i])).join(''));
-  const totalRow = wRow([totalScrap,totalPA,grandTotal].map((v,i)=>tdCell(String(pchNumber(v)),[3500,3500,3500][i],false)).join(''));
-  const body = wHdr(`Pouches Daily Adjustments — ${date}`) +
-    wPara(`Item: ${item}   Desc: ${desc}   Shift: ${document.getElementById('pchShift').value}   Line: ${document.getElementById('pchLine').value}`,{size:18,color:'555555'}) +
-    mkSection(mid,'⏱ Mid Shift') + mkSection(end,'✅ End of Shift') +
-    wSec('Σ Totals — Adjustments Only') + wTable(3,[3500,3500,3500],totalHdr+totalRow,10500);
+  const grandTotalAdjustment = mid.totalAdjustment + end.totalAdjustment;
+  const totalCompletionForRatio = Math.abs(mid.completion) + Math.abs(end.completion);
+  const grandPctSigned = totalCompletionForRatio ? grandTotalAdjustment / totalCompletionForRatio : 0;
+  const grandStatus = pchStatusFromTotal(grandTotalAdjustment, Math.abs(grandPctSigned));
+
+  const cols = [3200,2600,2600,2600]; 
+  const tw = 11000;
+
+  const mkSection = (d, label) => {
+    const hdr = wRow(['Field','Value','Notes','Status'].map((h,i)=>thCell(h,cols[i])).join(''));
+    const rows = [
+      ['Report', d.report, '', ''],
+      ['Item', item, desc, ''],
+      ['Completion', pchFormat(d.completion), 'Production recorded in NetSuite', ''],
+      ['Qty in System', pchFormat(d.system), 'Before applying scrap', ''],
+      ['Qty in Physical', pchFormat(d.physical), 'Real physical count', ''],
+      ['Scrap Reported', pchFormatSigned(d.scrapDisplay), 'Reported by Production', ''],
+      ['PA', pchFormatSigned(d.pa), 'Physical - (System - Scrap)', ''],
+      ['Total Adjustment', pchFormatSigned(d.totalAdjustment), 'Scrap + PA', `${Math.round(d.adjPctSigned*100)}% · ${d.status.label}`]
+    ].map((r,i)=>wRow(r.map((v,ci)=>tdCell(v||'—',cols[ci],i%2===1)).join(''))).join('');
+    return wSec(label) + wTable(4, cols, hdr+rows, tw);
+  };
+
+  const body = wHdr(`Pouches Adjustments — ${date}`) +
+    wPara(`Shift: ${document.getElementById('pchShift').value}   Line: ${document.getElementById('pchLine').value}`,{size:18,color:'555555'}) +
+    mkSection(mid, 'Mid Shift') +
+    wPara(document.getElementById('pchMidReportPreview').value,{size:18,color:'555555'}) +
+    mkSection(end, 'End of Shift') +
+    wPara(document.getElementById('pchEndReportPreview').value,{size:18,color:'555555'}) +
+    wSec('Grand Totals — Net Adjustments') +
+    wPara(`Total Scrap: ${pchFormatSigned(totalScrap)}   Total PA: ${pchFormatSigned(totalPA)}   Grand Total Adjustment: ${pchFormatSigned(grandTotalAdjustment)}   Grand Adjustment %: ${Math.round(grandPctSigned*100)}%   Grand Status: ${grandStatus.label}`,{size:20,bold:true}) +
+    wSec('Comments') +
+    wPara(`Mid Shift: ${document.getElementById('pchMidComments').value || '—'}`,{size:18,color:'555555'}) +
+    wPara(`End of Shift: ${document.getElementById('pchEndComments').value || '—'}`,{size:18,color:'555555'});
   const blob = await buildDocx(body, true);
   if(blob) dlBlob(blob, `Pouches_${date}.docx`);
   toast('✅ Pouches exported!');
 }
+
 
 // ── Pass Off Word ──
 async function exportPoWord() {
